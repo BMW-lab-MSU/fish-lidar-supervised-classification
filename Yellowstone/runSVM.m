@@ -9,20 +9,27 @@
 %% Setup
 % declare dataset filenames and paths here if desired
 
-% this can be a relative or absolute path
-data_dir = 'Data';
-hits_dir = 'Data';
+% data_dir can be a relative or absolute path; an empty string means you will
+% have to navigate to your data directory in the file chooser dialogs
+data_dir = '../../../Box/AFRL_Data/Data';
+% data_dir = '';
+hits_dir = data_dir;
 
 data_filename = '';
 hitsFileName = '';
 
 % TODO: error handling if DATA_DIR isn't a directory
 
-% load in the classifier mat file
-% TODO: where to put this mat file? does it belong with the data or with
-% the code??? it's currently with that data. hard coding this for now...
-load 'Data/CLASSIFIER_2_QuadraticSVM.mat';
+%% Load in the classifier mat file
 
+% TODO: where to put this mat file? does it belong with the data or with
+% the code??? it's currently with the data.
+if isdir(data_dir)
+    load([data_dir, '/CLASSIFIER_2_QuadraticSVM']);
+else
+    [classifier_file, classifier_path] = uigetfile('*.mat', 'Load a classifier mat file');
+    load([classifier_path filesep classifier_file]);
+end
 %% Load dataset
 
 % if no dataset filename is given, let the user select a file
