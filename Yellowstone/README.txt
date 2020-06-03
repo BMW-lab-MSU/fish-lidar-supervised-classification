@@ -7,7 +7,9 @@ filenames as well as lets users graphically select files.
 Addition Files Needed to runSVM*:
 find_latlong.m
 normalize_surface.m
-normalize_surface_vect.m
+normalize_surface_vect.m    ---- (In the future we hope to combine the independent functionality
+                                    of these two similar functions into a single file labeled under
+                                    normalize_surface.m)
 
 	
 This document will be seperated according to the title of each MATLAB section:
