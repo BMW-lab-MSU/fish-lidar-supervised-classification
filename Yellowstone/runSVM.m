@@ -216,22 +216,85 @@ data_for_classification_learner = [x;y]';
 yhat_cheating = QuadraticSVM.predictFcn(x')';
 
 % yhat = yhat_cross_validated;
+ yhat = yhat_cheating;      
 yhat = yhat_cheating;      
+ yhat = yhat_cheating;      
+yhat = yhat_cheating;      
+ yhat = yhat_cheating;      
+yhat = yhat_cheating;      
+ yhat = yhat_cheating;      
 
+%% Specific label graphing (Before Area Application)
 figure();
 subplot(211); stem(y); title('Actual Labels');
 subplot(212); stem(yhat); title('Predicted Labels');
 
-labelmat = [y;y;y;y;y;zeros(5,length(y));yhat;yhat;yhat;yhat;yhat];
-%figure(); subplot(311); imagesc(labelmat); xlim([640 670]);
-%xlabel({'Top Row = Human-Labeled Hits,','Bottom Row = Machine Learning Predicted Hits'});
-figure(); imagesc(x,[0 10]); xlim([640 670]); ylim([1 30]);
+figure(); imagesc(x,[0 10]); xlim([0 100000]); ylim([1 60]);
 xlabel('LIDAR Image Data');
 
 c = confusionmat(y,yhat);
 figure(); confusionchart(c,{'No Fish','Fish'})
 
-%figure(95); imagesc([repmat(5 + 3*yhat_cheating(:,1:27195),10,1); repmat(5 + 3*hits_vector(:,1:27195),10,1); xpol_norm(:,1:27195)], [0 10]); colorbar; title('First Quarter of Full Flight');
-%figure(96); imagesc([repmat(5 + 3*yhat_cheating(:,27195:54390),10,1);repmat(5 + 3*hits_vector(:,27195:54390),10,1); xpol_norm(:,27195:54390)], [0 10]); colorbar; title('Second Quarter of Full Flight');
-%figure(97); imagesc([repmat(5 + 3*yhat_cheating(:,54390:81585),10,1);repmat(5 + 3*hits_vector(:,54390:81585),10,1); xpol_norm(:,54390:81585)], [0 10]); colorbar; title('Third Quarter of Full Flight');
-%figure(98); imagesc([repmat(5 + 3*yhat_cheating(:,81585:108778),10,1);repmat(5 + 3*hits_vector(:,81585:108778),10,1); xpol_norm(:,81585:108778)], [0 30]); colorbar; title('Fourth Quarter of Full Flight');
+%% machine labeled area block
+
+N = length(yhat);
+window = 2500;
+index = window;
+trigger = 0;
+while trigger == 0
+   if index < length(yhat)
+        if yhat(index) == 1
+             yhat((index-window/2):(index+window/2)) = 1;
+             index = index + window;
+        else
+             index = index + 1;
+        end
+    else
+        trigger = 1;
+            
+    end
+    
+end
+
+%% Human Labeled area block
+
+N = length(y);
+index = window;
+trigger = 0;
+while trigger == 0
+   if index < length(y)
+        if y(index) == 1
+             y((index-window/2):(index+window/2)) = 1;
+             index = index + window;
+        else
+             index = index + 1;
+        end
+    else
+        trigger = 1;
+            
+    end
+    
+end
+
+%% Graphical Analysis
+
+
+yHalf1 = y(1:ceil(length(y)/2));
+yHalf2 = y(ceil(length(y)/2):length(y));
+yhatHalf1 = yhat(1:ceil(length(yhat)/2));
+yhatHalf2 = yhat(ceil(length(yhat)/2):length(yhat));
+
+labelmat1 = [yHalf1;yHalf1;yHalf1;yHalf1;yHalf1;zeros(6,length(yHalf1));yhatHalf1;yhatHalf1;yhatHalf1;yhatHalf1;yhatHalf1];
+labelmat2 = [yHalf2;yHalf2;yHalf2;yHalf2;yHalf2;zeros(6,length(yHalf2));yhatHalf2;yhatHalf2;yhatHalf2;yhatHalf2;yhatHalf2];
+
+figure(); subplot(311); imagesc(labelmat1); xlim([0 50000]);
+title('First Half of predictions and labels');
+xlabel({'Top Row = Human-Labeled Hits,','Bottom Row = Machine Learning Predicted Hits'});
+figure(); subplot(311); imagesc(labelmat2); xlim([0 50000]);
+title('Second Half of predictions and labels');
+xlabel({'Top Row = Human-Labeled Hits,','Bottom Row = Machine Learning Predicted Hits'});
+
+%figure(95); imagesc([repmat(5 + 3*yhat(:,1:27195),10,1); repmat(5 + 3*y(:,1:27195),10,1); xpol_norm(:,1:27195)], [0 10]); colorbar; title('First Quarter of Full Flight');
+%figure(96); imagesc([repmat(5 + 3*yhat(:,27195:54390),10,1);repmat(5 + 3*y(:,27195:54390),10,1); xpol_norm(:,27195:54390)], [0 10]); colorbar; title('Second Quarter of Full Flight');
+%figure(97); imagesc([repmat(5 + 3*yhat(:,54390:81585),10,1);repmat(5 + 3*y(:,54390:81585),10,1); xpol_norm(:,54390:81585)], [0 10]); colorbar; title('Third Quarter of Full Flight');
+%figure(98); imagesc([repmat(5 + 3*yhat(:,81585:108778),10,1);repmat(5 + 3*y(:,81585:108778),10,1); xpol_norm(:,81585:108778)], [0 30]); colorbar; title('Fourth Quarter of Full Flight');
