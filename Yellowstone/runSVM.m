@@ -216,13 +216,7 @@ data_for_classification_learner = [x;y]';
 yhat_cheating = QuadraticSVM.predictFcn(x')';
 
 % yhat = yhat_cross_validated;
- yhat = yhat_cheating;      
-yhat = yhat_cheating;      
- yhat = yhat_cheating;      
-yhat = yhat_cheating;      
- yhat = yhat_cheating;      
-yhat = yhat_cheating;      
- yhat = yhat_cheating;      
+ yhat = yhat_cheating;
 
 %% Specific label graphing (Before Area Application)
 figure();
@@ -287,10 +281,10 @@ yhatHalf2 = yhat(ceil(length(yhat)/2):length(yhat));
 labelmat1 = [yHalf1;yHalf1;yHalf1;yHalf1;yHalf1;zeros(6,length(yHalf1));yhatHalf1;yhatHalf1;yhatHalf1;yhatHalf1;yhatHalf1];
 labelmat2 = [yHalf2;yHalf2;yHalf2;yHalf2;yHalf2;zeros(6,length(yHalf2));yhatHalf2;yhatHalf2;yhatHalf2;yhatHalf2;yhatHalf2];
 
-figure(); subplot(311); imagesc(labelmat1); xlim([0 50000]);
+figure(); subplot(311); imagesc(labelmat1); xlim([0 95000]);
 title('First Half of predictions and labels');
 xlabel({'Top Row = Human-Labeled Hits,','Bottom Row = Machine Learning Predicted Hits'});
-figure(); subplot(311); imagesc(labelmat2); xlim([0 50000]);
+figure(); subplot(311); imagesc(labelmat2); xlim([0 95000]);
 title('Second Half of predictions and labels');
 xlabel({'Top Row = Human-Labeled Hits,','Bottom Row = Machine Learning Predicted Hits'});
 
