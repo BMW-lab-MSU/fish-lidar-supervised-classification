@@ -20,6 +20,9 @@ hitsFileName = '';
 
 % TODO: error handling if DATA_DIR isn't a directory
 
+% Constants:
+planeToSurf = 160;
+
 %% Load in the classifier mat file
 
 % TODO: where to put this mat file? does it belong with the data or with
@@ -54,7 +57,7 @@ depth_increment = h5read(full_filepath, '/info/depth_increment');
 distance = h5read(full_filepath, '/location/distance');
 latlong = h5read(full_filepath, '/location/latlong');
  
-%% Load ground truth fish hits
+%% Load Human Labeled fish hits
 
 % if no ground truth fish hits filename is given, let the user select a file
 if isempty(hitsFileName)
@@ -69,12 +72,6 @@ end
 % load in the ground truth fish hits
 full_filepath = [data_dir filesep hitsFileName];
 hitsMatrix = readmatrix(full_filepath);                                     % Initialize hits vectors
-
-% TODO: this is really gross :^0 let's modify the csv files to include these
-% estimates so our code can be more generic
-% hitsMatrix(:, 6) = [16, 22, 14, 60, 30, 12, 8];
-% TO-DONE on one fish_hits file, but leaving in here right now because we don't have commit
-% messages :(
 
 %% Set the distances from the csv file
 fish_distances = hitsMatrix(:, 1);                                            % Initializing vectors of preselected fish hit data
@@ -125,15 +122,15 @@ end
 
 %% Normalize surface index
 depth_vector = zeros(1, length(distance));
-xpol_norm = zeros(160, length(distance));
+xpol_norm = zeros(planeToSurf, length(distance));
 
 for i = 1:length(distance)                                                 % I need to personally review this chunk to understand :/
-    depth_vector(i) = 160;
-    if surf_idx(i) + 160 - 10 > 2048
+    depth_vector(i) = planeToSurf;
+    if surf_idx(i) + planeToSurf - 10 > 2048
         depth_vector(i) = 2048 - surf_idx(i) + 10; 
     end
 end
- xpol_norm = normalize_surface_vect(xpol_from_plane, surf_idx, depth_vector);
+ xpol_norm = normalize_surface_vect(xpol_from_plane, surf_idx, depth_vector, planeToSurf);
  
 %% Flooring and filtering of radiance data
  full_flight = zeros(1,length(distance));

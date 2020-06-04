@@ -22,7 +22,16 @@ NOTE: You must initialize your data in this section. Once you change the require
 			Distance, Latitude, Longitude, FishDepth, BottomDepth, Estimated School Size (# of fish)
 	- hits matrix hard coded estimated school size values due to the last column being a string, not an int
 	
-	
+%% Setup
+    - Allows the user to hardcode the file paths for data_filename and hitsFileName
+	- The User is also offered an interface to select a file for
+        - The Classifier
+        - The flight data
+        - The human label data
+
+    - planeToSurf is a value which dictates where the surface window is considered to start in the data
+
+
 %% Creating a "positive label" vector --- Author: Jackson Belford
 	- avgWidthPerFish is the estimated number of columns per individual fish in labeled group
 	- returns a hits_vector which labels columns based on the distance noted in the tables, and the estimated school size
@@ -45,6 +54,10 @@ NOTE: You must initialize your data in this section. Once you change the require
 
 		
 %% Now run the classification learner toolbox!
+
+
+%% Graphical Analysis
+    Shows areas of interest.
 	Uncomment last four figures to see the complete flight in sections.
 	- Zoom out on the LIDAR Image Data to see a complete image
 	- View stem plot showing predicted labels vs. actual labels
