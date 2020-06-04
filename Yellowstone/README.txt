@@ -6,7 +6,6 @@ filenames as well as lets users graphically select files.
 
 Addition Files Needed to runSVM*:
 find_latlong.m
-normalize_surface.m
 normalize_surface_vect.m    ---- (In the future we hope to combine the independent functionality
                                     of these two similar functions into a single file labeled under
                                     normalize_surface.m)
@@ -22,11 +21,6 @@ NOTE: You must initialize your data in this section. Once you change the require
 		- Note, this table should be organized in the following manner:
 			Distance, Latitude, Longitude, FishDepth, BottomDepth, Estimated School Size (# of fish)
 	- hits matrix hard coded estimated school size values due to the last column being a string, not an int
-	
-	
-%% Loop through
-	- DEPTH is the value kept under the surface, typically 160-200
-	- Uncomment figure() and imagesc to plot the data from each segment of the flight
 	
 	
 %% Creating a "positive label" vector --- Author: Jackson Belford

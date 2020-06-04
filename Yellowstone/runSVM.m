@@ -91,25 +91,6 @@ legend({'Flight Path','Fish Hits'});
 xlabel('Longitude'); ylabel('Latitude');
 axis([-110.6 -110.2 44.25 44.6]);
 
-%% Loop through
-
-DEPTH = 160;
-        
-N = length(fish_distances);                                                % Creates a variable equal to the number of known fish hits
-
-for idx = 1:N
-  
-    cur_distance = fish_distances(idx);                                    % Define the current values according to indexed fish hit
-    cur_latitude = fish_latitudes(idx);
-    cur_longitude = fish_longitudes(idx);
-    
-    % Find the matrix column corresponding to that distance
-    dif = cur_distance-distance;                                           % This bit of code takes the current distance and relates
-    col(idx) = find(abs(dif)==min(abs(dif)));                              % it to the distance recorded. The lowest value of the dif
-    col2(idx) = find_latlong(cur_latitude,cur_longitude,latlong);          % vector corrisponds to the correct sample column
-    
-end 
-
 %% Creating a "positive label" vector --- Author: Jackson Belford
 %  The value for average column width per fish was calculated by taking the
 %  average of (the column width eyeballed / number of fish indicated by
