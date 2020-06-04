@@ -108,26 +108,6 @@ for idx = 1:N
     col(idx) = find(abs(dif)==min(abs(dif)));                              % it to the distance recorded. The lowest value of the dif
     col2(idx) = find_latlong(cur_latitude,cur_longitude,latlong);          % vector corrisponds to the correct sample column
     
-    % Plot the cross-polarization data
-    xdata = distance(col(idx)-500:col(idx)+500);
-    xdata_col = col(idx)-500:col(idx)+500;
-    ydata = 1:DEPTH;
-    
-    xpol_data = xpol_from_plane(:,col(idx)-500:col(idx)+500);
-    xpol_surface_data = normalize_surface(xpol_data,surf_idx(col(idx)-500:col(idx)+500),DEPTH);
-%    figure();
-%    imagesc(xdata,ydata,xpol_surface_data,[0 10]);
-%    title(['Distance = ' num2str(cur_distance)]);
-    
-    xpol_surf = xpol_surface_data(1:140,:);                                % This code must floor values near the surface
-                                                                           % to create better contrast
-    for i = 1:140
-        for j = 1:length(xpol_surf)
-            if xpol_surf(i,j) < 2
-               xpol_surf(i,j) = 0;
-            end
-        end
-    end
 end 
 
 %% Creating a "positive label" vector --- Author: Jackson Belford
