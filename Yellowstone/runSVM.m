@@ -22,6 +22,7 @@ hitsFileName = '';
 
 % Constants:
 planeToSurf = 160;
+surfacePad = 10;
 
 %% Load in the classifier mat file
 
@@ -74,7 +75,7 @@ end
 
 % load in the ground truth fish hits
 full_filepath = [data_dir filesep hitsFileName];
-hitsMatrix = readmatrix(full_filepath);                                     % Initialize hits vectors
+hitsMatrix = readmatrix(full_filepath);                                    % Initialize hits vectors
 
 %% Set the distances from the csv file
 fish_distances = hitsMatrix(:, 1);                                            % Initializing vectors of preselected fish hit data
@@ -128,34 +129,22 @@ end
 depth_vector = zeros(1, length(distance));
 xpol_norm = zeros(planeToSurf, length(distance));
 
+% set surface depth vectors
 for i = 1:length(distance)                                                 % I need to personally review this chunk to understand :/
     depth_vector(i) = planeToSurf;
-    if surf_idx(i) + planeToSurf - 10 > IMAGE_DEPTH
-        depth_vector(i) = IMAGE_DEPTH - surf_idx(i) + 10; 
+    if surf_idx(i) + planeToSurf - surfacePad > IMAGE_DEPTH
+        depth_vector(i) = IMAGE_DEPTH - surf_idx(i) + surfacePad; 
     end
 end
- xpol_norm = normalize_surface_vect(xpol_from_plane, surf_idx, depth_vector, planeToSurf);
+xpol_norm = normalize_surface_vect(xpol_from_plane, surf_idx, depth_vector, planeToSurf);
  
 %% Flooring and filtering of radiance data
- for i = 1:140
-     for j = 1:length(distance)
-         if xpol_norm(i,j) < 2
-           xpol_norm(i,j) = 0;
-        end
+for j = 1:length(distance)
+    if xpol_norm(:,j) < 2
+        xpol_norm(:,j) = 0;
     end
- end
+end
 
-%  for i = 1:length(distance)
-%     threshold = sum(xpol_norm(20:140, i));
-%     if threshold < 130
-%        full_flight(i) = -1;
-%     else
-%        full_flight(i) = threshold;
-%     end
-%  end
-% 
-% k = full_flight == -1;
-% xpol_norm(:,k) = [];
 
 %% Windowing
 % Reduce column height to region of interest
