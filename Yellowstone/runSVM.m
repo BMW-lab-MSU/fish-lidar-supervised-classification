@@ -33,6 +33,7 @@ else
     [classifier_file, classifier_path] = uigetfile('*.mat', 'Load a classifier mat file');
     load([classifier_path filesep classifier_file]);
 end
+
 %% Load dataset
 
 % if no dataset filename is given, let the user select a file
@@ -56,6 +57,8 @@ surf_idx = h5read(full_filepath, '/info/surface_index');
 depth_increment = h5read(full_filepath, '/info/depth_increment');
 distance = h5read(full_filepath, '/location/distance');
 latlong = h5read(full_filepath, '/location/latlong');
+
+IMAGE_DEPTH = min(size(xpol_from_plane));
  
 %% Load Human Labeled fish hits
 
@@ -93,6 +96,7 @@ axis([-110.6 -110.2 44.25 44.6]);
 %  average of (the column width eyeballed / number of fish indicated by
 %  csv)
 
+% TODO: automate this? 
 avgWidthPerFish = 4.57;
 N = length(school_sizes);
 labelLength = zeros(N, 1);
@@ -126,14 +130,13 @@ xpol_norm = zeros(planeToSurf, length(distance));
 
 for i = 1:length(distance)                                                 % I need to personally review this chunk to understand :/
     depth_vector(i) = planeToSurf;
-    if surf_idx(i) + planeToSurf - 10 > 2048
-        depth_vector(i) = 2048 - surf_idx(i) + 10; 
+    if surf_idx(i) + planeToSurf - 10 > IMAGE_DEPTH
+        depth_vector(i) = IMAGE_DEPTH - surf_idx(i) + 10; 
     end
 end
  xpol_norm = normalize_surface_vect(xpol_from_plane, surf_idx, depth_vector, planeToSurf);
  
 %% Flooring and filtering of radiance data
- full_flight = zeros(1,length(distance));
  for i = 1:140
      for j = 1:length(distance)
          if xpol_norm(i,j) < 2
