@@ -14,14 +14,13 @@ This document will be seperated according to the title of each MATLAB section:
 %% Setup
     - data_dir can be a relative or absolute path
         - an empty string will prompt a UI document selector.
-    - data_filename
+    -data_filename
         - an empty string will prompt a UI document selector.
-    - hitsFileName
+    -hitsFileName
         - Table of labeled instances
         - an empty string will prompt a UI document selector.
 
-    - planeToSurf is set to the row by which the surface starts
-    - surfacePad is set be roughly the row size of the highest radiance surface points
+    -planeToSurf is set to the row by which the surface starts if the top column is 
 
 
 %% This file builds and labels the dataset for the Matlab classification suite
