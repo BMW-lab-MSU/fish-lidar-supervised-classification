@@ -11,19 +11,6 @@ normalize_surface_vect.m
 	
 This document will be seperated according to the title of each MATLAB section:
 
-%% Setup
-    - data_dir can be a relative or absolute path
-        - an empty string will prompt a UI document selector.
-    - data_filename
-        - an empty string will prompt a UI document selector.
-    - hitsFileName
-        - Table of labeled instances
-        - an empty string will prompt a UI document selector.
-
-    - planeToSurf is set to the row by which the surface starts
-    - surfacePad is set be roughly the row size of the highest radiance surface points
-
-
 %% This file builds and labels the dataset for the Matlab classification suite
 NOTE: You must initialize your data in this section. Once you change the required fields, you can run the program without issue.
 
@@ -34,19 +21,54 @@ NOTE: You must initialize your data in this section. Once you change the require
 	- hits matrix hard coded estimated school size values due to the last column being a string, not an int
 	
 %% Setup
-    - Allows the user to hardcode the file paths for data_filename and hitsFileName
-	- The User is also offered an interface to select a file for
-        - The Classifier
-        - The flight data
-        - The human label data
+    - data_dir can be a relative or absolute path
+        - an empty string will prompt a UI document selector.
+    - data_filename
+        - an empty string will prompt a UI document selector.
+    - hitsFileName
+        - Table of labeled instances
+        - an empty string will prompt a UI document selector.
 
-    - planeToSurf is a value which dictates where the surface window is considered to start in the data
+%% Load in the classifier mat file
+    - load file from direct path or open file selector UI
 
+%% Load dataset
+    - load file from direct path or open file selector UI
+    - .h5 file exclusive
+    - IMAGE_DEPTH = the number of rows in xpol data
+
+%% Load Human Labeled fish hits
+    - load file from direct path or open file selector UI
+    - full_filepath
+        - Loads in hits matrix file path
+    - hitsMatrix
+        - Matrix of positive labels
+
+%% Set the distances from the csv file
+    - fish_distances
+        - First column of hits matrix
+    - fish_latitudes
+        - Second column of hits matrix
+    - fish_longitudes
+        - Third column of hits matrix
+    - school_size
+        - seventh column of hits matrix
+
+%% Plot the path and the fish locations
+    - separation:
+        - Column distance between plotted long, lat point.
+    - Plots  2d scatter-plot of the flight path, can be overlayed on google maps!
 
 %% Creating a "positive label" vector --- Author: Jackson Belford
 	- avgWidthPerFish is the estimated number of columns per individual fish in labeled group
 	- returns a hits_vector which labels columns based on the distance noted in the tables, and the estimated school size
 
+%% Normalize Surface Index
+    - depth_vector
+        - shows the depth of each measurement column
+    - xpol_norm
+        - I might be wrong about what planeToSurf means.
+    - Runs normalize_surface_vect() returning a normalized vector, smoothing bumps
 
 %% Flooring and filtering of radiance data
 	- The first filter is a high-pass filter, flooring values less then --- (xpol_norm(i, j) < 2 --- a value.
@@ -66,9 +88,19 @@ NOTE: You must initialize your data in this section. Once you change the require
 		
 %% Now run the classification learner toolbox!
 
+%% Specific label graphing (Before Area Application)
+    - Shows a stem plot of predicted labels vs. chosen labels
+	- Zoom out on the LIDAR Image Data to see a complete image
+    - Confusion matrix values (can be mis-leading)
+
+%% machine labeled area block
+    - window
+        - Set to the number of rows blocked around a hit
+        - Should be based on school size?
+
+%% Human labeled area block
+    - Equivalent to the machine labeled block process for the y labels
 
 %% Graphical Analysis
     Shows areas of interest.
 	Uncomment last four figures to see the complete flight in sections.
-	- Zoom out on the LIDAR Image Data to see a complete image
-	- View stem plot showing predicted labels vs. actual labels
