@@ -7,6 +7,7 @@ filenames as well as lets users graphically select files.
 Addition Files Needed to runSVM*:
 find_latlong.m
 normalize_surface_vect.m
+create_positive_label_vect.m
 
 	
 This document will be seperated according to the title of each MATLAB section:

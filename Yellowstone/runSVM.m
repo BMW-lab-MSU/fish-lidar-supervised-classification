@@ -11,25 +11,26 @@
 
 % data_dir can be a relative or absolute path; an empty string means you will
 % have to navigate to your data directory in the file chooser dialogs
-data_dir = '../../../Box/AFRL_Data/Data';
-% data_dir = '';
-hits_dir = data_dir;
+data_dir = 'resources/data';
+classifier_dir = 'resources/classifiers/';
+hits_dir = 'resources/labels/';
 
-data_filename = '';
-hitsFileName = '';
+data_filename = 'yellowstone_wfov_20160928.processed.h5';
+hitsFileName = 'fish_hits_2016_with_school_size_estimates.csv';
 
 % TODO: error handling if DATA_DIR isn't a directory
 
-% Constants:
-planeToSurf = 160;
-surfacePad = 10;
+% Constants (TODO: Automate these constants):
+PLANE_TO_SURFACE = 160;
+SURFACE_PAD = 10;
+MAX_INTENSITY = 11;
 
 %% Load in the classifier mat file
 
 % TODO: where to put this mat file? does it belong with the data or with
 % the code??? it's currently with the data.
-if isdir(data_dir)
-    load([data_dir, '/CLASSIFIER_2_QuadraticSVM']);
+if isdir(classifier_dir)
+    load([classifier_dir, '/CLASSIFIER_2_QuadraticSVM']);
 else
     [classifier_file, classifier_path] = uigetfile('*.mat', 'Load a classifier mat file');
     load([classifier_path filesep classifier_file]);
@@ -43,6 +44,8 @@ if isempty(data_filename)
     if isdir(data_dir)
         % TODO: do we expect other file types besdies h5? if so, we can
         % change the filetype filter
+        % We need a way to reference different formats and create a basic
+        % template which works best for our program.
         [data_filename, data_dir] = uigetfile([data_dir, '/*.h5'], 'Select a dataset');
     else
         [data_filename, data_dir] = uigetfile('*.h5');
@@ -74,7 +77,7 @@ if isempty(hitsFileName)
 end
 
 % load in the ground truth fish hits
-full_filepath = [data_dir filesep hitsFileName];
+full_filepath = [hits_dir filesep hitsFileName];
 hitsMatrix = readmatrix(full_filepath);                                    % Initialize hits vectors
 
 %% Set the distances from the csv file
@@ -84,6 +87,7 @@ fish_longitudes = hitsMatrix(:, 3);
 school_sizes = hitsMatrix(:, 7);
 
 %% Plot the path and the fish locations
+% Simply a visual graphing process
 separation = 250;                                                          % Alters the sampling frequency of the mapping
 scatter(latlong(2,1:separation:size(latlong,2)),latlong(1,1:separation:size(latlong,2)),'m.'); axis square;
 hold on; scatter(fish_longitudes,fish_latitudes,'ro','LineWidth',3);
@@ -99,44 +103,20 @@ axis([-110.6 -110.2 44.25 44.6]);
 
 % TODO: automate this? 
 avgWidthPerFish = 4.57;
-N = length(school_sizes);
-labelLength = zeros(N, 1);
-columnNumber = zeros(N, 1);
-
-for idx = 1:N
-
-    tempLength = ceil(school_sizes(idx) * avgWidthPerFish);
-    
-    if tempLength >= 55
-        tempLength = ceil(tempLength/4);                                   % To better agree with Kyles work, large values assume
-    end                                                                    % a tight school instead of a massive school
-    
-    labelLength(idx) = tempLength;
-    
-end
-
-hits_vector = zeros(1, length(distance));
-
-for idy = 1:N
-    
-    columnNumber(idy) = max(find(abs(distance-fish_distances(idy)) < 1.5)); % Produces a vector with ones centered around the column number
-                                                                           % that corrisponds to the CSV.
-    hits_vector((columnNumber(idy)-ceil(labelLength(idy)/2)):(columnNumber(idy) + ceil(labelLength(idy)/2))) = 1;
-    
-end
+hits_vector = create_positive_label_vect(avgWidthPerFish, school_sizes, distance, fish_distances);
 
 %% Normalize surface index
 depth_vector = zeros(1, length(distance));
-xpol_norm = zeros(planeToSurf, length(distance));
+xpol_norm = zeros(PLANE_TO_SURFACE, length(distance));
 
 % set surface depth vectors
 for i = 1:length(distance)                                                 % I need to personally review this chunk to understand :/
-    depth_vector(i) = planeToSurf;
-    if surf_idx(i) + planeToSurf - surfacePad > IMAGE_DEPTH
-        depth_vector(i) = IMAGE_DEPTH - surf_idx(i) + surfacePad; 
+    depth_vector(i) = PLANE_TO_SURFACE;
+    if surf_idx(i) + PLANE_TO_SURFACE - SURFACE_PAD > IMAGE_DEPTH
+        depth_vector(i) = IMAGE_DEPTH - surf_idx(i) + SURFACE_PAD; 
     end
 end
-xpol_norm = normalize_surface_vect(xpol_from_plane, surf_idx, depth_vector, planeToSurf);
+xpol_norm = normalize_surface_vect(xpol_from_plane, surf_idx, depth_vector, PLANE_TO_SURFACE);
  
 %% Flooring and filtering of radiance data
 for j = 1:length(distance)
@@ -148,12 +128,11 @@ end
 
 %% Windowing
 % Reduce column height to region of interest
-start = 21;
-stop = 80;
+start = 1;
+stop = 60;
 x = xpol_norm(start:stop,:);
 y = hits_vector;
 % Clip max intensities
- MAX_INTENSITY = 10;
  x(x>MAX_INTENSITY) = MAX_INTENSITY;
 
 % Change cost for misclassifying fish (It is worse to miss a fish.)
@@ -201,6 +180,7 @@ while trigger == 0
 end
 
 %% Human Labeled area block
+% Setting individual labels to blocks of windowed size
 
 N = length(y);
 index = window;
