@@ -155,40 +155,26 @@ figure(); confusionchart(c,{'No Fish','Fish'})
 
 window = 2500;
 index = window;
-trigger = 0;
-while trigger == 0
-   if index < length(yhat)
-        if yhat(index) == 1
-             yhat((index-window/2):(index+window/2)) = 1;
-             index = index + window;
-        else
-             index = index + 1;
-        end
+while index < length(yhat)
+    if yhat(index) == 1
+            yhat((index-window/2):(index+window/2)) = 1;
+            index = index + window;
     else
-        trigger = 1;
-            
+            index = index + 1;
     end
-    
 end
 
 %% Human Labeled area block
 % Setting individual labels to blocks of windowed size
 
 index = window;
-trigger = 0;
-while trigger == 0
-   if index < length(y)
-        if y(index) == 1
-             y((index-window/2):(index+window/2)) = 1;
-             index = index + window;
-        else
-             index = index + 1;
-        end
+while index < length(y)
+    if y(index) == 1
+            y((index-window/2):(index+window/2)) = 1;
+            index = index + window;
     else
-        trigger = 1;
-            
+            index = index + 1;
     end
-    
 end
 
 %% Graphical Analysis
