@@ -28,7 +28,7 @@ MAX_INTENSITY = 11;
 
 % TODO: where to put this mat file? does it belong with the data or with
 % the code??? it's currently with the data.
-if isdir(classifier_dir)
+if isfolder(classifier_dir)
     load([classifier_dir, '/CLASSIFIER_2_QuadraticSVM']);
 else
     [classifier_file, classifier_path] = uigetfile('*.mat', 'Load a classifier mat file');
@@ -39,7 +39,7 @@ end
                                         
 if isempty(data_filename)                                                  % if no dataset filename is given, let the user select a file
     disp('Select a dataset')
-    if isdir(data_dir)
+    if isfolder(data_dir)
         % TODO: do we expect other file types besdies h5? if so, we can
         % change the filetype filter
         [data_filename, data_dir] = uigetfile([data_dir, '/*.h5'], 'Select a dataset');
@@ -54,7 +54,6 @@ full_filepath = [data_dir filesep data_filename];
 %h5disp(filename);                                                         % uncomment to see dataset categories
 xpol_from_plane = h5read(full_filepath, '/crosspol/radiance');             % Initialize data vectors
 surf_idx = h5read(full_filepath, '/info/surface_index');
-depth_increment = h5read(full_filepath, '/info/depth_increment');
 distance = h5read(full_filepath, '/location/distance');
 latlong = h5read(full_filepath, '/location/latlong');
 
@@ -67,7 +66,7 @@ IMAGE_WIDTH = max(size(xpol_from_plane));
                                                                            % if no ground truth fish hits filename is given, let the user select a file
 if isempty(hitsFileName)
     disp('Select a ground truth fish hits file')
-    if isdir(data_dir)
+    if isfolder(data_dir)
         [hitsFileName, data_dir] = uigetfile([data_dir, '/*.csv'], 'Select a ground truth csv file');
     else
         [hitsFileName, data_dir] = uigetfile('*.csv');
@@ -107,7 +106,6 @@ axis([-110.6 -110.2 44.25 44.6]);
 %% Data preprocessing
 %% Normalize surface index
 depth_vector = zeros(1, IMAGE_WIDTH);
-xpol_norm = zeros(PLANE_TO_SURFACE, IMAGE_WIDTH);
 
 % set surface depth vectors
 for i = 1:IMAGE_WIDTH                                                 % I need to personally review this chunk to understand :/
@@ -136,17 +134,11 @@ y = hits_vector;
  x(x>MAX_INTENSITY) = MAX_INTENSITY;
 
 %% Do the classification
-% Change cost for misclassifying fish (It is worse to miss a fish.)
-cost = [0 1; 20 0];
-
-data_for_classification_learner = [x;y]';
-
-%% Now run the classification learner toolbox!
 
 yhat_cheating = QuadraticSVM.predictFcn(x')';
 
 % yhat = yhat_cross_validated;
- yhat = yhat_cheating;
+yhat = yhat_cheating;
 
 %% Specific label graphing (Before Area Application)
 figure();
@@ -161,7 +153,6 @@ figure(); confusionchart(c,{'No Fish','Fish'})
 
 %% machine labeled area block
 
-N = length(yhat);
 window = 2500;
 index = window;
 trigger = 0;
@@ -183,7 +174,6 @@ end
 %% Human Labeled area block
 % Setting individual labels to blocks of windowed size
 
-N = length(y);
 index = window;
 trigger = 0;
 while trigger == 0
