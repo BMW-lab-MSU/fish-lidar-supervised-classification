@@ -7,15 +7,14 @@
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %% Setup
-% declare dataset filenames and paths here if desired
 
-% data_dir can be a relative or absolute path; an empty string means you will
+% data_dir/classifier_dir/hits_dir can be a relative or absolute path; an empty string means you will
 % have to navigate to your data directory in the file chooser dialogs
 data_dir = 'resources/data';
 classifier_dir = 'resources/classifiers/';
 hits_dir = 'resources/labels/';
 
-data_filename = 'yellowstone_wfov_20160928.processed.h5';
+data_filename = 'yellowstone_wfov_20160928.processed.h5';                  % declare dataset filenames and paths here if desired
 hitsFileName = 'fish_hits_2016_with_school_size_estimates.csv';
 
 % TODO: error handling if DATA_DIR isn't a directory
@@ -37,15 +36,12 @@ else
 end
 
 %% Load dataset
-
-% if no dataset filename is given, let the user select a file
-if isempty(data_filename)
+                                        
+if isempty(data_filename)                                                  % if no dataset filename is given, let the user select a file
     disp('Select a dataset')
     if isdir(data_dir)
         % TODO: do we expect other file types besdies h5? if so, we can
         % change the filetype filter
-        % We need a way to reference different formats and create a basic
-        % template which works best for our program.
         [data_filename, data_dir] = uigetfile([data_dir, '/*.h5'], 'Select a dataset');
     else
         [data_filename, data_dir] = uigetfile('*.h5');
@@ -53,10 +49,10 @@ if isempty(data_filename)
     end
 end
 
-% load the dataset
+                                                                           % load the dataset
 full_filepath = [data_dir filesep data_filename];
-%h5disp(filename);   % uncomment to see dataset names
-xpol_from_plane = h5read(full_filepath, '/crosspol/radiance');                   % Initialize data vectors
+%h5disp(filename);                                                         % uncomment to see dataset categories
+xpol_from_plane = h5read(full_filepath, '/crosspol/radiance');             % Initialize data vectors
 surf_idx = h5read(full_filepath, '/info/surface_index');
 depth_increment = h5read(full_filepath, '/info/depth_increment');
 distance = h5read(full_filepath, '/location/distance');
@@ -66,7 +62,7 @@ IMAGE_DEPTH = min(size(xpol_from_plane));
  
 %% Load Human Labeled fish hits
 
-% if no ground truth fish hits filename is given, let the user select a file
+                                                                           % if no ground truth fish hits filename is given, let the user select a file
 if isempty(hitsFileName)
     disp('Select a ground truth fish hits file')
     if isdir(data_dir)
@@ -76,9 +72,9 @@ if isempty(hitsFileName)
     end
 end
 
-% load in the ground truth fish hits
+                                                                           % load in the ground truth fish hits
 full_filepath = [hits_dir filesep hitsFileName];
-hitsMatrix = readmatrix(full_filepath);                                    % Initialize hits vectors
+hitsMatrix = readmatrix(full_filepath);                                    % Initialize hits values
 
 %% Set the distances from the csv file
 fish_distances = hitsMatrix(:, 1);                                            % Initializing vectors of preselected fish hit data
@@ -128,8 +124,8 @@ end
 
 %% Windowing
 % Reduce column height to region of interest
-start = 1;
-stop = 60;
+start = 10;
+stop = 69;
 x = xpol_norm(start:stop,:);
 y = hits_vector;
 % Clip max intensities
@@ -219,6 +215,6 @@ title('Second Half of predictions and labels');
 xlabel({'Top Row = Human-Labeled Hits,','Bottom Row = Machine Learning Predicted Hits'});
 
 %figure(95); imagesc([repmat(5 + 3*yhat(:,1:27195),10,1); repmat(5 + 3*y(:,1:27195),10,1); xpol_norm(:,1:27195)], [0 10]); colorbar; title('First Quarter of Full Flight');
-%figure(96); imagesc([repmat(5 + 3*yhat(:,27195:54390),10,1);repmat(5 + 3*y(:,27195:54390),10,1); xpol_norm(:,27195:54390)], [0 10]); colorbar; title('Second Quarter of Full Flight');
-%figure(97); imagesc([repmat(5 + 3*yhat(:,54390:81585),10,1);repmat(5 + 3*y(:,54390:81585),10,1); xpol_norm(:,54390:81585)], [0 10]); colorbar; title('Third Quarter of Full Flight');
+figure(96); imagesc([repmat(5 + 3*yhat(:,27195:54390),10,1);repmat(5 + 3*y(:,27195:54390),10,1); xpol_norm(:,27195:54390)], [0 10]); colorbar; title('Second Quarter of Full Flight');
+figure(97); imagesc([repmat(5 + 3*yhat(:,54390:81585),10,1);repmat(5 + 3*y(:,54390:81585),10,1); xpol_norm(:,54390:81585)], [0 10]); colorbar; title('Third Quarter of Full Flight');
 %figure(98); imagesc([repmat(5 + 3*yhat(:,81585:108778),10,1);repmat(5 + 3*y(:,81585:108778),10,1); xpol_norm(:,81585:108778)], [0 30]); colorbar; title('Fourth Quarter of Full Flight');
