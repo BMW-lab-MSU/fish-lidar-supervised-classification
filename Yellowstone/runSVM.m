@@ -58,7 +58,9 @@ depth_increment = h5read(full_filepath, '/info/depth_increment');
 distance = h5read(full_filepath, '/location/distance');
 latlong = h5read(full_filepath, '/location/latlong');
 
-IMAGE_DEPTH = min(size(xpol_from_plane));
+% Get the image dimensions; this assumes the image has more columns than rows
+IMAGE_HEIGHT = min(size(xpol_from_plane));
+IMAGE_WIDTH = max(size(xpol_from_plane));
  
 %% Load Human Labeled fish hits
 
@@ -82,6 +84,15 @@ fish_latitudes = hitsMatrix(:, 2);                                            % 
 fish_longitudes = hitsMatrix(:, 3);
 school_sizes = hitsMatrix(:, 7);
 
+%% Creating a "positive label" vector --- Author: Jackson Belford
+%  The value for average column width per fish was calculated by taking the
+%  average of (the column width eyeballed / number of fish indicated by
+%  csv)
+
+% TODO: automate this? 
+avgWidthPerFish = 4.57;
+hits_vector = create_positive_label_vect(avgWidthPerFish, school_sizes, distance, fish_distances);
+
 %% Plot the path and the fish locations
 % Simply a visual graphing process
 separation = 250;                                                          % Alters the sampling frequency of the mapping
@@ -92,15 +103,8 @@ legend({'Flight Path','Fish Hits'});
 xlabel('Longitude'); ylabel('Latitude');
 axis([-110.6 -110.2 44.25 44.6]);
 
-%% Creating a "positive label" vector --- Author: Jackson Belford
-%  The value for average column width per fish was calculated by taking the
-%  average of (the column width eyeballed / number of fish indicated by
-%  csv)
 
-% TODO: automate this? 
-avgWidthPerFish = 4.57;
-hits_vector = create_positive_label_vect(avgWidthPerFish, school_sizes, distance, fish_distances);
-
+%% Data preprocessing
 %% Normalize surface index
 depth_vector = zeros(1, length(distance));
 xpol_norm = zeros(PLANE_TO_SURFACE, length(distance));
@@ -108,8 +112,8 @@ xpol_norm = zeros(PLANE_TO_SURFACE, length(distance));
 % set surface depth vectors
 for i = 1:length(distance)                                                 % I need to personally review this chunk to understand :/
     depth_vector(i) = PLANE_TO_SURFACE;
-    if surf_idx(i) + PLANE_TO_SURFACE - SURFACE_PAD > IMAGE_DEPTH
-        depth_vector(i) = IMAGE_DEPTH - surf_idx(i) + SURFACE_PAD; 
+    if surf_idx(i) + PLANE_TO_SURFACE - SURFACE_PAD > IMAGE_HEIGHT
+        depth_vector(i) = IMAGE_HEIGHT - surf_idx(i) + SURFACE_PAD; 
     end
 end
 xpol_norm = normalize_surface_vect(xpol_from_plane, surf_idx, depth_vector, PLANE_TO_SURFACE);
@@ -131,6 +135,7 @@ y = hits_vector;
 % Clip max intensities
  x(x>MAX_INTENSITY) = MAX_INTENSITY;
 
+%% Do the classification
 % Change cost for misclassifying fish (It is worse to miss a fish.)
 cost = [0 1; 20 0];
 
