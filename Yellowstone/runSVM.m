@@ -106,11 +106,11 @@ axis([-110.6 -110.2 44.25 44.6]);
 
 %% Data preprocessing
 %% Normalize surface index
-depth_vector = zeros(1, length(distance));
-xpol_norm = zeros(PLANE_TO_SURFACE, length(distance));
+depth_vector = zeros(1, IMAGE_WIDTH);
+xpol_norm = zeros(PLANE_TO_SURFACE, IMAGE_WIDTH);
 
 % set surface depth vectors
-for i = 1:length(distance)                                                 % I need to personally review this chunk to understand :/
+for i = 1:IMAGE_WIDTH                                                 % I need to personally review this chunk to understand :/
     depth_vector(i) = PLANE_TO_SURFACE;
     if surf_idx(i) + PLANE_TO_SURFACE - SURFACE_PAD > IMAGE_HEIGHT
         depth_vector(i) = IMAGE_HEIGHT - surf_idx(i) + SURFACE_PAD; 
@@ -119,7 +119,7 @@ end
 xpol_norm = normalize_surface_vect(xpol_from_plane, surf_idx, depth_vector, PLANE_TO_SURFACE);
  
 %% Flooring and filtering of radiance data
-for j = 1:length(distance)
+for j = 1:IMAGE_WIDTH
     if xpol_norm(:,j) < 2
         xpol_norm(:,j) = 0;
     end
