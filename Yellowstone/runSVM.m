@@ -23,6 +23,7 @@ hitsFileName = 'fish_hits_2016_with_school_size_estimates.csv';
 PLANE_TO_SURFACE = 160;
 SURFACE_PAD = 10;
 MAX_INTENSITY = 11;
+MIN_INTENSITY = 2;
 
 %% Load in the classifier mat file
 
@@ -66,10 +67,10 @@ IMAGE_WIDTH = max(size(xpol_from_plane));
                                                                            % if no ground truth fish hits filename is given, let the user select a file
 if isempty(hitsFileName)
     disp('Select a ground truth fish hits file')
-    if isfolder(data_dir)
-        [hitsFileName, data_dir] = uigetfile([data_dir, '/*.csv'], 'Select a ground truth csv file');
+    if isfolder(hits_dir)
+        [hitsFileName, hits_dir] = uigetfile([hits_dir, '/*.csv'], 'Select a ground truth csv file');
     else
-        [hitsFileName, data_dir] = uigetfile('*.csv');
+        [hitsFileName, hits_dir] = uigetfile('*.csv');
     end
 end
 
@@ -117,11 +118,10 @@ end
 xpol_norm = normalize_surface_vect(xpol_from_plane, surf_idx, depth_vector, PLANE_TO_SURFACE);
  
 %% Flooring and filtering of radiance data
-for j = 1:IMAGE_WIDTH
-    if xpol_norm(:,j) < 2
-        xpol_norm(:,j) = 0;
-    end
-end
+xpol_norm(xpol_norm < MIN_INTENSITY) = 0;
+
+% Clip max intensities
+ xpol_norm(xpol_norm > MAX_INTENSITY) = MAX_INTENSITY;
 
 
 %% Windowing
@@ -130,8 +130,7 @@ start = 10;
 stop = 69;
 x = xpol_norm(start:stop,:);
 y = hits_vector;
-% Clip max intensities
- x(x>MAX_INTENSITY) = MAX_INTENSITY;
+
 
 %% Do the classification
 
