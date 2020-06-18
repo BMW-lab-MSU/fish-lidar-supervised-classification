@@ -65,6 +65,17 @@ else
     load([schools_path filesep schools_file]);
 end
 
-%% Load data from .mat files (PNG_file)
+%% Load file_to_find and png_file for ismember function.
 
-opts = detectImportOptions(data_matrix_path, '.mat')
+PNG_file = array2table(mat_data.PNG_file);
+singles_files_to_find = singles_matrix_label_data(:,2);
+singles_shot_values = singles_matrix_label_data(:,1);
+
+for idx = 1:height(singles_files_to_find)
+    file_to_find = singles_files_to_find(idx, 1)
+    rows = singles_shot_values(idx, 1)
+    [q, idy] = ismember(file_to_find, PNG_file, 'rows');
+    if q ~= 0
+        print(idy)
+    end
+end
