@@ -22,7 +22,7 @@ hitsFileName = 'fish_hits_2016_with_school_size_estimates.csv';
 % Constants (TODO: Automate these constants):
 PLANE_TO_SURFACE = 160;
 SURFACE_PAD = 10;
-MAX_INTENSITY = 11;
+MAX_INTENSITY = 10;
 
 %% Load in the classifier mat file
 
