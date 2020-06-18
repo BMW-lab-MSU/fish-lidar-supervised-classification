@@ -67,15 +67,17 @@ end
 
 %% Load file_to_find and png_file for ismember function.
 
-PNG_file = array2table(mat_data.PNG_file);
+PNG_file = mat_data.PNG_file;
 singles_files_to_find = singles_matrix_label_data(:,2);
 singles_shot_values = singles_matrix_label_data(:,1);
 
 for idx = 1:height(singles_files_to_find)
-    file_to_find = singles_files_to_find(idx, 1)
-    rows = singles_shot_values(idx, 1)
-    [q, idy] = ismember(file_to_find, PNG_file, 'rows');
+    file = string(singles_files_to_find(idx, 1).file);
+    [filepath,name,ext] = fileparts(file);
+    file_pieces = strsplit(name, '\');
+    file_to_find = file_pieces(4) + ext
+    [q, idy] = ismember(file_to_find, PNG_file', 'rows');
     if q ~= 0
-        print(idy)
+        idy
     end
 end
