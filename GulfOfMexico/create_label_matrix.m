@@ -118,3 +118,30 @@ disp("Total School Hits: " + school_hits);
 
 %% Graphical Analysis
 
+
+    data_to_display = hits_matrix(2, 12000:13000);
+    figure();
+    subplot(311);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 12000:13000 School Hits (5)');
+    
+    data_to_display = hits_matrix(2, 172000:173000);
+    subplot(312);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 172000:173000 School Hits (7)');
+    
+    data_to_display = hits_matrix(2, 731000:732000);
+    subplot(313);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 731000:732000 School Hits (2)');
+    
+    
+    data_to_display = hits_matrix(1, 12000:13000);
+    figure();
+    subplot(311);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 12000:13000 Single Hits (1)');
+    
+    data_to_display = hits_matrix(1, 172000:173000);
+    subplot(312);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 172000:173000 Single Hits (6)');
+    
+    data_to_display = hits_matrix(1, 731000:732000);
+    subplot(313);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 731000:732000 Single Hits (0)');
