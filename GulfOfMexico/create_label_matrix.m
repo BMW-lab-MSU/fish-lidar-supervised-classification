@@ -29,7 +29,7 @@ singles_matrix_path = ([singles_label_dir filesep singles_label_file_name]);
 
 disp("Initial data loaded and program is beginning to run.");
 
-%% Load one data .mat file
+%% Load one data .mat file and loads PNG file
 
 if isfolder(data_dir)
     disp(data_file_name + " ---------------------- Loading")
@@ -40,6 +40,8 @@ else
     mat_data = load([data_path filesep data_file]);
 end
 
+PNG_file = mat_data.PNG_file;
+
 %% Load data from labels .csv files (file_to_find)
 
 if isfolder(label_dir)
@@ -48,16 +50,21 @@ if isfolder(label_dir)
     opts.SelectedVariableNames={'shot1','shot2','file'};
     schools_matrix_label_data = readtable(schools_matrix_path, opts);
     disp("Schools ---------------------- Loaded")
-    %disp("Layers ---------------------- Loading")                                  % Layers dont work yet
-    %opts = detectImportOptions(layers_matrix_path);                        % Error in csv file.
-    %opts.SelectedVariableNames={'shot1','shot2','file'};
-    %layers_matrix_label_data = readtable(layers_matrix_path, opts);
-    %disp("Layers ---------------------- Loaded")
-    %disp("Jellies ---------------------- Loading")                                 % Jellies dont work yet
-    %opts = detectImportOptions(jellies_matrix_path);
-    %opts.SelectedVariableNames={'shot1','shot2','file'};
-    %jellies_matrix_label_data = readtable(jellies_matrix_path, opts);
-    %disp("Jellies ---------------------- Loaded")
+    disp("Layers ---------------------- Loading")                         
+    opts = detectImportOptions(layers_matrix_path);                       
+    opts.SelectedVariableNames={'shot1','shot2','file'};
+    layers_matrix_label_data = readtable(layers_matrix_path, opts);
+    disp("Layers ---------------------- Loaded")
+    disp("Jellies ---------------------- Loading")                                 % Handled for 0 jellies.
+    opts = detectImportOptions(jellies_matrix_path);
+    try
+        opts.SelectedVariableNames={'shot1','shot2','file'};
+        jellies_matrix_label_data = readtable(jellies_matrix_path, opts);
+    catch
+        jellies_matrix_label_data = zeros(1,length(PNG_file));
+    end
+        
+    disp("Jellies ---------------------- Loaded")
     disp("Singles ---------------------- Loading")
     opts = detectImportOptions(singles_matrix_path);
     opts.SelectedVariableNames={'shot','file'};
@@ -74,9 +81,7 @@ else
     load([schools_path filesep schools_file]);
 end
 
-%% Load file_to_find and png_file for ismember function.
-
-PNG_file = mat_data.PNG_file;                                              
+%% Load file_to_find for ismember function.                                              
 
 singles_files_to_find = singles_matrix_label_data(:,2);
 singles_shot_values = singles_matrix_label_data(:,1);
@@ -84,9 +89,17 @@ singles_shot_values = singles_matrix_label_data(:,1);
 schools_files_to_find = schools_matrix_label_data(:, 3);
 schools_shot_values = schools_matrix_label_data(:,1:2);
 
+jelly_files_to_find = jellies_matrix_label_data(:, 3);
+jelly_shot_values = jellies_matrix_label_data(:,1:2);
+
+layer_files_to_find = layers_matrix_label_data(:, 3);
+layer_shot_values = layers_matrix_label_data(:, 1:2);
+
 hits_matrix = zeros(4, length(PNG_file));
 single_index = 1;
 school_index = 2;
+jelly_index = 3;
+layer_index = 4;
 
 %% Parsing for single fish hits
 
@@ -97,6 +110,22 @@ hits_matrix = get_single_fish_hits_vect(singles_files_to_find, singles_shot_valu
 
 disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ SCHOOL FISH HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
 hits_matrix = get_school_fish_hits_vect(schools_files_to_find, schools_shot_values, PNG_file, school_index, hits_matrix);
+
+%% Parsing for jelly fish hits
+
+disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ JELLY FISH HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
+[row, col] = size(jellies_matrix_label_data);
+if row > 1
+    hits_matrix = get_jelly_fish_hits_vect(jelly_files_to_find, jelly_shot_values, PNG_file, jelly_index, hits_matrix);
+else
+    disp('No jellyfish labels found!');
+    hits_matrix(3,:) = 0;
+end
+
+%% Parsing for layer hits
+
+disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ LAYER HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
+hits_matrix = get_layer_hits_vect(layer_files_to_find, layer_shot_values, PNG_file, layer_index, hits_matrix);
 
 %% testing number of hits and comparing to label lengths.
 
@@ -116,32 +145,76 @@ for idx = 1:length(hits_matrix(school_index,:))
 end
 disp("Total School Hits: " + school_hits);
 
+jelly_hits = 0;
+for idx = 1:length(hits_matrix(jelly_index,:))
+    if hits_matrix(jelly_index, idx) == 1
+        jelly_hits = jelly_hits + 1;
+    end
+end
+disp("Total Jelly Hits: " + jelly_hits);
+
+layer_hits = 0;
+for idx = 1:length(hits_matrix(layer_index,:))
+    if hits_matrix(layer_index, idx) == 1
+        layer_hits = layer_hits + 1;
+    end
+end
+disp("Total Layer Hits: " + layer_hits);
+
 %% Graphical Analysis
 
-
-    data_to_display = hits_matrix(2, 12000:13000);
+    % Visual of School Labels
+    data_to_display = hits_matrix(school_index, 12000:13000);
     figure();
     subplot(311);
     image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 12000:13000 School Hits (5)');
     
-    data_to_display = hits_matrix(2, 172000:173000);
+    data_to_display = hits_matrix(school_index, 172000:173000);
     subplot(312);
     image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 172000:173000 School Hits (7)');
     
-    data_to_display = hits_matrix(2, 731000:732000);
+    data_to_display = hits_matrix(school_index, 731000:732000);
     subplot(313);
     image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 731000:732000 School Hits (2)');
     
-    
-    data_to_display = hits_matrix(1, 12000:13000);
+    % Visual of Single Labels
+    data_to_display = hits_matrix(single_index, 12000:13000);
     figure();
     subplot(311);
     image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 12000:13000 Single Hits (1)');
     
-    data_to_display = hits_matrix(1, 172000:173000);
+    data_to_display = hits_matrix(single_index, 172000:173000);
     subplot(312);
     image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 172000:173000 Single Hits (6)');
     
-    data_to_display = hits_matrix(1, 731000:732000);
+    data_to_display = hits_matrix(single_index, 731000:732000);
     subplot(313);
     image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 731000:732000 Single Hits (0)');
+    
+    % Visual of Jelly Labels
+    data_to_display = hits_matrix(jelly_index, 12000:13000);
+    figure();
+    subplot(311);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 12000:13000 Jelly Hits (0)');
+    
+    data_to_display = hits_matrix(jelly_index, 172000:173000);
+    subplot(312);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 172000:173000 Jelly Hits (0)');
+    
+    data_to_display = hits_matrix(jelly_index, 731000:732000);
+    subplot(313);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 731000:732000 Jelly Hits (0)');
+    
+    % Visual of Layer Labels
+    data_to_display = hits_matrix(layer_index, 10000:100000);
+    figure();
+    subplot(311);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 12000:13000 Layer Hits (15)');
+    
+    data_to_display = hits_matrix(layer_index, 570000:590000);
+    subplot(312);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 570000:590000 Layer Hits (8)');
+    
+    data_to_display = hits_matrix(layer_index, 730000:740000);
+    subplot(313);
+    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 730000:740000 Layer Hits (8)');
