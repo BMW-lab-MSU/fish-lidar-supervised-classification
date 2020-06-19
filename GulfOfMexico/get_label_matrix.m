@@ -1,21 +1,21 @@
-function [hits_matrix] = get_label_matrix(data_dir, jellies_label_dir, layers_label_dir, schools_label_dir, singles_label_dir, data_file_name)
+function [hits_matrix] = get_label_matrix(data_dir, label_dir, jellies_label_dir, layers_label_dir, schools_label_dir, singles_label_dir, data_file_name)
 %GET_LABEL_MATRIX 
 
 data_no_ext = strsplit(data_file_name, '.');
 file_parts = strsplit(string(data_no_ext(1)), '_');
 date = file_parts(3);
 
-jellies_label_file_name = 'jellies ' + date + '.csv';
-layers_label_file_name = 'layers ' + date + '.csv';
-schools_label_file_name = 'final schools ' + date + '.csv';
-singles_label_file_name = 'final single ' + date + '.csv';
+jellies_label_file_name = string('jellies ' + date + '.csv');
+layers_label_file_name = string('layers ' + date + '.csv');
+schools_label_file_name = string('final schools ' + date + '.csv');
+singles_label_file_name = string('final single ' + date + '.csv');
 
 % Full Paths
-data_matrix_path = ([data_dir filesep data_file_name]);
-jellies_matrix_path =  ([jellies_label_dir filesep jellies_label_file_name]);
-schools_matrix_path = ([schools_label_dir filesep schools_label_file_name]);
-layers_matrix_path = ([layers_label_dir filesep layers_label_file_name]);
-singles_matrix_path = ([singles_label_dir filesep singles_label_file_name]);
+data_matrix_path = (string(data_dir) + string(data_file_name));
+jellies_matrix_path =  (string(jellies_label_dir) + string(jellies_label_file_name));
+schools_matrix_path = (string(schools_label_dir) + string(schools_label_file_name));
+layers_matrix_path = (string(layers_label_dir) + string(layers_label_file_name));
+singles_matrix_path = (string(singles_label_dir) + string(singles_label_file_name));
 disp("Initial data loaded and program is beginning to run.");
 
 %% Load one data .mat file and loads PNG file
@@ -91,8 +91,8 @@ layer_index = 4;
 
 %% Parsing for single fish hits
 
-%disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ SINGLE FISH HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
-%hits_matrix = get_single_fish_hits_vect(singles_files_to_find, singles_shot_values, PNG_file, single_index, hits_matrix);
+disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ SINGLE FISH HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
+hits_matrix = get_single_fish_hits_vect(singles_files_to_find, singles_shot_values, PNG_file, single_index, hits_matrix);
 
 %% Parsing for school fish hits
 
@@ -149,62 +149,5 @@ for idx = 1:length(hits_matrix(layer_index,:))
 end
 disp("Total Layer Hits: " + layer_hits);
 
-%% Graphical Analysis
-
-    % Visual of School Labels
-    data_to_display = hits_matrix(school_index, 12000:13000);
-    figure();
-    subplot(311);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 12000:13000 School Hits (5)');
-    
-    data_to_display = hits_matrix(school_index, 172000:173000);
-    subplot(312);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 172000:173000 School Hits (7)');
-    
-    data_to_display = hits_matrix(school_index, 731000:732000);
-    subplot(313);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 731000:732000 School Hits (2)');
-    
-    % Visual of Single Labels
-    data_to_display = hits_matrix(single_index, 12000:13000);
-    figure();
-    subplot(311);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 12000:13000 Single Hits (1)');
-    
-    data_to_display = hits_matrix(single_index, 172000:173000);
-    subplot(312);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 172000:173000 Single Hits (6)');
-    
-    data_to_display = hits_matrix(single_index, 731000:732000);
-    subplot(313);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 731000:732000 Single Hits (0)');
-    
-    % Visual of Jelly Labels
-    data_to_display = hits_matrix(jelly_index, 12000:13000);
-    figure();
-    subplot(311);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 12000:13000 Jelly Hits (0)');
-    
-    data_to_display = hits_matrix(jelly_index, 172000:173000);
-    subplot(312);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 172000:173000 Jelly Hits (0)');
-    
-    data_to_display = hits_matrix(jelly_index, 731000:732000);
-    subplot(313);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 731000:732000 Jelly Hits (0)');
-    
-    % Visual of Layer Labels
-    data_to_display = hits_matrix(layer_index, 10000:100000);
-    figure();
-    subplot(311);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 12000:13000 Layer Hits (15)');
-    
-    data_to_display = hits_matrix(layer_index, 570000:590000);
-    subplot(312);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 570000:590000 Layer Hits (8)');
-    
-    data_to_display = hits_matrix(layer_index, 730000:740000);
-    subplot(313);
-    image(data_to_display,'CDataMapping', 'scaled'); colorbar; title('Example 730000:740000 Layer Hits (8)');
 end
 

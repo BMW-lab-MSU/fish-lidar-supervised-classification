@@ -1,5 +1,5 @@
 function [hits_matrix] = get_layer_hits_vect(layer_files_to_find, layer_shots_values, PNG_file, layer_hits_row_number, hits_matrix)
-%GET_LAYER_HITS_VECT Returns a give hits vector with the school_hits_row_number row
+%GET_LAYER_HITS_VECT Returns a give hits vector with the layer_hits_row_number row
 %                              marked 1 on single hits.
 %   layer_files_to_find:      matrix of shot values (col:1,2) and full file paths
 %                              (col:3) given by the csv. [~,1:3]
