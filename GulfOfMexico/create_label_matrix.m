@@ -25,7 +25,7 @@ data_file_name7 = 'DATA_FOR_10-02.mat';
 data_file_name8 = 'DATA_FOR_10-03.mat';
 data_file_name9 = 'DATA_FOR_10-04.mat';
 data_file_name10 = 'DATA_FOR_10-05.mat';
-data_file_name11 = 'DATA_FOR_10-06.mat';
+%data_file_name11 = 'DATA_FOR_10-06.mat';                                   % Commented out b/c lack of label files in Schools and Layers
 data_file_name12 = 'DATA_FOR_10-07.mat';
 
 % For Graphical Analysis
@@ -96,9 +96,9 @@ disp('~~~~~~~~~~~~~~~ Day 10 Label Matrix Created ~~~~~~~~~~~~~~~');
 
 %% Create labels for Day 11
 
-disp('~~~~~~~~~~~~~~~ Creating label matrix for Day 11 ~~~~~~~~~~~~~~~');
-day11_labels_matrix = get_label_matrix(data_dir, label_dir, jellies_label_dir, layers_label_dir, schools_label_dir, singles_label_dir, data_file_name11);
-disp('~~~~~~~~~~~~~~~ Day 11 Label Matrix Created ~~~~~~~~~~~~~~~');
+%disp('~~~~~~~~~~~~~~~ Creating label matrix for Day 11 ~~~~~~~~~~~~~~~');
+%day11_labels_matrix = get_label_matrix(data_dir, label_dir, jellies_label_dir, layers_label_dir, schools_label_dir, singles_label_dir, data_file_name11);
+%disp('~~~~~~~~~~~~~~~ Day 11 Label Matrix Created ~~~~~~~~~~~~~~~');
 
 %% Create labels for Day 12
 
