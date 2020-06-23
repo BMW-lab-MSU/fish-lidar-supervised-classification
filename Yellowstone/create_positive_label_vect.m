@@ -1,6 +1,6 @@
-function [hits_vector] = create_positive_label_vect(avgWidthPerFish, school_sizes, distance, fish_distances)
+function [hits_vector] = create_positive_label_vect(avg_width_per_fish, school_sizes, distance, fish_distances)
 % Authors: Jackson Belford, Trevor Vannoy
-% Usage:    avgWidthPerFish is a value estimated to be the number of fish hits in a column 
+% Usage:    avg_width_per_fish is a value estimated to be the number of fish hits in a column 
 %                          on average. Generally around 4.25 for schooling
 %                          fish.
 %           school_sizes is the column of data containing the number of
@@ -21,28 +21,28 @@ MAX_SCHOOL_WIDTH = 55;
 DISTANCE_DIFFERENCE_THRESHOLD = 1.5;
 
 N = length(school_sizes);
-labelLength = zeros(N, 1);
-columnNumber = zeros(N, 1);
+label_length = zeros(N, 1);
+column_number = zeros(N, 1);
 
 % Set the length of the labels based upon the fish school size
 for idx = 1:N
 
-    tempLength = ceil(school_sizes(idx) * avgWidthPerFish);
+    temp_length = ceil(school_sizes(idx) * avg_width_per_fish);
     
-    if tempLength >= MAX_SCHOOL_WIDTH
-        tempLength = ceil(tempLength/4);                                   % To better agree with Kyles work, large values assume
+    if temp_length >= MAX_SCHOOL_WIDTH
+        temp_length = ceil(temp_length/4);                                   % To better agree with Kyles work, large values assume
     end                                                                    % a tight school instead of a massive school
     
-    labelLength(idx) = tempLength;
+    label_length(idx) = temp_length;
     
 end
 
 hits_vector = zeros(1, length(distance));
 for idy = 1:N
     
-    columnNumber(idy) = find(abs(distance-fish_distances(idy)) < DISTANCE_DIFFERENCE_THRESHOLD, 1, 'last'); % Produces a vector with ones centered around the column number
+    column_number(idy) = find(abs(distance-fish_distances(idy)) < DISTANCE_DIFFERENCE_THRESHOLD, 1, 'last'); % Produces a vector with ones centered around the column number
                                                                            % that corrisponds to the CSV.
-    hits_vector((columnNumber(idy)-ceil(labelLength(idy)/2)):(columnNumber(idy) + ceil(labelLength(idy)/2))) = 1;
+    hits_vector((column_number(idy)-ceil(label_length(idy)/2)):(column_number(idy) + ceil(label_length(idy)/2))) = 1;
     
 end
 end
