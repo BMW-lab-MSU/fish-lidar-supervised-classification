@@ -10,17 +10,15 @@
 
 % data_dir/classifier_dir/hits_dir can be a relative or absolute path; an empty string means you will
 % have to navigate to your data directory in the file chooser dialogs
-% data_dir = 'resources/data';
-% classifier_dir = 'resources/classifiers/';
-% hits_dir = 'resources/labels/';
-data_dir = '/home/trevor/research/AFRL/Box/Data/Yellowstone';
-classifier_dir = '/home/trevor/research/AFRL/Box/Data/Yellowstone';
-hits_dir = '/home/trevor/research/AFRL/Box/Data/Yellowstone/';
+data_dir = 'resources/data';
+classifier_dir = 'resources/classifiers/';
+hits_dir = 'resources/labels/';
+% data_dir = '/home/trevor/research/AFRL/Box/Data/Yellowstone';
+% classifier_dir = '/home/trevor/research/AFRL/Box/Data/Yellowstone';
+% hits_dir = '/home/trevor/research/AFRL/Box/Data/Yellowstone/';
 
 data_filename = 'yellowstone_wfov_20160928.processed.h5';                  % declare dataset filenames and paths here if desired
 hits_filename = 'fish_hits_2016_with_school_size_estimates.csv';
-
-% TODO: error handling if DATA_DIR isn't a directory
 
 % Constants (TODO: Automate these constants):
 PLANE_TO_SURFACE = 160;
@@ -31,9 +29,6 @@ MIN_INTENSITY = 2;
 show_plots = true;
 
 %% Load in the classifier mat file
-
-% TODO: where to put this mat file? does it belong with the data or with
-% the code??? it's currently with the data.
 if isfolder(classifier_dir)
     load([classifier_dir, '/CLASSIFIER_2_QuadraticSVM']);
 else
@@ -42,21 +37,17 @@ else
 end
 
 %% Load dataset
-                                        
-if isempty(data_filename)                                                  % if no dataset filename is given, let the user select a file
-    disp('Select a dataset')
+full_filepath = [data_dir filesep data_filename];
+if ~isfile(full_filepath)
     if isfolder(data_dir)
-        % TODO: do we expect other file types besdies h5? if so, we can
-        % change the filetype filter
         [data_filename, data_dir] = uigetfile([data_dir, '/*.h5'], 'Select a dataset');
     else
-        [data_filename, data_dir] = uigetfile('*.h5');
-
+        [data_filename, data_dir] = uigetfile('*.h5', 'Select a dataset');
     end
+    
+    full_filepath = [data_dir filesep data_filename];
 end
-
-                                                                           % load the dataset
-full_filepath = [data_dir filesep data_filename];
+                                                                    % load the dataset
 %h5disp(filename);                                                         % uncomment to see dataset categories
 xpol_from_plane = h5read(full_filepath, '/crosspol/radiance');             % Initialize data vectors
 surf_idx = h5read(full_filepath, '/info/surface_index');
@@ -68,18 +59,17 @@ IMAGE_HEIGHT = min(size(xpol_from_plane));
 IMAGE_WIDTH = max(size(xpol_from_plane));
  
 %% Load Human Labeled fish hits
-                                                                           % if no ground truth fish hits filename is given, let the user select a file
-if isempty(hits_filename)
-    disp('Select a ground truth fish hits file')
-    if isfolder(hits_dir)
-        [hits_filename, hits_dir] = uigetfile([hits_dir, '/*.csv'], 'Select a ground truth csv file');
+full_filepath = [hits_dir filesep hits_filename];
+if ~isfile(full_filepath)
+    if isfolder(data_dir)
+        [hits_filename, hits_dir] = uigetfile([data_dir, '/*.csv'], 'Select a ground truth csv');
     else
-        [hits_filename, hits_dir] = uigetfile('*.csv');
+        [hits_filename, hits_dir] = uigetfile('*.csv', 'Select a ground truth csv');
     end
+    
+    full_filepath = [hits_dir filesep hits_filename];
 end
 
-                                                                           % load in the ground truth fish hits
-full_filepath = [hits_dir filesep hits_filename];
 hits_matrix = readmatrix(full_filepath);                                    % Initialize hits values
 
 %% Set the distances from the csv file
