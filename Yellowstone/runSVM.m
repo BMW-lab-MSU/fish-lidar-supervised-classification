@@ -24,7 +24,7 @@ hits_filename = 'fish_hits_2016_with_school_size_estimates.csv';
 
 % Constants (TODO: Automate these constants):
 PLANE_TO_SURFACE = 160;
-SURFACE_PAD = 10;
+SURFACE_PAD = 0;
 MAX_INTENSITY = 11;
 MIN_INTENSITY = 2;
 
@@ -112,33 +112,30 @@ end
 
 %% Data preprocessing
 %% Normalize surface index
-depth_vector = zeros(1, IMAGE_WIDTH);
+% The height of the water does not start at the same row in each LIDAR
+% shot. This could potentially cause problems with shift-variant
+% classifiers, so we want the height of the water to always start at 
+% the same row in every LIDAR shot. 
+xpol_normalized = normalize_surface_height(xpol_from_plane, surf_idx, SURFACE_PAD);
 
-% set surface depth vectors
-for i = 1:IMAGE_WIDTH                                                 % I need to personally review this chunk to understand :/
-    depth_vector(i) = PLANE_TO_SURFACE;
-    if surf_idx(i) + PLANE_TO_SURFACE - SURFACE_PAD > IMAGE_HEIGHT
-        depth_vector(i) = IMAGE_HEIGHT - surf_idx(i) + SURFACE_PAD; 
-    end
-end
-xpol_norm = normalize_surface_vect(xpol_from_plane, surf_idx, depth_vector, PLANE_TO_SURFACE);
- 
-%% Flooring and filtering of radiance data
-xpol_norm(xpol_norm < MIN_INTENSITY) = 0;
+%% Dimensionality reduction
+% Reduce column height to region of interest. The resulting image height
+% needs to be the same as what the classifier was trained against, which 
+% in this case is 60. 
+REDUCED_COLUMN_HEIGHT = 60;
+xpol_normalized = xpol_normalized(1:REDUCED_COLUMN_HEIGHT,:);
 
-% Clip max intensities
-xpol_norm(xpol_norm > MAX_INTENSITY) = MAX_INTENSITY;
+%% Reduce LIDAR data radiance range
+% Very small and very large values of radiance are of little interest to us.
+% Small values are likely just noise, not returns off of fish, so we can 
+% truncate small values down to 0 to reduce noise. Large values are clipped
+% to increase image constrast. 
+xpol_normalized(xpol_normalized < MIN_INTENSITY) = 0;
+xpol_normalized(xpol_normalized > MAX_INTENSITY) = MAX_INTENSITY;
 
 
-%% Windowing
-% Reduce column height to region of interest
-start = 10;
-stop = 69;
-x = xpol_norm(start:stop,:);
-
-%% Do the classification
-
-machine_labels_cheating = QuadraticSVM.predictFcn(x')';
+%% Classification
+machine_labels_cheating = QuadraticSVM.predictFcn(xpol_normalized')';
 
 % machine_labels = machine_labels_cross_validated;
 machine_labels = machine_labels_cheating;
@@ -150,13 +147,13 @@ if show_plots
     subplot(211); stem(human_labels); title('Actual Labels');
     subplot(212); stem(machine_labels); title('Predicted Labels');
 
-    figure(); imagesc(x,[0 10]); xlim([0 100000]); ylim([1 60]);
+    figure(); imagesc(xpol_normalized,[0 10]); xlim([0 100000]); ylim([1 60]);
     xlabel('LIDAR Image Data');
 end
 
 c = confusionmat(human_labels, machine_labels);
 if show_plots
-    figure(); confusionchart(c,{'No Fish','Fish'})
+    figure(); confusionchart(c,{'No Fish','Fish'});
 end
 
 %% Machine labeled fish blocks
@@ -217,22 +214,22 @@ if show_plots
     xlabel({'Top Row = Human-Labeled Hits,','Bottom Row = Machine Learning Predicted Hits'});
 
     figure(95);
-    imagesc([repmat(5 + 3*machine_labels(:,1:27195),10,1); repmat(5 + 3*human_labels(:,1:27195),10,1); xpol_norm(:,1:27195)], [0 10]);
+    imagesc([repmat(5 + 3*machine_labels(:,1:27195),10,1); repmat(5 + 3*human_labels(:,1:27195),10,1); xpol_normalized(:,1:27195)], [0 10]);
     colorbar;
     title('First Quarter of Full Flight');
 
     figure(96);
-    imagesc([repmat(5 + 3*machine_labels(:,27195:54390),10,1);repmat(5 + 3*human_labels(:,27195:54390),10,1); xpol_norm(:,27195:54390)], [0 10]);
+    imagesc([repmat(5 + 3*machine_labels(:,27195:54390),10,1);repmat(5 + 3*human_labels(:,27195:54390),10,1); xpol_normalized(:,27195:54390)], [0 10]);
     colorbar;
     title('Second Quarter of Full Flight');
 
     figure(97);
-    imagesc([repmat(5 + 3*machine_labels(:,54390:81585),10,1);repmat(5 + 3*human_labels(:,54390:81585),10,1); xpol_norm(:,54390:81585)], [0 10]);
+    imagesc([repmat(5 + 3*machine_labels(:,54390:81585),10,1);repmat(5 + 3*human_labels(:,54390:81585),10,1); xpol_normalized(:,54390:81585)], [0 10]);
     colorbar;
     title('Third Quarter of Full Flight');
 
     figure(98);
-    imagesc([repmat(5 + 3*machine_labels(:,81585:108778),10,1);repmat(5 + 3*human_labels(:,81585:108778),10,1); xpol_norm(:,81585:108778)], [0 30]);
+    imagesc([repmat(5 + 3*machine_labels(:,81585:108778),10,1);repmat(5 + 3*human_labels(:,81585:108778),10,1); xpol_normalized(:,81585:108778)], [0 30]);
     colorbar;
     title('Fourth Quarter of Full Flight');
 end
