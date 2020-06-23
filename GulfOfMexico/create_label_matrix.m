@@ -167,3 +167,59 @@ disp('~~~~~~~~~~~~~~~ Day 12 Label Matrix Created ~~~~~~~~~~~~~~~');
 %% Congradulations!
 
 disp('Congrats! You ran this entire program, which I am going to assume was not fast!');
+
+%% Running Tests --- Run Section
+
+[row, col] = size(day1_labels_matrix);
+overlaps = zeros(1, col);
+for idx = 1:col
+    overlaps(1, idx) = sum(day1_labels_matrix(:, idx));
+end
+figure();
+bar(overlaps); title('Values of 1 are commonly layers of plankton.');
+
+%% Graphics Testing
+
+%data = load('resources/data/DATA_FOR_09-24.mat');
+
+xpol_data = icath_x(:, 730000:740000);
+copol_data = icath_co(:, 730000:740000);
+x_gain = x_gain.
+
+for idx = 1:length(x_gain)
+    
+end
+
+copol_data = copol_data .* co_gain;
+
+dpol_dataxc = xpol_data ./ copol_data;
+
+dpol_datacx = copol_data ./ xpol_data;
+
+label_data = day1_labels_matrix(:, 730000:740000);
+
+figure()
+subplot(311);
+image(xpol_data, 'CDataMapping', 'scaled'); colorbar; title('XPol Data Day 1: 10,000 --- 100,000');
+subplot(312);
+image(label_data, 'CDataMapping', 'scaled'); colorbar; title('Label Data Day 1: 10,000 --- 100,000');
+
+figure()
+subplot(311);
+image(copol_data, 'CDataMapping', 'scaled'); colorbar; title('Co Data Day 1: 10,000 --- 100,000');
+subplot(312);
+image(label_data, 'CDataMapping', 'scaled'); colorbar; title('Label Data Day 1: 10,000 --- 100,000');
+
+
+figure()
+subplot(311);
+image(dpol_dataxc, 'CDataMapping', 'scaled'); colorbar; title('DPol X/C Data Day 1: 10,000 --- 100,000');
+subplot(312);
+image(label_data, 'CDataMapping', 'scaled'); colorbar; title('Label Data Day 1: 10,000 --- 100,000');
+
+
+figure()
+subplot(311);
+image(dpol_datacx, 'CDataMapping', 'scaled'); colorbar; title('DPol C/X Data Day 1: 10,000 --- 100,000');
+subplot(312);
+image(label_data, 'CDataMapping', 'scaled'); colorbar; title('Label Data Day 1: 10,000 --- 100,000');

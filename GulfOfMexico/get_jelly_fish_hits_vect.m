@@ -13,6 +13,7 @@ shot_index_1 = 1;
 shot_index_2 = 2;
 file_name_extension_index = 5;
 message_content = 'Jelly hits labeled at ~~~ ';
+jelly_hit_value = 1;
 
 for idx = 1:height(jelly_files_to_find)
     file = string(jelly_files_to_find(idx, 1).file);
@@ -26,7 +27,7 @@ for idx = 1:height(jelly_files_to_find)
     if is_inPNG ~= 0
         hit_column_start = idy + table2array(shot1);
         hit_column_end = idy + table2array(shot2);
-        hits_matrix(jelly_hits_row_number, hit_column_start:hit_column_end) = 1;
+        hits_matrix(jelly_hits_row_number, hit_column_start:hit_column_end) = jelly_hit_value;
         fprintf(message_content);
         disp("Start:" + hit_column_start);
         disp("End:" + hit_column_end)

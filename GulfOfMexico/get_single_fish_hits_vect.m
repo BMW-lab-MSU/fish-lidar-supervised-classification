@@ -10,6 +10,7 @@ function [hits_matrix] = get_single_fish_hits_vect(single_files_to_find, single_
 
 file_name_extension_index = 4;
 message_content = 'Single hit labeled at ~~~ ';
+single_hit_value = 1;
 
 for idx = 1:height(single_files_to_find)
     file = string(single_files_to_find(idx, 1).file);
@@ -21,7 +22,7 @@ for idx = 1:height(single_files_to_find)
     [q, idy] = ismember(file_to_find, PNG_file', 'rows');
     if q ~= 0
         hit_column = idy + table2array(shot);
-        hits_matrix(single_hits_row_number, hit_column)=1;
+        hits_matrix(single_hits_row_number, hit_column)=single_hit_value;
         fprintf(message_content);
         disp(hit_column);
     end
