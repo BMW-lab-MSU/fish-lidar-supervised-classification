@@ -115,6 +115,16 @@ end
 disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ LAYER HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
 hits_matrix = get_layer_hits_vect(layer_files_to_find, layer_shot_values, PNG_file, layer_index, hits_matrix);
 
+%% Creating Classification_data.mat
+labeled_xpol_data = vertcat(mat_data.icath_x,hits_matrix);
+icath_co = mat_data.icath_co;
+lat = mat_data.lat;
+
+lon = mat_data.lon;
+file_save_name = 'CLASSIFICATION_DATA_' + string(date) + '.mat';
+save(file_save_name, 'labeled_xpol_data', 'lat', 'lon', '-v7.3');
+disp('Saved: ' + file_save_name)
+
 %% testing number of hits and comparing to label lengths.
 
 single_hits = 0;
