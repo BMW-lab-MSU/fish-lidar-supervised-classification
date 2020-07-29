@@ -184,7 +184,6 @@ bar(overlaps); title('Values of 1 are commonly layers of plankton.');
 
 xpol_data = icath_x(:, 730000:740000);
 copol_data = icath_co(:, 730000:740000);
-x_gain = x_gain.
 
 for idx = 1:length(x_gain)
     
