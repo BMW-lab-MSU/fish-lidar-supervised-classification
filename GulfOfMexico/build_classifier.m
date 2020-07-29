@@ -1,6 +1,6 @@
 %% Create Classifier
 
-data = load('CLASSIFICATION_DATA_09-24.mat');
+data = load('C:\Users\bradl\Box Sync\AFRL_Data\Data\GulfOfMexico\GoM Processed Classifier\CLASSIFICATION_DATA_09-24.mat');
 
 %%
 
@@ -25,4 +25,4 @@ classifier_data_t = classifier_data';
 
 %%
 
-save trainedModel1 trainedModel
+% save trainedModel1 trainedModel
