@@ -16,6 +16,14 @@ surface_index(isnan(surface_index))=0;
 
 normalized_xpol = normalize_surface_height(xpol_data, surface_index, 0);
 
+
+%% Remove empty columns
+col_total = 0;
+for idx = length(xpol_data)
+    col_sum = sum(idx, 1);
+    col_total =+ col_sum;
+end
+col_avg = col_total/length(xpol_data);
 %% Plots
 
 data_to_plot = xpol_data(:,390000:400000);
