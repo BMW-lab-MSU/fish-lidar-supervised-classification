@@ -73,7 +73,6 @@ NOTE: You must initialize your data in this section. Once you change the require
 
 %% Flooring and filtering of radiance data
 	- The first filter is a high-pass filter, flooring values less then --- (xpol_norm(i, j) < 2 --- a value.
-	- The second filter I am still toying with, and will update this document later.
 	
 	
 %% Windowing
