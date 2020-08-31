@@ -1,7 +1,7 @@
 %% Create Classifier
 
 filepath = 'C:\Users\bradl\Box Sync\AFRL_Data\Data\GulfOfMexico\GoM Processed Classifier/';
-data = load([filepath 'CLASSIFICATION_DATA_09-24.mat']);    % First Day = 09-24
+data = load([filepath 'CLASSIFICATION_DATA_09-24.mat']);
 
 %%
 
