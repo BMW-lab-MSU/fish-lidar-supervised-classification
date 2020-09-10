@@ -1,4 +1,4 @@
-function [conf,labels_pred] = predict_labels(datapath,model)
+function [conf,labels_pred,labels] = predict_labels(datapath,model)
 
     tic;    % Keep track of time
 

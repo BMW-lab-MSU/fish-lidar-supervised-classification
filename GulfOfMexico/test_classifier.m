@@ -1,14 +1,17 @@
 %% Select testing variables
 
 % Pick the classifier
-boxdir = 'C:\Users\bradl\Box Sync\AFRL_Data\Data\GulfOfMexico\GoM Processed Classifier/';
+%boxdir = 'C:\Users\bradl\Box Sync\AFRL_Data\Data\GulfOfMexico\GoM Processed Classifier/';
+boxdir = '/home/trevor/research/AFRL/Box/Data/GulfOfMexico/GoM Processed Classifier/';
 modeldir = [boxdir '/Classifiers_Trained_On_09-24_Data/'];
-modelfile = 'trainedModel_FineTree.mat';
+modelfiles = dir([modeldir, 'trainedModel*']);
 
 % Load the classifier
-modelstruct = load([modeldir modelfile]);
-modelcell = struct2cell(modelstruct);
-model = modelcell{2};
+for idx = 1:length(modelfiles)
+    modelstruct = load([modeldir modelfiles(idx).name]);
+    modelcell = struct2cell(modelstruct);
+    models{idx} = modelcell{2};
+end
 
 % Pick the days to analyze
 path1 = [boxdir 'CLASSIFICATION_DATA_09-25.mat'];
@@ -32,17 +35,21 @@ accuracy = zeros(1,num_days);
 precision = zeros(1,num_days);
 recall = zeros(1,num_days);
 
+
 %% Run the classifier on each day!
-for idx = 1:num_days
-    datapath = datapath_list(idx);
-    datapath = string(datapath);
-    datapath_char = convertStringsToChars(datapath);
-    disp(['Running classifier on ...' datapath_char(end-29:end)]);
-    [conf_all(:,:,idx),~] = predict_labels(datapath, model);
-    [accuracy(idx), precision(idx), recall(idx)] = analyze_confusion(conf_all(:,:,idx));
+for model_idx = 1:length(models)
+    for idx = 1:num_days
+        datapath = datapath_list(idx);
+        datapath = string(datapath);
+        datapath_char = convertStringsToChars(datapath);
+        disp(['Running classifier on ...' datapath_char(end-29:end)]);
+        [conf_all(:,:,idx),predicted_labels{idx}, labels{idx}] = predict_labels(datapath, models{model_idx});
+        [accuracy(idx), precision(idx), recall(idx)] = analyze_confusion(conf_all(:,:,idx));
+    end
+    
+    % Display & Save Results
+    conf_all
+    acc_prec_rec = [accuracy; precision; recall]
+    save([modeldir 'results_' modelfiles(model_idx).name],'conf_all','accuracy','precision','recall','predicted_labels','labels');
 end
 
-%% Display & Save Results
-conf_all
-acc_prec_rec = [accuracy; precision; recall]
-save([modeldir 'results_' modelfile],'conf_all','accuracy','precision','recall');
