@@ -19,11 +19,10 @@ for i = 1:length(data_filenames)
     % load in the data
     disp(['loading ' data_filenames{i} '...'])
     xpol_data = h5read(data_path, '/crosspol/radiance');             
-    surf_idx = h5read(data_path, '/info/surface_index');
     distance = h5read(data_path, '/location/distance');
     
     disp('preprocessing...')
-    xpol_processed = preprocess(xpol_data, surf_idx, SURFACE_PAD, REDUCED_COLUMN_HEIGHT);
+    xpol_processed = preprocess(xpol_data, SURFACE_PAD, REDUCED_COLUMN_HEIGHT);
     
     disp('creating labels...')
     labels = create_labels(labels_path, distance);
