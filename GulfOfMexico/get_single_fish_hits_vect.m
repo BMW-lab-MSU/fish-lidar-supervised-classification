@@ -23,8 +23,8 @@ for idx = 1:height(single_files_to_find)
     if q ~= 0
         hit_column = idy + table2array(shot);
         hits_matrix(single_hits_row_number, hit_column)=single_hit_value;
-        fprintf(message_content);
-        disp(hit_column);
+        %fprintf(message_content);
+        %disp(hit_column);
     end
 end
 

@@ -28,9 +28,9 @@ for idx = 1:height(layer_files_to_find)
         hit_column_start = idy + table2array(shot1);
         hit_column_end = idy + table2array(shot2);
         hits_matrix(layer_hits_row_number, hit_column_start:hit_column_end) = layer_hit_value;
-        fprintf(message_content);
-        disp("Start:" + hit_column_start);
-        disp("End:" + hit_column_end)
+        %fprintf(message_content);
+        %disp("Start:" + hit_column_start);
+        %disp("End:" + hit_column_end)
     end
 end
 
