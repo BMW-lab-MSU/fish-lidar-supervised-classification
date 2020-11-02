@@ -34,8 +34,13 @@ surface_index = zeros(1, num_lidar_shots);
 switch alg_type
 case 'before_max'
     for idx = 1:num_lidar_shots
-        surface_index(idx) = find(raw_data(1:max_indices(idx), idx) ...
+        surface_temp = find(raw_data(1:max_indices(idx), idx) ...
             <= 0.01 * max_values(idx), 1, 'last');
+    	if surface_temp
+	    surface_index(idx) = surface_temp;
+	else
+	    surface_index(idx) = 1;
+	end
     end
 case 'max'
     surface_index = max_indices;
