@@ -19,11 +19,11 @@ for idx = 1:height(layer_files_to_find)
     file = string(layer_files_to_find(idx, 1).file);
     [filepath,name,ext] = fileparts(file);                                 % Have to check if [name, ext] will work.
     file_pieces = strsplit(name, '\');
-    file_to_find = file_pieces(file_name_extension_index) + ext;
+    file_to_find = file_pieces + ext;
     
     shot1 = layer_shots_values(idx, shot_index_1);
     shot2 = layer_shots_values(idx, shot_index_2);
-    [is_inPNG, idy] = ismember(file_to_find, PNG_file', 'rows');
+    [is_inPNG, idy] = ismember(file_to_find, PNG_file);
     if is_inPNG ~= 0
         hit_column_start = idy + table2array(shot1);
         hit_column_end = idy + table2array(shot2);
