@@ -21,6 +21,7 @@ REDUCED_COLUMN_HEIGHT = 150;
 
 for i = 1:length(dataFilenames)
     % load in the data
+    disp(['loading data ' dataFilenames{i}])
     load([originalDataDir filesep dataFilenames{i}])
     
     disp('preprocessing...')
@@ -28,17 +29,25 @@ for i = 1:length(dataFilenames)
     xpol_raw = icath_x .* x_gain;
     copol_raw = icath_co .* co_gain;
 
+    xpol_raw(isnan(xpol_raw)) = 0;
+    copol_raw(isnan(copol_raw)) = 0;
+
     [xpol_processed, copol_processed] = preprocess(xpol_raw, copol_raw, SURFACE_PAD, REDUCED_COLUMN_HEIGHT);
     
     disp('creating labels...')
-    labels = create_labels(originalDataDir, labelDir, dataFilenames{i});
-    
+    try
+        labels = create_labels(originalDataDir, labelDir, dataFilenames{i});
+    catch ME
+	% 10-6 is missing some label csv files, so this catch should handle that and just create empty labels
+	labels = []; 
+    end
+
     data.xpol_raw = xpol_raw;
     data.copol_raw = copol_raw;
     data.xpol_processed = xpol_processed;
     data.copol_processed = copol_processed;
     data.labels = labels;
-    data.metadata = struct('latitude', lat, 'longitude', long, 'temperature', temp, 'tilt', tilt, 'time', time);
+    data.metadata = struct('latitude', lat, 'longitude', lon, 'temperature', temp, 'tilt', tilt, 'time', time);
 
     save([processedDataDir filesep saveFilenames{i}], 'xpol_processed', 'labels');
 end
