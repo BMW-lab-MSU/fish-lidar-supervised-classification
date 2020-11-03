@@ -35,12 +35,12 @@ for i = 1:length(dataFilenames)
     [xpol_processed, copol_processed] = preprocess(xpol_raw, copol_raw, SURFACE_PAD, REDUCED_COLUMN_HEIGHT);
     
     disp('creating labels...')
-    %try
+    try
         labels = create_labels(originalDataDir, labelDir, dataFilenames{i}, PNG_file);
-    %catch ME
+    catch ME
 	% 10-6 is missing some label csv files, so this catch should handle that and just create empty labels
-	%labels = []; 
-    %end
+	labels = []; 
+    end
 
     data.xpol_raw = xpol_raw;
     data.copol_raw = copol_raw;
@@ -49,6 +49,7 @@ for i = 1:length(dataFilenames)
     data.labels = labels;
     data.metadata = struct('latitude', lat, 'longitude', lon, 'temperature', temp, 'tilt', tilt, 'time', time);
 
-    save([processedDataDir filesep saveFilenames{i}], 'data');
+    save([processedDataDir filesep saveFilenames{i}], 'data', '-v7.3');
+    clearvars -EXCEPT originalDataDir labelDir dataFilenames boxDir processedDataDir saveFilenames SURFACE_PAD REDUCED_COLUMN_HEIGHT
 end
     

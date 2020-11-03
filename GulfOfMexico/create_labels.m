@@ -21,28 +21,40 @@ disp("Initial data loaded and program is beginning to run.");
 %% Load data from labels .csv files (file_to_find)
 
 disp("Schools ---------------------- Loading")
-opts = detectImportOptions(schools_matrix_path);
-opts.SelectedVariableNames={'shot1','shot2','file'};
-schools_matrix_label_data = readtable(schools_matrix_path, opts);
+try
+    opts = detectImportOptions(schools_matrix_path);
+    opts.SelectedVariableNames={'shot1','shot2','file'};
+    schools_matrix_label_data = readtable(schools_matrix_path, opts);
+catch
+    schools_matrix_label_data = zeros(1, length(PNG_file));
+end
 disp("Schools ---------------------- Loaded")
 disp("Layers ---------------------- Loading")                         
-opts = detectImportOptions(layers_matrix_path);                       
-opts.SelectedVariableNames={'shot1','shot2','file'};
-layers_matrix_label_data = readtable(layers_matrix_path, opts);
+try
+    opts = detectImportOptions(layers_matrix_path);                       
+    opts.SelectedVariableNames={'shot1','shot2','file'};
+    layers_matrix_label_data = readtable(layers_matrix_path, opts);
+catch
+    layers_matrix_label_data = zeros(1, length(PNG_file));
+end
 disp("Layers ---------------------- Loaded")
 disp("Jellies ---------------------- Loading")                                 % Handled for 0 jellies.
-opts = detectImportOptions(jellies_matrix_path);
 try
-opts.SelectedVariableNames={'shot1','shot2','file'};
-jellies_matrix_label_data = readtable(jellies_matrix_path, opts);
+    opts = detectImportOptions(jellies_matrix_path);
+    opts.SelectedVariableNames={'shot1','shot2','file'};
+    jellies_matrix_label_data = readtable(jellies_matrix_path, opts);
 catch
-jellies_matrix_label_data = zeros(1,length(PNG_file));
+    jellies_matrix_label_data = zeros(1,length(PNG_file));
 end
 disp("Jellies ---------------------- Loaded")
 disp("Singles ---------------------- Loading")
-opts = detectImportOptions(singles_matrix_path);
-opts.SelectedVariableNames={'shot','file'};
-singles_matrix_label_data = readtable(singles_matrix_path, opts);
+try
+    opts = detectImportOptions(singles_matrix_path);
+    opts.SelectedVariableNames={'shot','file'};
+    singles_matrix_label_data = readtable(singles_matrix_path, opts);
+catch
+    singles_matrix_label_data = zeros(1, length(PNG_file));
+end
 disp("Singles ---------------------- Loaded")
 
 %% Load file_to_find for ismember function.                                              
