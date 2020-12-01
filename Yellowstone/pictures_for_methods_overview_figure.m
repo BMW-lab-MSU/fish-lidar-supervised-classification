@@ -1,4 +1,4 @@
-
+%% setup
 box_dir = 'C:\Users\bugsbunny\Box\AFRL_Data\Data\Yellowstone';
 data_filename = 'yellowstone_20150923.processed.h5';
 data_path = [box_dir filesep data_filename];
@@ -53,13 +53,6 @@ exportgraphics(gca, 'figs/surface_correction.pdf', 'ContentType', 'vector');
 figure
 imshow(xpol_depth_adjustment(:, start:stop), 'DisplayRange', [0 10], 'Colormap', cmap)
 exportgraphics(gca, 'figs/depth_adjustment.pdf', 'ContentType', 'vector');
-
-    
-    
-
-
- 
-
 
 
 
