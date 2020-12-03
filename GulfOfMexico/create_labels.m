@@ -1,4 +1,19 @@
-function [labels] = create_labels(data_dir, label_dir, data_file_name, PNG_file)
+function [labels] = create_labels(label_dir, data_file_name, PNG_file)
+% create_labels transforms a ground truth csv file into a label vector
+%
+% Inputs:
+%   label_dir   - directory where ground truth csv files are
+%   data_file_name  - name of the data mat file that we are creating labels 
+%                     for; this is really only used to get the date, which is in
+%                     both the data and csv file names
+%   PNG_file        - matrix of PNG file names associated with data mat file we 
+%                     that we are creating labels for
+%
+% Outputs:
+%   labels  - ground truth label matrix; row 1 is single fish, row 2 is fish
+%             schools, row 3 is jellyfish, and row 4 is plankton layers
+
+% Authors: Jackson Belford, Trevor Vannoy
 
 data_no_ext = strsplit(data_file_name, '.');
 file_parts = strsplit(string(data_no_ext(1)), '_');
@@ -10,7 +25,6 @@ schools_label_file_name = ['final schools ' date '.csv'];
 singles_label_file_name = ['final single ' date '.csv'];
 
 % Full Paths
-data_matrix_path = [data_dir filesep data_file_name];
 jellies_matrix_path =  [label_dir filesep jellies_label_file_name];
 schools_matrix_path = [label_dir filesep schools_label_file_name];
 layers_matrix_path = [label_dir filesep layers_label_file_name];
@@ -105,4 +119,3 @@ labels = get_layer_hits_vect(layer_files_to_find, layer_shot_values, PNG_file, l
 
 
 end
-

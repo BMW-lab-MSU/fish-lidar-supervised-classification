@@ -1,3 +1,5 @@
+%% Preprocess Gulf of Mexico data and create mat files
+
 boxDir = '/mnt/data/trevor/research/afrl/box/Data/GulfOfMexico';
 originalDataDir = [boxDir filesep 'original data'];
 labelDir = [boxDir filesep 'ground truth results'];
@@ -38,8 +40,8 @@ for i = 1:length(dataFilenames)
     try
         labels = create_labels(originalDataDir, labelDir, dataFilenames{i}, PNG_file);
     catch ME
-	% 10-6 is missing some label csv files, so this catch should handle that and just create empty labels
-	labels = []; 
+        % 10-6 is missing some label csv files, so this catch should handle that and just create empty labels
+        labels = []; 
     end
 
     data.xpol_raw = xpol_raw;
@@ -49,7 +51,7 @@ for i = 1:length(dataFilenames)
     data.labels = labels;
     data.metadata = struct('latitude', lat, 'longitude', lon, 'temperature', temp, 'tilt', tilt, 'time', time);
 
-    save([processedDataDir filesep saveFilenames{i}], 'data', '-v7.3');
+    save([processedDataDir filesep saveFilenames{i}], 'data', '-struct', '-v7.3');
+
     clearvars -EXCEPT originalDataDir labelDir dataFilenames boxDir processedDataDir saveFilenames SURFACE_PAD REDUCED_COLUMN_HEIGHT
 end
-    

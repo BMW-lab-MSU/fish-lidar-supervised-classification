@@ -1,4 +1,15 @@
 function labels_human = create_labels(label_file, distance)
+% CREATE_LABELS creates ground truth labels for the Yellowstone data
+%
+% Inputs:
+%   label_file - the full path to the ground truth csv file
+%   distance   - flight distance from h5 data file
+%
+% Outputs:
+%   labels_human - ground truth labels
+
+% Authors: Jackson Belford, Trevor Vannoy
+
 %% Load labels file
 hits_matrix = readmatrix(label_file);
 

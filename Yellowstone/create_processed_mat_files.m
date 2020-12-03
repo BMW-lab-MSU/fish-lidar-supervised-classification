@@ -1,3 +1,4 @@
+%% Preprocess Yellowstone data and create mat files
 
 box_dir = '/mnt/data/trevor/research/afrl/box/Data/Yellowstone';
 
@@ -53,14 +54,5 @@ for i = 1:length(data_filenames)
     data.location = location;
     data.timestamps = timestamps;
     
-    save([box_dir filesep save_filenames{i}], 'data', '-v7.3');
+    save([box_dir filesep save_filenames{i}], 'data', '-struct', '-v7.3');
 end
-    
-    
-
-
- 
-
-
-
-
