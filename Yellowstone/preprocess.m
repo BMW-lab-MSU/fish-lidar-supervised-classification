@@ -20,8 +20,8 @@ function [xpol_processed, copol_processed] = preprocess(xpol_raw, copol_raw, sur
 % classifiers, so we want the height of the water to always start at 
 % the same row in every LIDAR shot. 
 surface_index = find_water_surface(copol_raw);
-xpol_processed = normalize_surface_height(xpol_raw, surface_index, surface_pad);
-copol_processed = normalize_surface_height(copol_raw, surface_index, surface_pad);
+xpol_processed = correct_surface(xpol_raw, surface_index, surface_pad);
+copol_processed = correct_surface(copol_raw, surface_index, surface_pad);
 
 %% Dimensionality reduction
 xpol_processed = xpol_processed(1:column_height,:);

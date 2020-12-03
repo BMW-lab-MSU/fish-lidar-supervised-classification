@@ -51,7 +51,7 @@ for i = 1:length(dataFilenames)
     data.labels = labels;
     data.metadata = struct('latitude', lat, 'longitude', lon, 'temperature', temp, 'tilt', tilt, 'time', time);
 
-    save([processedDataDir filesep saveFilenames{i}], 'data', '-struct', '-v7.3');
+    save([processedDataDir filesep saveFilenames{i}], '-struct', 'data', '-v7.3');
 
     clearvars -EXCEPT originalDataDir labelDir dataFilenames boxDir processedDataDir saveFilenames SURFACE_PAD REDUCED_COLUMN_HEIGHT
 end
