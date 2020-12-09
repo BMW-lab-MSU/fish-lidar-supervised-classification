@@ -9,6 +9,11 @@ cmap = flipud(colormap('gray'));
 set(0, 'DefaultAxesFontSize', 14, 'DefaultTextFontSize', 14)
 
 %%
+SPEED_OF_LIGHT = 299792458 / 1.3; % water has an index of refraction ~1.3
+SAMPLE_RATE = 1e9;
+DEPTH_INCREMENT = SPEED_OF_LIGHT / SAMPLE_RATE / 2;
+
+%%
 close all
 
 fig = figure('Units', 'inches', 'Position', [1000, 1000, 8, 5]);
@@ -35,7 +40,7 @@ d = linspace(0, total_distance, col_stop - col_start + 1);
 
 nexttile
 
-imagesc(day2.xpol_raw(row_start:row_stop, col_start:col_stop), 'XData', d);
+imagesc(d, DEPTH_INCREMENT * (0:row_stop-row_start-1), day2.xpol_raw(row_start:row_stop, col_start:col_stop));
 colormap(cmap);
 hold on
 
@@ -78,7 +83,7 @@ d = linspace(0, total_distance, col_stop - col_start + 1);
 
 nexttile
 
-imagesc(day1.xpol_raw(row_start:row_stop, col_start:col_stop), 'XData', d);
+imagesc(d, DEPTH_INCREMENT * (0:row_stop-row_start-1), day1.xpol_raw(row_start:row_stop, col_start:col_stop));
 colormap(cmap)
 hold on
 

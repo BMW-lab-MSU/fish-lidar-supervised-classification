@@ -1,6 +1,10 @@
 %% Setup
-data_dir = 'C:\Users\bugsbunny\Box\AFRL_Data\Data\Yellowstone';
+data_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
 load([data_dir filesep 'processed_data_2016.mat'])
+
+SPEED_OF_LIGHT = 299792458 / 1.3; % water has an index of refraction ~1.3
+SAMPLE_RATE = 800e6;
+DEPTH_INCREMENT = SPEED_OF_LIGHT / SAMPLE_RATE / 2;
 
 % create a grayscale colormap with white at the bottom
 cmap = flipud(colormap('gray'));
@@ -17,10 +21,16 @@ close all
 
 fig_fish_example_raw = figure;
 
+% index of refraction is different in air; since the image starts pretty close
+% to the surface of the water, the first depth sample is computed using 
+% the speed of light in vacuum/air, then the rest are computed assuming water
+depth = [DEPTH_INCREMENT * 1.3 * row_start,...
+    DEPTH_INCREMENT * 1.3 * row_start + DEPTH_INCREMENT * (1 : row_stop - row_start -1)];
+
 % x-axis arbitrarily starts at 0 to show relative distance instead of
 % absolute flight distance
 imagesc(location.distance(col_start:col_stop) - location.distance(col_start), ...
-    metadata.depth_increment*(row_start:row_stop), ...
+    depth, ...
     xpol_raw(row_start:row_stop, col_start:col_stop), [0, 50])
 colormap(cmap);
 xlabel('Distance [m]')
@@ -42,7 +52,7 @@ annotation('ellipse', [0.34 0.2 0.1 0.45], 'LineStyle', '--', 'LineWidth', 3, ..
 fig_fish_example_processed = figure;
 
 imagesc(location.distance(col_start:col_stop) - location.distance(col_start), ...
-    metadata.depth_increment*(0:size(xpol_processed, 1) - 1), ...
+    DEPTH_INCREMENT*(0:size(xpol_processed, 1) - 1), ...
     xpol_processed(:, col_start:col_stop), [0, 50]);
 colormap(cmap);
 xlabel('Distance [m]')
