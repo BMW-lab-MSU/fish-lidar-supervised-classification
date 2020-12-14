@@ -1,5 +1,5 @@
 %% Choose classifier
-% Choose which classifier to use by finding which one has the highest f2 score 
+% Choose which classifier to use by finding which one has the highest f3 score 
 % on regions of interest in the data that is a superset of the training data
 
 %% Constants
@@ -34,9 +34,9 @@ for i = 1:numel(trained_models)
 
     % analyize results for each lidar shot
     confusion = confusionmat(data.labels, predicted_labels);
-    [~, precision, recall, f2] = analyze_confusion(confusion);
+    [~, precision, recall, f3] = analyze_confusion(confusion);
 
-    shot = struct('Confusion', confusion, 'F2', f2, ...
+    shot = struct('Confusion', confusion, 'F3', f3, ...
         'Precison', precision, 'Recall', recall, ...
         'HumanLabels', data.labels, 'PredictedLabels', predicted_labels);
 
@@ -47,9 +47,9 @@ for i = 1:numel(trained_models)
         PREDICTED_LABEL_THRESHOLD, WINDOW_SIZE, OVERLAP);
 
     confusion_roi = confusionmat(labels_roi, predicted_labels_roi);
-    [~, precision_roi, recall_roi, f2_roi] = analyze_confusion(confusion_roi);
+    [~, precision_roi, recall_roi, f3_roi] = analyze_confusion(confusion_roi);
 
-    roi = struct('Confusion', confusion_roi, 'F2', f2_roi, ...
+    roi = struct('Confusion', confusion_roi, 'F3', f3_roi, ...
         'Precison', precision_roi, 'Recall', recall_roi, ...
         'HumanLabels', labels_roi, 'PredictedLabels', predicted_labels_roi);
 
@@ -57,12 +57,12 @@ for i = 1:numel(trained_models)
 end
 
 %% Find which classifier has the best performance
-max_f2 = intmin;
+max_f3 = intmin;
 best_model = '';
 
 for model = results.keys
-    if results(model{:}).roi.F2 >= max_f2
-        max_f2 = results(model{:}).roi.F2;
+    if results(model{:}).roi.F3 >= max_f3
+        max_f3 = results(model{:}).roi.F3;
         best_model = model{:};
     end
 end
