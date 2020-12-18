@@ -6,8 +6,8 @@ box_dir = '/mnt/data/trevor/research/afrl/box/Data/Yellowstone';
 data2015 = load([box_dir filesep 'processed_data_2015'], 'xpol_processed', 'labels');
 data2016 = load([box_dir filesep 'processed_data_2016'], 'xpol_processed', 'labels');
 
-trained_model_dir = 'trained_models_2016';
-trained_model = 'fineTree2016';
+trained_model_dir = 'trained_models';
+trained_model = 'optimizedRusBoost';
 load([trained_model_dir filesep trained_model]);
 
 %%
@@ -16,7 +16,7 @@ OVERLAP = 0.1;
 TRUE_LABEL_THRESHOLD = 1;
 PREDICTED_LABEL_THRESHOLD = 10;
 
-results2015.Shot.PredictedLabels = fineTree.predictFcn(data2015.xpol_processed');
+results2015.Shot.PredictedLabels = optimizedRusBoost.predictFcn(data2015.xpol_processed');
 results2015.Shot.Labels = data2015.labels;
 results2015.Shot.Confusion = confusionmat(results2015.Shot.Labels, results2015.Shot.PredictedLabels);
 [~, precision, recall, f3] = analyze_confusion(results2015.Shot.Confusion);
@@ -34,7 +34,7 @@ results2015.Roi.Precision = precision;
 results2015.Roi.Recall = recall;
 results2015.Roi.F3 = f3;
 
-results2016.Shot.PredictedLabels = fineTree.predictFcn(data2016.xpol_processed');
+results2016.Shot.PredictedLabels = optimizedRusBoost.predictFcn(data2016.xpol_processed');
 results2016.Shot.Labels = data2016.labels;
 results2016.Shot.Confusion = confusionmat(results2016.Shot.Labels, results2016.Shot.PredictedLabels);
 [~, precision, recall, f3] = analyze_confusion(results2016.Shot.Confusion);
