@@ -1,22 +1,16 @@
 %% Setup
 clear
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
+box_dir = '/mnt/data/trevor/research/afrl/box/Data/Yellowstone';
 input_data_filename = 'processed_data_2016';
-training_data_filename = 'training_data_2016';
+training_data_filename = 'training_data_2016_undersampled75';
 
 load([box_dir filesep input_data_filename], 'xpol_processed', 'labels')
 
-%% Remove open water shots
-%
-SHOT_THRESHOLD = 0.10;
+%% Undersample the majority class
+UNDERSAMPLING_RATIO = 0.75;
 
-shot_avg = mean(sum(xpol_processed));
-
-shots_to_remove = find(sum(xpol_processed) < shot_avg * SHOT_THRESHOLD);
-
-if any(labels(shots_to_remove))
-    error('shot containing a fish was removed')
-end
+no_fish = find(labels == 0);
+shots_to_remove = no_fish(randperm(numel(no_fish), ceil(UNDERSAMPLING_RATIO * numel(no_fish))));
 
 xpol_processed(:,shots_to_remove) = [];
 labels(shots_to_remove) = [];

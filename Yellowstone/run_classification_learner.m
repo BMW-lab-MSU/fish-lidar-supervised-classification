@@ -1,5 +1,5 @@
 box_dir = '/mnt/data/trevor/research/afrl/box/Data/Yellowstone';
-training_data_filename = 'training_data_2015';
+training_data_filename = 'training_data_2016_undersampled75';
 
 load([box_dir filesep training_data_filename])
 
