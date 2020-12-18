@@ -5,7 +5,6 @@ originalDataDir = [boxDir filesep 'original data'];
 labelDir = [boxDir filesep 'ground truth results'];
 processedDataDir = [boxDir filesep 'processed data'];
 
-
 dataFilenames = {'DATA_FOR_09-24.mat', 'DATA_FOR_09-25.mat', 'DATA_FOR_09-26.mat', 'DATA_FOR_09-29.mat', 'DATA_FOR_09-30.mat', 'DATA_FOR_10-01.mat', 'DATA_FOR_10-02.mat', 'DATA_FOR_10-03.mat', 'DATA_FOR_10-04.mat', 'DATA_FOR_10-05.mat', 'DATA_FOR_10-06.mat', 'DATA_FOR_10-07.mat'}; 
 
 saveFilenames = {'processed_data_09-24.mat', 'processed_data_09-25.mat', 'processed_data_09-26.mat', 'processed_data_09-29.mat', 'processed_data_09-30.mat', 'processed_data_10-01.mat', 'processed_data_10-02.mat', 'processed_data_10-03.mat', 'processed_data_10-04.mat', 'processed_data_10-05.mat', 'processed_data_10-06.mat', 'processed_data_10-07.mat'};
@@ -37,12 +36,7 @@ for i = 1:length(dataFilenames)
     [xpol_processed, copol_processed] = preprocess(xpol_raw, copol_raw, SURFACE_PAD, REDUCED_COLUMN_HEIGHT);
     
     disp('creating labels...')
-    try
-        labels = create_labels(originalDataDir, labelDir, dataFilenames{i}, PNG_file);
-    catch ME
-        % 10-6 is missing some label csv files, so this catch should handle that and just create empty labels
-        labels = []; 
-    end
+    labels = create_labels(labelDir, dataFilenames{i}, PNG_file);
 
     data.xpol_raw = xpol_raw;
     data.copol_raw = copol_raw;

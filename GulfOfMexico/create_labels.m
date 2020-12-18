@@ -94,12 +94,20 @@ layer_index = 4;
 %% Parsing for single fish hits
 
 disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ SINGLE FISH HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
-labels = get_single_fish_hits_vect(singles_files_to_find, singles_shot_values, PNG_file, single_index, labels);
+try
+    labels = get_single_fish_hits_vect(singles_files_to_find, singles_shot_values, PNG_file, single_index, labels);
+catch ME
+    disp('no single fish labels');
+end
 
 %% Parsing for school fish hits
 
 disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ SCHOOL FISH HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
-labels = get_school_fish_hits_vect(schools_files_to_find, schools_shot_values, PNG_file, school_index, labels);
+try
+    labels = get_school_fish_hits_vect(schools_files_to_find, schools_shot_values, PNG_file, school_index, labels);
+catch ME
+    disp('no school fish labels');
+end
 
 %% Parsing for jelly fish hits
 
@@ -115,7 +123,11 @@ end
 %% Parsing for layer hits
 
 disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ LAYER HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
-labels = get_layer_hits_vect(layer_files_to_find, layer_shot_values, PNG_file, layer_index, labels);
+try
+    labels = get_layer_hits_vect(layer_files_to_find, layer_shot_values, PNG_file, layer_index, labels);
+catch ME
+    disp('No plankton layers found');
+end
 
 
 end
