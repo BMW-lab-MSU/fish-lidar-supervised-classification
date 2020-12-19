@@ -1,6 +1,8 @@
 %% setup
+addpath('../common')
+
 box_dir = 'C:\Users\bugsbunny\Box\AFRL_Data\Data\Yellowstone';
-data_filename = 'yellowstone_20150923.processed.h5';
+data_filename = 'processed_data_2015';
 data_path = [box_dir filesep data_filename];
 
 % number of rows above the surface of the water to start the image
@@ -10,12 +12,12 @@ SURFACE_PAD = 0;
 REDUCED_COLUMN_HEIGHT = 60;
 
 % load in the data
-xpol_data = h5read(data_path, '/crosspol/radiance');             
-distance = h5read(data_path, '/location/distance');
+load(data_path, 'xpol_raw', 'copol_raw', 'location');
+distance = location.distance;
     
 %% data processing
-surface_index = find_water_surface(xpol_data);
-xpol_surface_corrected = normalize_surface_height(xpol_data, surface_index, SURFACE_PAD);
+surface_index = find_water_surface(copol_raw, 'NSkipSamples', 600, 'NSmoothingSamples', 10);
+xpol_surface_corrected = correct_surface(xpol_raw, surface_index, SURFACE_PAD);
 xpol_depth_adjustment = xpol_surface_corrected(1:REDUCED_COLUMN_HEIGHT, :);    
 
 %% figure creation
@@ -28,15 +30,15 @@ stop = 25.4e3;
 mkdir('figs')
 
 % original shots
-imshow(xpol_data(:, start:stop), 'DisplayRange', [0 10], 'Colormap', cmap)
+imshow(xpol_raw(:, start:stop), 'DisplayRange', [0 10], 'Colormap', cmap)
 ylim([600, 1700])
 exportgraphics(gca, 'figs/original_shots.pdf', 'ContentType', 'vector');
 
 % surface detected
 figure
-imshow(xpol_data(:, start:stop), 'DisplayRange', [0 10], 'Colormap', cmap)
+imshow(xpol_raw(:, start:stop), 'DisplayRange', [0 10], 'Colormap', cmap)
 hold on
-plot(surface_index(start:stop), 'LineStyle', '--', 'Color', '#a3c166', 'LineWidth', 1)
+plot(surface_index(start:stop), 'LineStyle', '--', 'Color', '#c18566', 'LineWidth', 2.5)
 hold off
 ylim([600, 1700])
 exportgraphics(gca, 'figs/surface_detection.pdf', 'ContentType', 'vector');
