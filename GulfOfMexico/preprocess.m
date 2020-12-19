@@ -19,7 +19,7 @@ function [xpol_processed, copol_processed] = preprocess(xpol_raw, copol_raw, sur
 % shot. This could potentially cause problems with shift-variant
 % classifiers, so we want the height of the water to always start at 
 % the same row in every LIDAR shot. 
-surface_index = find_water_surface(copol_raw);
+surface_index = find_water_surface(copol_raw, 'NSkipSamples', 0, 'NSmoothingSamples', 10);
 xpol_processed = correct_surface(xpol_raw, surface_index, surface_pad);
 copol_processed = correct_surface(copol_raw, surface_index, surface_pad);
 

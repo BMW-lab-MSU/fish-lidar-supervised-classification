@@ -14,11 +14,9 @@ saveFilenames = {'processed_data_09-24.mat', 'processed_data_09-25.mat', 'proces
 % number of rows above the surface of the water to start the image
 SURFACE_PAD = 0;
 
-% number of columns to use in dimensionality reduction
-% 150 is kinda arbitrary based upon looking at how the lidar reflectance
-% trails off with increasing depth; talking to Jim about the lidar's penetration
-% depth and expected depths of targets would give us a more justified number
-REDUCED_COLUMN_HEIGHT = 150;
+% number of rows to use in dimensionality reduction
+% 100 rows corresponds to about 11.53 meters
+REDUCED_COLUMN_HEIGHT = 100;
 
 
 for i = 1:length(dataFilenames)

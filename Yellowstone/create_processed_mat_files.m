@@ -1,10 +1,13 @@
 %% Preprocess Yellowstone data and create mat files
 
-box_dir = '/mnt/data/trevor/research/afrl/box/Data/Yellowstone';
+box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
 
 data_filenames = {'yellowstone_wfov_20160928.processed.h5', 'yellowstone_20150923.processed.h5'};
 labels_filenames = {'fish_hits_2016_with_school_size_estimates.csv', 'fish_hits_2015_with_school_size_estimates.csv'};
 save_filenames = {'processed_data_2016' ,'processed_data_2015'};
+
+% number of samples to skip when finding water surface
+skip_samples = [512, 600];
 
 % number of rows above the surface of the water to start the image
 SURFACE_PAD = 0;
@@ -40,7 +43,7 @@ for i = 1:length(data_filenames)
 
     
     disp('preprocessing...')
-    [xpol_processed, copol_processed] = preprocess(xpol_raw, copol_raw, SURFACE_PAD, REDUCED_COLUMN_HEIGHT);
+    [xpol_processed, copol_processed] = preprocess(xpol_raw, copol_raw, SURFACE_PAD, REDUCED_COLUMN_HEIGHT, skip_samples(i));
     
     disp('creating labels...')
     labels = create_labels(labels_path, distance);
