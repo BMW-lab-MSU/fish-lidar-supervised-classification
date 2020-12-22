@@ -1,12 +1,13 @@
-data_dir = '../../Box/Data/GulfOfMexico/processed data';
+data_dir = '../../box/Data/GulfOfMexico/processed data';
 
 day1 = load([data_dir filesep 'processed_data_09-24.mat'], 'labels', 'xpol_raw', 'metadata');
 day2 = load([data_dir filesep 'processed_data_09-25.mat'], 'labels', 'xpol_raw', 'metadata');
 
+mkdir('figs');
 
 %%
 cmap = flipud(colormap('gray'));
-set(0, 'DefaultAxesFontSize', 14, 'DefaultTextFontSize', 14)
+set(0, 'DefaultAxesFontSize', 12, 'DefaultTextFontSize', 12)
 
 %%
 SPEED_OF_LIGHT = 299792458 / 1.3; % water has an index of refraction ~1.3
@@ -16,14 +17,14 @@ DEPTH_INCREMENT = SPEED_OF_LIGHT / SAMPLE_RATE / 2;
 %%
 close all
 
-fig = figure('Units', 'inches', 'Position', [1000, 1000, 8, 5]);
+fig = figure('Units', 'inches', 'Position', [2, 2, 8, 5]);
 t = tiledlayout(2,1);
 t.TileSpacing = 'compact';
 t.Padding = 'compact';
 t.XLabel.String = 'Distance [m]';
 t.YLabel.String = 'Depth [m]';
-t.XLabel.FontSize = 14;
-t.YLabel.FontSize = 14;
+t.XLabel.FontSize = 12;
+t.YLabel.FontSize = 12;
 
 
 col_start =340900;
@@ -51,20 +52,20 @@ hold on
 
 
 % jellyfish
-annotation('ellipse', [0.12 0.63 0.05 0.22], 'LineStyle', '-', 'Color', '#67A3C1', ...
+annotation('ellipse', [0.108 0.625 0.05 0.22], 'LineStyle', '-', 'Color', '#67A3C1', ...
     'LineWidth', 3)
-annotation('ellipse', [0.32 0.7 0.05 0.2], 'LineStyle', '-', 'Color', '#67A3C1', ...
+annotation('ellipse', [0.31 0.7 0.05 0.2], 'LineStyle', '-', 'Color', '#67A3C1', ...
     'LineWidth', 3)
 
 % fish schools
-annotation('ellipse', [0.432 0.7 0.03, 0.18], 'LineStyle', ':', 'Color', '#a3c166', ...
+annotation('ellipse', [0.422 0.7 0.03, 0.18], 'LineStyle', ':', 'Color', '#a3c166', ...
     'LineWidth', 3)
-annotation('ellipse', [0.482 0.72 0.07 0.18], 'LineStyle', ':', 'Color', '#a3c166', ...
+annotation('ellipse', [0.472 0.72 0.07 0.18], 'LineStyle', ':', 'Color', '#a3c166', ...
     'LineWidth', 3)
-annotation('ellipse', [0.761 0.68 0.03 0.18], 'LineStyle', ':', 'Color', '#a3c166', ...
+annotation('ellipse', [0.757 0.68 0.03 0.18], 'LineStyle', ':', 'Color', '#a3c166', ...
     'LineWidth', 3)
 
-title('(a)', 'FontSize', 14)
+title('(a)', 'FontSize', 12)
 set(gca, 'TitleHorizontalAlignment', 'left')
 
 %%
@@ -78,20 +79,21 @@ row_stop = 600;
 arclen = distance(day1.metadata.latitude(col_start), day1.metadata.longitude(col_start), ...
     day1.metadata.latitude(col_stop), day1.metadata.longitude(col_stop));
 total_distance = deg2km(arclen) * 1e3; % [m]
-d = linspace(0, total_distance, col_stop - col_start + 1);
+dist = linspace(0, total_distance, col_stop - col_start + 1);
+depth = DEPTH_INCREMENT * (0:row_stop-row_start-1);
 
 
 nexttile
 
-imagesc(d, DEPTH_INCREMENT * (0:row_stop-row_start-1), day1.xpol_raw(row_start:row_stop, col_start:col_stop));
+imagesc(dist, depth, day1.xpol_raw(row_start:row_stop, col_start:col_stop));
 colormap(cmap)
 hold on
 
 % single fish hits
-scatter(d(find(day1.labels(1,col_start:col_stop))), 177*ones(1, length(find(day1.labels(1, col_start:col_stop)))), ... 
+scatter(d(find(day1.labels(1,col_start:col_stop))), depth(end-2)*ones(1, length(find(day1.labels(1, col_start:col_stop)))), ... 
     'Marker', '^', 'MarkerEdgeColor', '#67A3C1', 'MarkerFaceColor', '#67A3C1', 'SizeData', 50)
 
-title('(b)', 'FontSize', 14)
+title('(b)', 'FontSize', 12)
 set(gca, 'TitleHorizontalAlignment', 'left')
 
 
