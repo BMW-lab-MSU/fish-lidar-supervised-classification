@@ -23,14 +23,14 @@ for idx = 1:height(layer_files_to_find)
     
     shot1 = layer_shots_values(idx, shot_index_1);
     shot2 = layer_shots_values(idx, shot_index_2);
-    [is_inPNG, idy] = ismember(file_to_find, PNG_file', 'rows');
+    [is_inPNG, idy] = ismember(file_to_find, PNG_file);
     if is_inPNG ~= 0
         hit_column_start = idy + table2array(shot1);
         hit_column_end = idy + table2array(shot2);
         hits_matrix(layer_hits_row_number, hit_column_start:hit_column_end) = layer_hit_value;
-        fprintf(message_content);
-        disp("Start:" + hit_column_start);
-        disp("End:" + hit_column_end)
+        %fprintf(message_content);
+        %disp("Start:" + hit_column_start);
+        %disp("End:" + hit_column_end)
     end
 end
 

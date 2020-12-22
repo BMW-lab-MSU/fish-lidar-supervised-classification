@@ -19,12 +19,12 @@ for idx = 1:height(single_files_to_find)
     file_to_find = file_pieces(file_name_extension_index) + ext;
     
     shot = single_shot_values(idx, 1);
-    [q, idy] = ismember(file_to_find, PNG_file', 'rows');
+    [q, idy] = ismember(file_to_find, PNG_file);
     if q ~= 0
         hit_column = idy + table2array(shot);
         hits_matrix(single_hits_row_number, hit_column)=single_hit_value;
-        fprintf(message_content);
-        disp(hit_column);
+        %fprintf(message_content);
+        %disp(hit_column);
     end
 end
 
