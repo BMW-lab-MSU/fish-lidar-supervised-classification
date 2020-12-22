@@ -2,13 +2,13 @@
 clear
 box_dir = '/mnt/data/trevor/research/afrl/box/Data/GulfOfMexico/processed data';
 input_data_filename = 'processed_data_09-24';
-training_data_filename = 'training_data_09-24_undersampled75_no_plankton';
+training_data_filename = 'training_data_09-24_undersampled75_just_fish';
 
 load([box_dir filesep input_data_filename], 'xpol_processed', 'labels')
 
 %% Create binary classification labels
 % label indices: 1 = single fish, 2 = fish schools, 3 = jellyfish, 4 = plankton
-labels = any(labels(1:3,:));
+labels = any(labels(1:2,:));
 
 %% Undersample the majority class
 UNDERSAMPLING_RATIO = 0.75;
