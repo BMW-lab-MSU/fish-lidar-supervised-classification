@@ -12,7 +12,7 @@ depth = [-ones(1, LABEL_HEIGHT * 2), depth_increment * (0:height(data) - 1)];
 %% lidar data image
 fig = figure();
 ax1 = axes;
-imagesc(ax1, distance, depth, [repmat(zeros(1, width(data)), LABEL_HEIGHT * 2, 1); data])
+imagesc(ax1, distance, depth, [repmat(zeros(1, width(data)), LABEL_HEIGHT * 2, 1); data]);
 
 % remove first tick (-1) so the ticks start at 0 at the surface
 ax1.YTick = ax1.YTick(2:end);
@@ -23,7 +23,7 @@ ax1.XLabel.String = 'Distance [m]';
 
 % remove axis box so the axis forms an "L" instead of a box; this makes the
 % figure look better because the labels image cuts off the top part of the axis
-ax1.Box = 'off'
+ax1.Box = 'off';
 
 
 %% labels image
@@ -37,9 +37,9 @@ ax2.YTick = [];
 %% overlay axes and set colormaps
 % using multiple colormaps in a single axis
 % https://www.mathworks.com/matlabcentral/answers/194554-how-can-i-use-and-display-two-different-colormaps-on-the-same-figure
-linkaxes([ax1, ax2])
+linkaxes([ax1, ax2]);
 colormap(ax1, flipud(colormap('gray')));
-colormap(ax2, [255, 255, 255; 163, 193, 102; 103, 163, 193]/255)
+colormap(ax2, [255, 255, 255; 163, 193, 102; 103, 163, 193]/255);
 
 
 %% legend
