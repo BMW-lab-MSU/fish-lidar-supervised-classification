@@ -2,8 +2,10 @@ function datastruct = extract_data_from_png(filename)
 
 rawdata = imread(filename);
 
-cur_date = filename(1:5);
-cur_filename = filename(7:end);
+file_parts = strsplit(filename, filesep);
+
+cur_date = file_parts{end-1};
+cur_filename = file_parts{end};
 
 numshots = size(rawdata,2);
 
