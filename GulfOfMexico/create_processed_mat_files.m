@@ -1,4 +1,5 @@
 %% Preprocess Gulf of Mexico data and create mat files
+addpath('../common/')
 
 boxDir = '/mnt/data/trevor/research/afrl/box/Data/GulfOfMexico';
 originalDataDir = [boxDir filesep 'original data'];

@@ -44,8 +44,8 @@ for DAY = DAYS
     icath_x = zeros(1000,num_shots);
 
     % Keep track of the original spot of each shot in the PNG image
-    date = char(zeros(5,num_shots));
-    PNG_file = char(zeros(17,num_shots));
+    date = cell(1,num_shots);
+    PNG_file = cell(1,num_shots);
     PNG_column = zeros(1,num_shots);
 
     cur_idx = 1;
@@ -63,8 +63,8 @@ for DAY = DAYS
         temp(cur_idx:cur_idx + cur_num_shots - 1) = all_data(i).temp;
         icath_co(:,cur_idx:cur_idx + cur_num_shots - 1) = all_data(i).icath_co;
         icath_x(:,cur_idx:cur_idx + cur_num_shots - 1) = all_data(i).icath_x;
-        date(:,cur_idx:cur_idx + cur_num_shots - 1) = all_data(i).date;
-        PNG_file(:,cur_idx:cur_idx + cur_num_shots - 1) = all_data(i).PNG_file;
+        date(cur_idx:cur_idx + cur_num_shots - 1) = all_data(i).date;
+        PNG_file(cur_idx:cur_idx + cur_num_shots - 1) = all_data(i).PNG_file;
         PNG_column(cur_idx:cur_idx + cur_num_shots - 1) = all_data(i).PNG_column;
         
         cur_idx = cur_idx + cur_num_shots;
