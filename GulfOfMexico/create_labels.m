@@ -39,7 +39,7 @@ try
     opts = detectImportOptions(schools_matrix_path);
     opts.SelectedVariableNames={'shot1','shot2','file'};
     schools_matrix_label_data = readtable(schools_matrix_path, opts);
-catch
+catch ME
     schools_matrix_label_data = zeros(1, length(PNG_file));
 end
 disp("Schools ---------------------- Loaded")
@@ -48,7 +48,7 @@ try
     opts = detectImportOptions(layers_matrix_path);                       
     opts.SelectedVariableNames={'shot1','shot2','file'};
     layers_matrix_label_data = readtable(layers_matrix_path, opts);
-catch
+catch ME
     layers_matrix_label_data = zeros(1, length(PNG_file));
 end
 disp("Layers ---------------------- Loaded")
@@ -57,7 +57,7 @@ try
     opts = detectImportOptions(jellies_matrix_path);
     opts.SelectedVariableNames={'shot1','shot2','file'};
     jellies_matrix_label_data = readtable(jellies_matrix_path, opts);
-catch
+catch ME
     jellies_matrix_label_data = zeros(1,length(PNG_file));
 end
 disp("Jellies ---------------------- Loaded")
@@ -66,7 +66,7 @@ try
     opts = detectImportOptions(singles_matrix_path);
     opts.SelectedVariableNames={'shot','file'};
     singles_matrix_label_data = readtable(singles_matrix_path, opts);
-catch
+catch ME
     singles_matrix_label_data = zeros(1, length(PNG_file));
 end
 disp("Singles ---------------------- Loaded")
@@ -97,6 +97,7 @@ disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ SINGLE FISH HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
 try
     labels = get_single_fish_hits_vect(singles_files_to_find, singles_shot_values, PNG_file, single_index, labels);
 catch ME
+    %disp(ME)
     disp('no single fish labels');
 end
 
@@ -106,6 +107,7 @@ disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ SCHOOL FISH HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
 try
     labels = get_school_fish_hits_vect(schools_files_to_find, schools_shot_values, PNG_file, school_index, labels);
 catch ME
+    %disp(ME)
     disp('no school fish labels');
 end
 
@@ -116,6 +118,7 @@ disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ JELLY FISH HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
 if row > 1
     labels = get_jelly_fish_hits_vect(jelly_files_to_find, jelly_shot_values, PNG_file, jelly_index, labels);
 else
+    %disp(ME)
     disp('No jellyfish labels found!');
     labels(3,:) = 0;
 end
@@ -126,6 +129,7 @@ disp("~~~~~~~~~~~~~~~~~~~~~~~~~~ LAYER HITS ~~~~~~~~~~~~~~~~~~~~~~~~~~");
 try
     labels = get_layer_hits_vect(layer_files_to_find, layer_shot_values, PNG_file, layer_index, labels);
 catch ME
+    %disp(ME)
     disp('No plankton layers found');
 end
 

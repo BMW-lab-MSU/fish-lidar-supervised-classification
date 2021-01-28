@@ -16,8 +16,8 @@ message_content = 'Jelly hits labeled at ~~~ ';
 jelly_hit_value = 1;
 
 for idx = 1:height(jelly_files_to_find)
-    file = string(jelly_files_to_find(idx, 1).file);
-    file_pieces = strsplit(file, '\');
+    file = jelly_files_to_find(idx, 1).file;
+    file_pieces = strsplit(file{:}, '\');
     file_to_find = file_pieces(end);
     
     shot1 = jelly_shot_values(idx, shot_index_1);

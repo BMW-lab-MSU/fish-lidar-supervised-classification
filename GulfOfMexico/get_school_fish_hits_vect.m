@@ -16,8 +16,8 @@ message_content = 'School hits labeled at ~~~ ';
 school_hit_value = 1;
 
 for idx = 1:height(school_files_to_find)
-    file = string(school_files_to_find(idx, 1).file);
-    file_pieces = strsplit(file, '\');
+    file = school_files_to_find(idx, 1).file;
+    file_pieces = strsplit(file{:}, '\');
     file_to_find = file_pieces(end);
     
     shot1 = school_shots_values(idx, shot_index_1);

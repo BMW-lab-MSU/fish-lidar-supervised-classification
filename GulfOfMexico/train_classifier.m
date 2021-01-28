@@ -1,6 +1,6 @@
 %% Load training data
 disp('loading training data');
-box_dir = '../../data';
+box_dir = '/mnt/data/trevor/research/afrl/box/Data/GulfOfMexico/processed data';
 load([box_dir filesep 'training_data_09-24_undersampled75_just_fish']);
 
 %% Train the RUSBoost ensemble
@@ -105,3 +105,4 @@ partitionedModel = crossval(trainedClassifier.ClassificationEnsemble, 'KFold', 5
 
 % Compute validation accuracy
 validationAccuracy = 1 - kfoldLoss(partitionedModel, 'LossFun', 'ClassifError');
+end

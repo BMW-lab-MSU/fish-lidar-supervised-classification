@@ -16,8 +16,8 @@ message_content = 'Layer hits labeled at ~~~ ';
 layer_hit_value = 1;
 
 for idx = 1:height(layer_files_to_find)
-    file = string(layer_files_to_find(idx, 1).file);
-    file_pieces = strsplit(file, '\');
+    file = layer_files_to_find(idx, 1).file;
+    file_pieces = strsplit(file{:}, '\');
     file_to_find = file_pieces(end);
     
     shot1 = layer_shots_values(idx, shot_index_1);

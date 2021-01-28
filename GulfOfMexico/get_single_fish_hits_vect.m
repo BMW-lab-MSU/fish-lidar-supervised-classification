@@ -13,10 +13,10 @@ message_content = 'Single hit labeled at ~~~ ';
 single_hit_value = 1;
 
 for idx = 1:height(single_files_to_find)
-    file = string(single_files_to_find(idx, 1).file);
-    file_pieces = strsplit(file, '\');
+    file = single_files_to_find(idx, 1).file;
+    file_pieces = strsplit(file{:}, '\');
     file_to_find = file_pieces(end);
-    
+
     shot = single_shot_values(idx, 1);
     [q, idy] = ismember(file_to_find, PNG_file);
     if q ~= 0
