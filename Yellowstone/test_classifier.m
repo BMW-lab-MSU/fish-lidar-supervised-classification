@@ -2,7 +2,7 @@
 % load data and classifier
 addpath('../common')
 
-box_dir = '../../data/';
+box_dir = '/mnt/data/trevor/research/afrl/box/Data/Yellowstone';
 
 data2015 = load([box_dir filesep 'processed_data_2015'], 'xpol_processed', 'labels');
 data2016 = load([box_dir filesep 'processed_data_2016'], 'xpol_processed', 'labels');

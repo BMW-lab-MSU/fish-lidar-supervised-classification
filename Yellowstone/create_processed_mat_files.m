@@ -1,6 +1,6 @@
 %% Preprocess Yellowstone data and create mat files
 
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
+box_dir = '/mnt/data/trevor/research/afrl/box/Data/Yellowstone';
 
 data_filenames = {'yellowstone_wfov_20160928.processed.h5', 'yellowstone_20150923.processed.h5'};
 labels_filenames = {'fish_hits_2016_with_school_size_estimates.csv', 'fish_hits_2015_with_school_size_estimates.csv'};

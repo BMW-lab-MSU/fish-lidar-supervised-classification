@@ -1,6 +1,6 @@
 %% Load training data
 disp('loading training data');
-box_dir = '../../data';
+box_dir = '/mnt/data/trevor/research/afrl/box/Data/Yellowstone';
 load([box_dir filesep 'training_data_2016_undersampled75']);
 
 %% Train the RUSBoost ensemble
