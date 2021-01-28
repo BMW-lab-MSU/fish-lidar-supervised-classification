@@ -20,7 +20,7 @@ datapaths = {
 
 %% Load the classifier
 disp('loading classifier')
-trained_model_dir = '.';
+trained_model_dir = box_dir;
 load([trained_model_dir filesep 'rusBoost']);
 
 %% Region of interest parameters
