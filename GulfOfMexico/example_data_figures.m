@@ -1,3 +1,5 @@
+addpath('../common');
+
 data_dir = '../../box/Data/GulfOfMexico/processed data';
 
 day1 = load([data_dir filesep 'processed_data_09-24.mat'], 'labels', 'xpol_raw', 'metadata');

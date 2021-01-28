@@ -1,4 +1,6 @@
 %% Setup
+addpath('../common');
+
 data_dir = 'C:\Users\bugsbunny\Box\AFRL_Data\Data\Yellowstone';
 
 % load data

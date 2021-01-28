@@ -1,4 +1,6 @@
 %% Setup
+addpath('../common');
+
 data_dir = '/mnt/data/trevor/research/afrl/box/Data/GulfOfMexico';
 
 % load data

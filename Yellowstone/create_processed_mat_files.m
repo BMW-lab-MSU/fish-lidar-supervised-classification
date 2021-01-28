@@ -1,4 +1,5 @@
 %% Preprocess Yellowstone data and create mat files
+addpath('../common');
 
 box_dir = '/mnt/data/trevor/research/afrl/box/Data/Yellowstone';
 

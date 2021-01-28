@@ -1,4 +1,6 @@
 %% Setup
+addpath('../common');
+
 clear
 box_dir = '/mnt/data/trevor/research/afrl/box/Data/Yellowstone';
 input_data_filename = 'processed_data_2016';

@@ -1,4 +1,6 @@
 %% Setup
+addpath('../common');
+
 data_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
 load([data_dir filesep 'processed_data_2016.mat'])
 
