@@ -14,9 +14,8 @@ single_hit_value = 1;
 
 for idx = 1:height(single_files_to_find)
     file = string(single_files_to_find(idx, 1).file);
-    [filepath,name,ext] = fileparts(file);                                 % Have to check if [name, ext] will work.
-    file_pieces = strsplit(name, '\');
-    file_to_find = file_pieces(file_name_extension_index) + ext;
+    file_pieces = strsplit(file, '\');
+    file_to_find = file_pieces(end);
     
     shot = single_shot_values(idx, 1);
     [q, idy] = ismember(file_to_find, PNG_file);

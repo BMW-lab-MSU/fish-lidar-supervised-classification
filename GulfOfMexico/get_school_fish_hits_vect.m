@@ -17,9 +17,8 @@ school_hit_value = 1;
 
 for idx = 1:height(school_files_to_find)
     file = string(school_files_to_find(idx, 1).file);
-    [filepath,name,ext] = fileparts(file);                                 % Have to check if [name, ext] will work.
-    file_pieces = strsplit(name, '\');
-    file_to_find = file_pieces(file_name_extension_index) + ext;
+    file_pieces = strsplit(file, '\');
+    file_to_find = file_pieces(end);
     
     shot1 = school_shots_values(idx, shot_index_1);
     shot2 = school_shots_values(idx, shot_index_2);
