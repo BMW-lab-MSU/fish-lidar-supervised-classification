@@ -1,6 +1,6 @@
 addpath('../common');
 
-data_dir = '../../box/Data/GulfOfMexico/processed data';
+data_dir = '/Users/joeyaist/Box/AFRL_Data/Data/GulfOfMexico/processed data';
 
 day1 = load([data_dir filesep 'processed_data_09-24.mat'], 'labels', 'xpol_raw', 'metadata');
 day2 = load([data_dir filesep 'processed_data_09-25.mat'], 'labels', 'xpol_raw', 'metadata');
@@ -8,7 +8,7 @@ day2 = load([data_dir filesep 'processed_data_09-25.mat'], 'labels', 'xpol_raw',
 mkdir('figs');
 
 %%
-cmap = flipud(colormap('gray'));
+cmap = flipud(colormap(brewermap(10000,'*PuBu')));
 set(0, 'DefaultAxesFontSize', 12, 'DefaultTextFontSize', 12)
 
 %%

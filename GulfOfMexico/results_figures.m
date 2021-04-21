@@ -1,7 +1,7 @@
 %% Setup
 addpath('../common');
 
-data_dir = '/mnt/data/trevor/research/afrl/box/Data/GulfOfMexico';
+data_dir = '/Users/joeyaist/Box/AFRL_Data/Data/GulfOfMexico';
 
 % load data
 day8 = load([data_dir filesep 'processed data' filesep 'processed_data_10-03.mat'], 'xpol_processed', 'metadata');
@@ -15,30 +15,34 @@ SAMPLE_RATE = 1e9;
 DEPTH_INCREMENT = SPEED_OF_LIGHT / SAMPLE_RATE / 2;
 
 %% Confusion matrices
-%confusion_fig = figure('Units', 'inches', 'Position', [2, 2, 7, 2.5]);
-%t = tiledlayout(confusion_fig, 1,2);
-%
-%nexttile
-%c1 = confusionchart(results('average').Shot.Confusion, {'no fish', 'fish'});
-%c1.FontSize = 12;
+confusion_fig = figure('Units', 'inches', 'Position', [2, 2, 7, 2.5]);
+t = tiledlayout(confusion_fig, 1,2);
+
+nexttile
+c1 = confusionchart(results('average').Shot.Confusion, {'no fish', 'fish'});
+c1.ColumnSummary = 'column-normalized';
+c1.RowSummary = 'row-normalized';
+c1.FontSize = 12;
 %% c1.DiagonalColor = '#a3c166';
-%c1.DiagonalColor = '#67A3C1';
-%c1.OffDiagonalColor = '#c18566';
-%sortClasses(c1, {'no fish', 'fish'})
-%title('Shot')
-%
-%nexttile
-%c2 = confusionchart(results('average').Roi.Confusion, {'no fish', 'fish'});
-%c2.FontSize = 12;
+c1.DiagonalColor = '#67A3C1';
+c1.OffDiagonalColor = '#c18566';
+sortClasses(c1, {'no fish', 'fish'})
+title('Shot')
+
+nexttile
+c2 = confusionchart(results('average').Roi.Confusion, {'no fish', 'fish'});
+c2.ColumnSummary = 'column-normalized';
+c2.RowSummary = 'row-normalized';
+c2.FontSize = 12;
 %% c2.DiagonalColor = '#a3c166';
-%c2.OffDiagonalColor = '#c18566';
-%c2.DiagonalColor = '#67A3C1';
-%sortClasses(c2, {'no fish', 'fish'})
-%title('ROI')
-%
+c2.OffDiagonalColor = '#c18566';
+c2.DiagonalColor = '#67A3C1';
+sortClasses(c2, {'no fish', 'fish'})
+title('ROI')
+
 %% NOTE: I use illustrator or inkscape to change the top-left font color to
 %% white, like MALTAB does if I don't set the diagonal colors
-%exportgraphics(confusion_fig, 'figs/gom_confusion.pdf', 'ContentType', 'vector');
+exportgraphics(confusion_fig, 'figs/gom_confusion.pdf', 'ContentType', 'vector');
 
 
 %% ROI label comparison
