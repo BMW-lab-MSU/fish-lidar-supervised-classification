@@ -1,7 +1,7 @@
 %% Setup
 addpath('../common');
 
-data_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
+data_dir = '/Users/joeyaist/Box/AFRL_Data/Data/Yellowstone';
 load([data_dir filesep 'processed_data_2016.mat'])
 
 SPEED_OF_LIGHT = 299792458 / 1.3; % water has an index of refraction ~1.3
@@ -9,7 +9,7 @@ SAMPLE_RATE = 800e6;
 DEPTH_INCREMENT = SPEED_OF_LIGHT / SAMPLE_RATE / 2;
 
 % create a grayscale colormap with white at the bottom
-cmap = flipud(colormap('gray'));
+cmap = flipud(colormap(brewermap(10000,'*PuBu')));
 
 %% Create figures
 

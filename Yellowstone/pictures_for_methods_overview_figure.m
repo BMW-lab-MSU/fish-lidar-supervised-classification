@@ -1,8 +1,8 @@
 %% setup
 addpath('../common')
 
-box_dir = 'C:\Users\bugsbunny\Box\AFRL_Data\Data\Yellowstone';
-data_filename = 'processed_data_2015';
+box_dir = '/Users/joeyaist/Box/AFRL_Data/Data/Yellowstone';
+data_filename = 'processed_data_2015.mat';
 data_path = [box_dir filesep data_filename];
 
 % number of rows above the surface of the water to start the image
@@ -22,7 +22,7 @@ xpol_depth_adjustment = xpol_surface_corrected(1:REDUCED_COLUMN_HEIGHT, :);
 
 %% figure creation
 close all
-cmap = flipud(colormap('gray')); % grayscale colormap with white at bottom
+cmap = flipud(colormap(brewermap(10000,'*PuBu'))); % Blue on purple colormap with white at bottom
 
 start = 24.75e3;
 stop = 25.4e3;

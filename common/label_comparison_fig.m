@@ -38,7 +38,7 @@ ax2.YTick = [];
 % using multiple colormaps in a single axis
 % https://www.mathworks.com/matlabcentral/answers/194554-how-can-i-use-and-display-two-different-colormaps-on-the-same-figure
 linkaxes([ax1, ax2]);
-colormap(ax1, flipud(colormap('gray')));
+colormap(ax1, flipud(colormap(brewermap(10000,'*PuBu'))));
 colormap(ax2, [255, 255, 255; 163, 193, 102; 103, 163, 193]/255);
 
 
