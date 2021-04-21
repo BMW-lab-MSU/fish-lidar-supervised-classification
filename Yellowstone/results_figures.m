@@ -21,6 +21,7 @@ t = tiledlayout(roi_confusion_fig, 1,2);
 nexttile
 c1 = confusionchart(results2016.Roi.Confusion, {'no fish', 'fish'});
 c1.ColumnSummary = 'column-normalized';
+c1.RowSummary = 'row-normalized';
 c1.FontSize = 12;
 % c1.DiagonalColor = '#a3c166';
 c1.DiagonalColor = '#67A3C1';
@@ -31,6 +32,7 @@ title('2016')
 nexttile
 c2 = confusionchart(results2015.Roi.Confusion, {'no fish', 'fish'});
 c2.ColumnSummary = 'column-normalized';
+c2.RowSummary = 'row-normalized';
 c2.FontSize = 12;
 % c2.DiagonalColor = '#a3c166';
 c2.OffDiagonalColor = '#c18566';
@@ -49,6 +51,7 @@ t = tiledlayout(shot_confusion_fig, 1,2);
 nexttile
 c1 = confusionchart(results2016.Shot.Confusion, {'no fish', 'fish'});
 c1.ColumnSummary = 'column-normalized';
+c1.RowSummary = 'row-normalized';
 c1.FontSize = 12;
 % c1.DiagonalColor = '#a3c166';
 c1.DiagonalColor = '#67A3C1';
@@ -59,6 +62,7 @@ title('2016')
 nexttile
 c2 = confusionchart(results2015.Shot.Confusion, {'no fish', 'fish'});
 c2.ColumnSummary = 'column-normalized';
+c2.RowSummary = 'row-normalized';
 c2.FontSize = 12;
 % c2.DiagonalColor = '#a3c166';
 c2.OffDiagonalColor = '#c18566';
