@@ -12,7 +12,7 @@ load([box_dir filesep 'training' filesep 'training_data.mat']);
 
 %%
 trained_models = cell(1, crossval_partition.NumTestSets);
-crossval_confusion = zeros(1, 2, 2);
+crossval_confusion = zeros(2, 2, 1);
 
 
 tic
@@ -25,6 +25,6 @@ for i = 1:crossval_partition.NumTestSets
     trained_models{i} = fitcsvm(training_set_data.', training_set_labels, 'Cost', [0 1; 10 0]);
 
     pred_labels = predict(trained_models{i}, validation_set_data.');
-    crossval_confusion(i, :, :) = confusionmat(validation_set_labels, pred_labels);
+    crossval_confusion(:, :, i) = confusionmat(validation_set_labels, pred_labels);
 end
 toc
