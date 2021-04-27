@@ -30,7 +30,7 @@ training_data = data(:, training(holdout_partition));
 testing_data = data(:, test(holdout_partition));
 
 
-%% Partition the data for cross-fold validation
+%% Partition the data for k-fold cross validation
 N_FOLDS = 5;
 
 crossval_partition = cvpartition(training_labels, 'KFold', N_FOLDS, 'Stratify', true);
