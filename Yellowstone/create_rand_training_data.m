@@ -5,7 +5,7 @@ clear
 % Set random number generator properties for reproducibility
 rng(0, 'twister');
 
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
+box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/Yellowstone';
 input_data_files = {'processed_data_2015', 'processed_data_2016'};
 
 
@@ -31,7 +31,7 @@ testing_data = data(:, test(holdout_partition));
 
 
 %% Partition the data for cross-fold validation
-N_FOLDS = 10;
+N_FOLDS = 5;
 
 crossval_partition = cvpartition(training_labels, 'KFold', N_FOLDS, 'Stratify', true);
 
