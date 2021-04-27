@@ -19,34 +19,17 @@ fncost = optimizableVariable('fncost', [1 20], 'Type', 'integer');
 
 minfn = @(z)svmobjfun(z, crossval_partition, training_data, training_labels);
 
-results = bayesopt(minfn, [sigma, box, standardize, fncost], 'IsObjectiveDeterministic', true, 'AcquisitionFunctionName', 'expected-improvement-plus', 'UseParallel', true);
-    % tic
-    % % for i = 1:crossval_partition.NumTestSets
-    % for i = 2
-    %     validation_set_data = training_data(:, test(crossval_partition, i));
-    %     validation_set_labels = training_labels(test(crossval_partition, i));
-    %     training_set_data = training_data(:, training(crossval_partition, i));
-    %     training_set_labels = training_labels(training(crossval_partition, i));
+results = bayesopt(minfn, [sigma, box, standardize, fncost], 'IsObjectiveDeterministic', true, 'AcquisitionFunctionName', 'expected-improvement-plus', 'UseParallel', false, 'MaxObjectiveEvaluations', 1);
 
-    %     trained_models{i} = fitcsvm(training_set_data.', training_set_labels, 'Cost', [0 1; 10 0]);
 
-    %     pred_labels = predict(trained_models{i}, validation_set_data.');
 
-    %     crossval_confusion(:, :, i) = confusionmat(validation_set_labels, pred_labels);
-
-    %     losses(i) = loss(trained_models{i}, validation_set_data.', validation_set_labels)
-    % end
-    % toc
-
-    % kfold_loss = mean(losses)
-
+%% SVM objective function for Bayesian optimization
 function [objective, constraints, userdata] = svmobjfun(z, crossval_partition, training_data, training_labels)
     trained_models = cell(1, crossval_partition.NumTestSets);
     crossval_confusion = zeros(2, 2, 1);
     losses = zeros(1, 1);
 
-    % for i = 1:crossval_partition.NumTestSets
-    for i = 1
+    for i = 1:crossval_partition.NumTestSets
         validation_set_data = training_data(:, test(crossval_partition, i));
         validation_set_labels = training_labels(test(crossval_partition, i));
         training_set_data = training_data(:, training(crossval_partition, i));
@@ -58,10 +41,12 @@ function [objective, constraints, userdata] = svmobjfun(z, crossval_partition, t
 
         crossval_confusion(:, :, i) = confusionmat(validation_set_labels, pred_labels);
 
-        losses(i) = loss(trained_models{i}, validation_set_data.', validation_set_labels)
+        losses(i) = loss(trained_models{i}, validation_set_data.', validation_set_labels);
     end
     
-    objective = mean(losses)
+    objective = mean(losses);
+
+    constraints = [];
 
     userdata.trained_models = trained_models;
     userdata.confusion = crossval_confusion;
