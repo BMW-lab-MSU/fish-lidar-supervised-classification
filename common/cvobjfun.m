@@ -11,9 +11,9 @@ function [objective, constraints, userdata] = cvobjfun(fitfun, params, crossval_
         % because our observations are in columns, but everybody else wants them
         % in rows.
         validation_set_data = data(:, test(crossval_partition, i))';
-        validation_set_labels = labels(test(crossval_partition, i))';
+        validation_set_labels = logical(labels(test(crossval_partition, i)))';
         training_set_data = data(:, training(crossval_partition, i))';
-        training_set_labels = labels(training(crossval_partition, i))';
+        training_set_labels = logical(labels(training(crossval_partition, i)))';
 
         % Undersample the majority class
         idx_remove = random_undersample(training_set_labels, MINORITY_LABEL, ...
@@ -36,7 +36,7 @@ function [objective, constraints, userdata] = cvobjfun(fitfun, params, crossval_
         pred_labels = predict(trained_models{i}, validation_set_data);
 
         % Compute performance metrics
-        crossval_confusion(:, :, i) = confusionmat(validation_set_labels, pred_labels);
+        crossval_confusion(:, :, i) = confusionmat(validation_set_labels, logical(pred_labels));
         [~, ~, ~, f3scores(i)] = analyze_confusion(crossval_confusion(:, :, i));
     end
     
