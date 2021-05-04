@@ -38,6 +38,8 @@ function [objective, constraints, userdata] = cvobjfun(fitcfun, hyperparams, sam
         % Compute performance metrics
         crossval_confusion(:, :, i) = confusionmat(validation_set_labels, logical(pred_labels));
         [~, ~, ~, f3scores(i)] = analyze_confusion(crossval_confusion(:, :, i));
+        
+        clear 'trained_model'
     end
     
     objective = -mean(f3scores);
