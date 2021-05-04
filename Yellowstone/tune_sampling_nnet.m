@@ -15,5 +15,5 @@ tune_sampling_base(@nnet, training_data, training_labels, crossval_partition);
 
 %% Model fitting function
 function model = nnet(data, labels, ~)
-    model = fitcnnet(data, labels); 
+    model = fitcnet(data, labels, 'Standardize', true); 
 end
