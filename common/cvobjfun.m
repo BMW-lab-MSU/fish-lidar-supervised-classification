@@ -1,8 +1,8 @@
-function [objective, constraints, userdata] = cvobjfun(fitfun, params, crossval_partition, data, labels)
+function [objective, constraints, userdata] = cvobjfun(fitfun, hyperparams, sampling_params, crossval_partition, data, labels)
 % bayesobjfun Optimize hyperparameters
     MINORITY_LABEL = 0;
 
-    trained_models = cell(1, crossval_partition.NumTestSets);
+    % trained_models = cell(1, crossval_partition.NumTestSets);
     crossval_confusion = zeros(2, 2, crossval_partition.NumTestSets);
     f3scores = zeros(1, crossval_partition.NumTestSets);
 
@@ -17,23 +17,23 @@ function [objective, constraints, userdata] = cvobjfun(fitfun, params, crossval_
 
         % Undersample the majority class
         idx_remove = random_undersample(training_set_labels, MINORITY_LABEL, ...
-            'UndersamplingRatio', params.undersampling_ratio);
+            'UndersamplingRatio', sampling_params.undersampling_ratio);
 
         training_set_data(idx_remove, :) = [];
         training_set_labels(idx_remove) = [];
 
         % Oversample the minority class
         [synthetic_fish, synthetic_fish_labels] = ADASYN(training_set_data, ...
-            training_set_labels, params.oversampling_beta, [], [], false);
+            training_set_labels, sampling_params.oversampling_beta, [], [], false);
 
         training_set_data = [training_set_data; synthetic_fish];
         training_set_labels = [training_set_labels; synthetic_fish_labels];
 
         % Train the model
-        trained_models{i} = fitfun(training_set_data, training_set_labels, params);
+        trained_model = fitfun(training_set_data, training_set_labels, hyperparams);
 
         % Predict labels on the validation set
-        pred_labels = predict(trained_models{i}, validation_set_data);
+        pred_labels = predict(trained_model, validation_set_data);
 
         % Compute performance metrics
         crossval_confusion(:, :, i) = confusionmat(validation_set_labels, logical(pred_labels));
