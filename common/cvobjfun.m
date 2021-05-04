@@ -1,4 +1,4 @@
-function [objective, constraints, userdata] = cvobjfun(fitfun, hyperparams, sampling_params, crossval_partition, data, labels)
+function [objective, constraints, userdata] = cvobjfun(fitcfun, hyperparams, sampling_params, crossval_partition, data, labels)
 % bayesobjfun Optimize hyperparameters
     MINORITY_LABEL = 0;
 
@@ -30,7 +30,7 @@ function [objective, constraints, userdata] = cvobjfun(fitfun, hyperparams, samp
         training_set_labels = [training_set_labels; synthetic_fish_labels];
 
         % Train the model
-        trained_model = fitfun(training_set_data, training_set_labels, hyperparams);
+        trained_model = fitcfun(training_set_data, training_set_labels, hyperparams);
 
         % Predict labels on the validation set
         pred_labels = predict(trained_model, validation_set_data);
