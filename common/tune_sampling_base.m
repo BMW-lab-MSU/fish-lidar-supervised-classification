@@ -1,4 +1,4 @@
-function tune_sampling_base(fitcfun, data, labels, crossval_partition)
+function tune_sampling_base(fitcfun, data, labels, crossval_partition, opts)
 arguments
     fitcfun (1,1) function_handle
     data (:,:) single
