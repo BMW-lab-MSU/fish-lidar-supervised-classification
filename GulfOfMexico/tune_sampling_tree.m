@@ -9,11 +9,13 @@ box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
 
 %% Load data
 load([box_dir filesep 'training' filesep 'training_data.mat']);
+training_data = training_data';
+training_labels = training_labels';
 
 %% Tune sampling ratios
 tune_sampling_base(@tree, training_data, training_labels, crossval_partition);
 
 %% Model fitting function
 function model = tree(data, labels, ~)
-    model = fitctree(data, labels); 
+    model = compact(fitctree(data, labels));
 end

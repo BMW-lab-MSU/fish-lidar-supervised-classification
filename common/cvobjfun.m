@@ -28,7 +28,7 @@ function [objective, constraints, userdata] = cvobjfun(fitcfun, hyperparams, sam
 
         % Train the model
         trained_model = fitcfun([data(training_set, :); synthetic_fish], ...
-            [labels(trainin_set); synthetic_fish_labels], hyperparams);
+            [labels(training_set); synthetic_fish_labels], hyperparams);
 
         % Predict labels on the validation set
         pred_labels = logical(predict(trained_model, data(validation_set, :)));
