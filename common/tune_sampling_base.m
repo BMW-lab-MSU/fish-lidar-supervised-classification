@@ -38,7 +38,7 @@ end
 % Training
 disp([name, ': coarse search'])
 if opts.UseParallel
-    parfor i = progress(1:GRID_SIZE)
+    parfor i = 1:GRID_SIZE
         params = struct('undersampling_ratio', under(i), ...
             'oversampling_beta', over(i));
 
@@ -50,7 +50,7 @@ if opts.UseParallel
         end
     end
 else
-    for i = progress(1:GRID_SIZE)
+    for i = 1:GRID_SIZE
         params = struct('undersampling_ratio', under(i), ...
             'oversampling_beta', over(i));
 
@@ -116,7 +116,7 @@ end
 % Training
 disp([name, ': fine search'])
 if opts.UseParallel
-    parfor i = progress(1:GRID_SIZE)
+    parfor i = 1:GRID_SIZE
         params = struct('undersampling_ratio', under(i), ...
             'oversampling_beta', over(i));
 
@@ -128,7 +128,7 @@ if opts.UseParallel
         end
     end
 else
-    for i = progress(1:GRID_SIZE)
+    for i = 1:GRID_SIZE
         params = struct('undersampling_ratio', under(i), ...
             'oversampling_beta', over(i));
 
