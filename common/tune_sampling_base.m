@@ -1,6 +1,15 @@
 function tune_sampling_base(fitcfun, data, labels, crossval_partition)
+arguments
+    fitcfun (1,1) function_handle
+    data (:,:) single
+    labels (:,:) logical
+    crossval_partition (1,1) cvpartition
+    opts.Progress (1,1) logical = false
+    opts.UseParallel (1,1) logical = false
+end
 
 name = functions(fitcfun).function;
+
 
 %% Coarse grid search to determine general search area
 undersampling = 0:0.2:0.8;
@@ -17,18 +26,49 @@ GRID_SIZE = numel(under);
 result.objective = zeros(1, GRID_SIZE);
 result.userdata = cell(1, GRID_SIZE);
 
+if opts.Progress
+    if opts.UseParallel
+        progressbar = ProgressBar(GRID_SIZE, 'IsParallel', true);
+        progress.setup([],[],[]);
+    else
+        progressbar = ProgressBar(GRID_SIZE);
+    end
+end
+
 % Training
 disp([name, ': coarse search'])
-for i = progress(1:GRID_SIZE)
-    params = struct('undersampling_ratio', under(i), ...
-        'oversampling_beta', over(i));
+if opts.UseParallel
+    parfor i = progress(1:GRID_SIZE)
+        params = struct('undersampling_ratio', under(i), ...
+            'oversampling_beta', over(i));
 
-    [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
-        params, crossval_partition, data, labels);
+        [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
+            params, crossval_partition, data, labels);
+        
+        if opts.Progress
+            updateParallel([], pwd);
+        end
+    end
+else
+    for i = progress(1:GRID_SIZE)
+        params = struct('undersampling_ratio', under(i), ...
+            'oversampling_beta', over(i));
+
+        [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
+            params, crossval_partition, data, labels);
+
+        if opts.Progress
+            progressbar([], [], []);
+        end
+    end
 end
 [minf3, minf3idx] = min(result.objective);
 result.undersampling_ratio = under(minf3idx);
 result.oversampling_beta = over(minf3idx);
+
+if opts.Progress
+    progressbar.release();
+end
 
 save(['tune_sampling_coarse_' name '.mat'], 'result');
 
@@ -62,18 +102,48 @@ GRID_SIZE = numel(under);
 result.objective = zeros(1, GRID_SIZE);
 result.userdata = cell(1, GRID_SIZE);
 
+if opts.Progress
+    if opts.UseParallel
+        progressbar = ProgressBar(GRID_SIZE, 'IsParallel', true);
+        progress.setup([],[],[]);
+    else
+        progressbar = ProgressBar(GRID_SIZE);
+    end
+end
 
 % Training
 disp([name, ': fine search'])
-for i = progress(1:GRID_SIZE)
-    params = struct('undersampling_ratio', under(i), ...
-        'oversampling_beta', over(i));
+if opts.UseParallel
+    parfor i = progress(1:GRID_SIZE)
+        params = struct('undersampling_ratio', under(i), ...
+            'oversampling_beta', over(i));
 
-    [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
-        params, crossval_partition, data, labels);
+        [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
+            params, crossval_partition, data, labels);
+        
+        if opts.Progress
+            updateParallel([], pwd);
+        end
+    end
+else
+    for i = progress(1:GRID_SIZE)
+        params = struct('undersampling_ratio', under(i), ...
+            'oversampling_beta', over(i));
+
+        [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
+            params, crossval_partition, data, labels);
+
+        if opts.Progress
+            progressbar([], [], []);
+        end
+    end
 end
 [minf3, minf3idx] = min(result.objective);
 result.undersampling_ratio = under(minf3idx);
 result.oversampling_beta = over(minf3idx);
+
+if opts.Progress
+    progressbar.release();
+end
 
 save(['tune_sampling_fine_' name '.mat'], 'result');
