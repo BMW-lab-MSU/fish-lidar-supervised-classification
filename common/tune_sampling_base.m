@@ -23,8 +23,8 @@ over = reshape(over, 1, numel(over));
 GRID_SIZE = numel(under);
 
 % Preallocate data structures for grid search results
-result.objective = zeros(1, GRID_SIZE);
-result.userdata = cell(1, GRID_SIZE);
+objective = zeros(1, GRID_SIZE);
+userdata = cell(1, GRID_SIZE);
 
 if opts.Progress
     if opts.UseParallel
@@ -42,7 +42,7 @@ if opts.UseParallel
         params = struct('undersampling_ratio', under(i), ...
             'oversampling_beta', over(i));
 
-        [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
+        [objective(i), ~, userdata{i}] = cvobjfun(fitcfun, [], ...
             params, crossval_partition, data, labels);
         
         if opts.Progress
@@ -54,7 +54,7 @@ else
         params = struct('undersampling_ratio', under(i), ...
             'oversampling_beta', over(i));
 
-        [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
+        [objective(i), ~, userdata{i}] = cvobjfun(fitcfun, [], ...
             params, crossval_partition, data, labels);
 
         if opts.Progress
@@ -65,6 +65,8 @@ end
 [minf3, minf3idx] = min(result.objective);
 result.undersampling_ratio = under(minf3idx);
 result.oversampling_beta = over(minf3idx);
+result.objective = objective;
+result.userdata = userdata;
 
 if opts.Progress
     progressbar.release();
@@ -99,13 +101,13 @@ over = reshape(over, 1, numel(over));
 GRID_SIZE = numel(under);
 
 % Preallocate data structures for grid search results
-result.objective = zeros(1, GRID_SIZE);
-result.userdata = cell(1, GRID_SIZE);
+objective = zeros(1, GRID_SIZE);
+userdata = cell(1, GRID_SIZE);
 
 if opts.Progress
     if opts.UseParallel
         progressbar = ProgressBar(GRID_SIZE, 'IsParallel', true);
-        progress.setup([],[],[]);
+        progressbar.setup([],[],[]);
     else
         progressbar = ProgressBar(GRID_SIZE);
     end
@@ -118,7 +120,7 @@ if opts.UseParallel
         params = struct('undersampling_ratio', under(i), ...
             'oversampling_beta', over(i));
 
-        [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
+        [objective(i), ~, userdata{i}] = cvobjfun(fitcfun, [], ...
             params, crossval_partition, data, labels);
         
         if opts.Progress
@@ -130,7 +132,7 @@ else
         params = struct('undersampling_ratio', under(i), ...
             'oversampling_beta', over(i));
 
-        [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
+        [objective(i), ~, userdata{i}] = cvobjfun(fitcfun, [], ...
             params, crossval_partition, data, labels);
 
         if opts.Progress
@@ -141,6 +143,8 @@ end
 [minf3, minf3idx] = min(result.objective);
 result.undersampling_ratio = under(minf3idx);
 result.oversampling_beta = over(minf3idx);
+result.objective = objective;
+result.userdata = userdata;
 
 if opts.Progress
     progressbar.release();
