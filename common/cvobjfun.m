@@ -10,36 +10,35 @@ function [objective, constraints, userdata] = cvobjfun(fitcfun, hyperparams, sam
         % Get validation and training partitions; transpose the data and labels
         % because our observations are in columns, but everybody else wants them
         % in rows.
-        validation_set_data = data(:, test(crossval_partition, i))';
-        validation_set_labels = logical(labels(test(crossval_partition, i)))';
-        training_set_data = data(:, training(crossval_partition, i))';
-        training_set_labels = logical(labels(training(crossval_partition, i)))';
+        validation_set = test(crossval_partition, i); 
+        training_set = training(crossval_partition, i);
 
         % Undersample the majority class
-        idx_remove = random_undersample(training_set_labels, MINORITY_LABEL, ...
+        idx_remove = random_undersample(...
+            labels(training_set), MINORITY_LABEL, ...
             'UndersamplingRatio', sampling_params.undersampling_ratio);
-
-        training_set_data(idx_remove, :) = [];
-        training_set_labels(idx_remove) = [];
+        
+        training_set(idx_remove) = [];
 
         % Oversample the minority class
-        [synthetic_fish, synthetic_fish_labels] = ADASYN(training_set_data, ...
-            training_set_labels, sampling_params.oversampling_beta, [], [], false);
-
-        training_set_data = [training_set_data; synthetic_fish];
-        training_set_labels = [training_set_labels; synthetic_fish_labels];
+        [synthetic_fish, synthetic_fish_labels] = ADASYN(...
+            data(training_set, :), ...
+            labels(training_set), ...
+            sampling_params.oversampling_beta, [], [], false);
 
         % Train the model
-        trained_model = fitcfun(training_set_data, training_set_labels, hyperparams);
+        trained_model = fitcfun([data(training_set, :); synthetic_fish], ...
+            [labels(trainin_set); synthetic_fish_labels], hyperparams);
 
         % Predict labels on the validation set
-        pred_labels = predict(trained_model, validation_set_data);
+        pred_labels = logical(predict(trained_model, data(validation_set, :)));
 
         % Compute performance metrics
-        crossval_confusion(:, :, i) = confusionmat(validation_set_labels, logical(pred_labels));
+        crossval_confusion(:, :, i) = confusionmat(labels(validation_set), ...
+            pred_labels);
         [~, ~, ~, f3scores(i)] = analyze_confusion(crossval_confusion(:, :, i));
         
-        clear 'trained_model'
+        clear trained_model validation_set training_set synthetic_fish synthetic_fish_labels pred_labels
     end
     
     objective = -mean(f3scores);
