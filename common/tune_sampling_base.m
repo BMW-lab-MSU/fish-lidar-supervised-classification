@@ -29,7 +29,7 @@ userdata = cell(1, GRID_SIZE);
 if opts.Progress
     if opts.UseParallel
         progressbar = ProgressBar(GRID_SIZE, 'IsParallel', true);
-        progress.setup([],[],[]);
+        progressbar.setup([],[],[]);
     else
         progressbar = ProgressBar(GRID_SIZE);
     end
