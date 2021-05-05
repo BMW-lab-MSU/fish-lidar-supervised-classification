@@ -14,8 +14,8 @@ data = [];
 labels = [];
 for filename = input_data_files
     tmp = load([box_dir filesep filename{:}], 'xpol_processed', 'labels');
-    data = [data, tmp.xpol_processed];
-    labels = [labels, tmp.labels];
+    data = [data, single(tmp.xpol_processed)];
+    labels = logical([labels, logical(tmp.labels)]);
 end
 
 
