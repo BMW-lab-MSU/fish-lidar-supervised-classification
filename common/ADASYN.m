@@ -292,7 +292,7 @@ idcs = knnsearch_nonflat(Smin,Smin, 'K',k+1, 'Distance',knnDistance);
 idcs = idcs(:,2:end);
 
 %initialize output and writing target as an empty matrix
-Ssyn = zeros([0 size(Smin,2)]);
+Ssyn = zeros(sum(g), size(Smin,2));
 
 %for every minority example xi...
 for cei=1:size(Smin,1)  %cei: current example index
@@ -326,7 +326,7 @@ for cei=1:size(Smin,1)  %cei: current example index
     end
     
     %append examples synthesized from xi to overall synthetic example set:
-    Ssyn = [Ssyn; xiSyn];
+    Ssyn(((cei -1) * csi + 1):(cei * csi), :) = xiSyn;
     
 end
 
