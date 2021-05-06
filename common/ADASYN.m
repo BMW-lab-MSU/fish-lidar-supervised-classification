@@ -1,4 +1,4 @@
-function [out_featuresSyn, out_labelsSyn] = ADASYN(in_features, in_labels, in_beta, in_kDensity, in_kSMOTE, in_featuresAreNormalized)
+function [out_featuresSyn, out_labelsSyn] = ADASYN(in_features, in_labels, in_beta, in_kDensity, in_kSMOTE, knnIdxFull, knnIdxMinority)
 %this function implements the ADASYN method as proposed in the following
 %paper:
 %
@@ -120,11 +120,6 @@ if nargin < 5 || isempty(in_kSMOTE)
     in_kSMOTE = 5;
 end
 
-if nargin < 6 || isempty(in_featuresAreNormalized)
-    in_featuresAreNormalized = true;
-end
-
-
 if in_beta == 0
     %nothing needs to be done because beta==0 is defined to mean that
     %current class ratio is kept:
@@ -186,26 +181,15 @@ if size(Smin,1)==1
 end
 
 
-if in_featuresAreNormalized
-    knnDistance = 'euclidean';
-else
-    %IMPORTANT: using 'seuclidean' as the distance measure means that
-    %standardized Euclidean distance is used, i.e. the standard deviation
-    %of the coordinates is automatically divided away. hence, using
-    %'seuclidean' instead of 'euclidean' saves the effort of normalizing
-    %the feature values by a Z-transformation (0mean,1var).
-    %cf. documentation of input parameter in_featuresAreNormalized for more
-    %information.
-    knnDistance = 'seuclidean';
-end
-
 %kNN for density estimation:
-idcs = knnsearch_nonflat(S,Smin, 'K',in_kDensity+1, 'Distance',knnDistance);
+% idcs = KnnFind.Run(S, Smin, 'K', in_kDensity + 1, 'NSMethod', 'nn_descent');
+% idcs = knnsearch_nonflat(S,Smin, 'K',in_kDensity+1, 'Distance',knnDistance);
 %note: why in_kDensity+1? because Smin is a subset of S and hence all
 %points in Smin have a trivial nearest neighbor in S with distance 0.
 %but that neighbor is not interesting because it's the point from Smin
 %itself. hence remove it:
-idcs = idcs(:,2:end);
+% idcs = idcs(:,2:end);
+idcs = knnIdxFull(in_labels==minLabel,:);
 
 
 %compute the \Gamma values (eq. (4) in reference [2]):
@@ -244,13 +228,13 @@ if sum(g)==0
 end
 
 %with this g known, call the ADASYN_SMOTE subroutine...:
-out_featuresSyn = ADASYN_SMOTE(Smin,g,in_kSMOTE,knnDistance);
+out_featuresSyn = ADASYN_SMOTE(Smin,g,in_kSMOTE, knnIdxMinority);
 %...and generate the labels:
 out_labelsSyn = logical(minLabel * ones([size(out_featuresSyn,1) 1]));
 
 
 
-function Ssyn = ADASYN_SMOTE(Smin,g,k,knnDistance)
+function Ssyn = ADASYN_SMOTE(Smin,g,k,idcs)
 %subroutine implementing SMOTE algorithm as it is to be used by function
 %ADASYN(). cf. section 3.1.3 in the following paper for details:
 %
@@ -284,12 +268,13 @@ function Ssyn = ADASYN_SMOTE(Smin,g,k,knnDistance)
 
 
 %determine nearest neighbors:
-idcs = knnsearch_nonflat(Smin,Smin, 'K',k+1, 'Distance',knnDistance);
+% idcs = KnnFind(Smin,Smin, 'K',k+1, 'NSMethod', 'nn_descent');
+% idcs = knnsearch_nonflat(Smin,Smin, 'K',k+1, 'Distance',knnDistance);
 %note: why k+1? because we search kNNs of Smin in Smin itself and hence all
 %points in Smin have a trivial nearest neighbor in Smin with distance 0.
 %but that neighbor is not interesting because it's the point from Smin
 %itself. hence remove it:
-idcs = idcs(:,2:end);
+% idcs = idcs(:,2:end);
 
 %initialize output and writing target as an empty matrix
 Ssyn = zeros(sum(g), size(Smin,2));
