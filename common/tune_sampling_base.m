@@ -1,4 +1,4 @@
-function tune_sampling_base(fitcfun, data, labels, crossval_partition)
+function tune_sampling_base(fitcfun, data, labels, crossval_partition, knn_index_full, knn_index_minority)
 
 name = functions(fitcfun).function;
 
@@ -24,7 +24,8 @@ for i = progress(1:GRID_SIZE)
         'oversampling_beta', over(i));
 
     [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
-        params, crossval_partition, data, labels);
+        params, crossval_partition, data, labels, knn_index_full, ...
+        knn_index_minority);
 end
 [minf3, minf3idx] = min(result.objective);
 result.undersampling_ratio = under(minf3idx);
@@ -70,7 +71,8 @@ for i = progress(1:GRID_SIZE)
         'oversampling_beta', over(i));
 
     [result.objective(i), ~, result.userdata{i}] = cvobjfun(fitcfun, [], ...
-        params, crossval_partition, data, labels);
+        params, crossval_partition, data, labels, knn_index_full, ...
+        knn_index_minority);
 end
 [minf3, minf3idx] = min(result.objective);
 result.undersampling_ratio = under(minf3idx);
