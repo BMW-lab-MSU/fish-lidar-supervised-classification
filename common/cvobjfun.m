@@ -1,4 +1,4 @@
-function [objective, constraints, userdata] = cvobjfun(fitcfun, hyperparams, sampling_params, crossval_partition, data, labels)
+function [objective, constraints, userdata] = cvobjfun(fitcfun, hyperparams, undersampling_ratio, crossval_partition, data, labels)
 % bayesobjfun Optimize hyperparameters
     MINORITY_LABEL = 0;
     N_NEIGHBORS = 5;
@@ -17,18 +17,13 @@ function [objective, constraints, userdata] = cvobjfun(fitcfun, hyperparams, sam
         % Undersample the majority class
         idx_remove = random_undersample(...
             labels(training_set), MINORITY_LABEL, ...
-            'UndersamplingRatio', sampling_params.undersampling_ratio);
+            'UndersamplingRatio', undersampling_ratio);
         
         training_set(idx_remove) = [];
 
-        % Oversample the minority class
-        [synthetic_fish, synthetic_fish_labels] = ADASYN(...
-            data(training_set, :), labels(training_set), ...
-            sampling_params.oversampling_beta, N_NEIGHBORS, N_NEIGHBORS);
-
         % Train the model
-        trained_model = fitcfun([data(training_set, :); synthetic_fish], ...
-            [labels(training_set); synthetic_fish_labels], hyperparams);
+        trained_model = fitcfun(data(training_set, :), labels(training_set), ...
+            hyperparams);
 
         % Predict labels on the validation set
         pred_labels = logical(predict(trained_model, data(validation_set, :)));
@@ -38,7 +33,7 @@ function [objective, constraints, userdata] = cvobjfun(fitcfun, hyperparams, sam
             pred_labels);
         [~, ~, ~, f3scores(i)] = analyze_confusion(crossval_confusion(:, :, i));
         
-        clearvars -except MINORITY_LABEL N_NEIGHBORS crossval_confusion f3scores fitcfun hyperparams sampling_params data labels crossval_partition
+        clearvars -except MINORITY_LABEL N_NEIGHBORS crossval_confusion f3scores fitcfun hyperparams data labels crossval_partition undersampling_ratio
     end
     
     objective = -mean(f3scores);
