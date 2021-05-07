@@ -6,6 +6,7 @@ arguments
     crossval_partition (1,1) cvpartition
     opts.Progress (1,1) logical = false
     opts.UseParallel (1,1) logical = false
+    opts.MaxNumThreads (1,1) int32 = 1
 end
 
 name = functions(fitcfun).function;
@@ -28,7 +29,8 @@ userdata = cell(1, GRID_SIZE);
 
 if opts.Progress
     if opts.UseParallel
-        progressbar = ProgressBar(GRID_SIZE, 'IsParallel', true);
+        progressbar = ProgressBar(GRID_SIZE, 'IsParallel', true, ...
+            'WorkerDirectory', pwd());
         progressbar.setup([],[],[]);
     else
         progressbar = ProgressBar(GRID_SIZE);
@@ -39,6 +41,8 @@ end
 disp([name, ': coarse search'])
 if opts.UseParallel
     parfor i = 1:GRID_SIZE
+        maxNumCompThreads(opts.MaxNumThreads);
+
         params = struct('undersampling_ratio', under(i), ...
             'oversampling_beta', over(i));
 
@@ -106,7 +110,8 @@ userdata = cell(1, GRID_SIZE);
 
 if opts.Progress
     if opts.UseParallel
-        progressbar = ProgressBar(GRID_SIZE, 'IsParallel', true);
+        progressbar = ProgressBar(GRID_SIZE, 'IsParallel', true, ...
+            'WorkerDirectory', pwd());
         progressbar.setup([],[],[]);
     else
         progressbar = ProgressBar(GRID_SIZE);
@@ -117,6 +122,8 @@ end
 disp([name, ': fine search'])
 if opts.UseParallel
     parfor i = 1:GRID_SIZE
+        maxNumCompThreads(opts.MaxNumThreads);
+
         params = struct('undersampling_ratio', under(i), ...
             'oversampling_beta', over(i));
 
