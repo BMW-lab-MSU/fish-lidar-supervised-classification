@@ -189,7 +189,8 @@ end
 %but that neighbor is not interesting because it's the point from Smin
 %itself. hence remove it:
 % idcs = idcs(:,2:end);
-idcs = knnIdxFull;
+idcs = knnindex(S, in_kDensity, 'Method', 'nndescent');
+idcs = idcs(in_labels == 1, :);
 
 
 %compute the \Gamma values (eq. (4) in reference [2]):
@@ -274,7 +275,7 @@ function Ssyn = ADASYN_SMOTE(Smin,g,k,idcs)
 %points in Smin have a trivial nearest neighbor in Smin with distance 0.
 %but that neighbor is not interesting because it's the point from Smin
 %itself. hence remove it:
-% idcs = idcs(:,2:end);
+idcs = knnindex(Smin, k, 'Method', 'nndescent');
 
 %initialize output and writing target as an empty matrix
 Ssyn = zeros(sum(g), size(Smin,2));
