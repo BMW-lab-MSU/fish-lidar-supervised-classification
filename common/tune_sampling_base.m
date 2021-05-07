@@ -33,7 +33,9 @@ end
 % Training
 disp([name, ': undersampling grid search'])
 
-progressbar.setup([],[],[]);
+if opts.Progress
+    progressbar.setup([],[],[]);
+end
 
 if opts.UseParallel
     parfor i = 1:GRID_SIZE
