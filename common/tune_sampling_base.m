@@ -23,8 +23,7 @@ userdata = cell(1, GRID_SIZE);
 if opts.Progress
     if opts.UseParallel
         progressbar = ProgressBar(GRID_SIZE, ...
-            'IsParallel', true, ...
-            'WorkerDirectory', pwd(), ...
+            'IsParallel', true, 'WorkerDirectory', pwd(), ...
             'Title', 'Grid search');
     else
         progressbar = ProgressBar(GRID_SIZE, 'Title', 'Grid search');
@@ -50,7 +49,8 @@ if opts.UseParallel
 else
     for i = 1:GRID_SIZE
         [objective(i), ~, userdata{i}] = cvobjfun(fitcfun, [], ...
-            undersampling(i), crossval_partition, data, labels);
+            undersampling(i), crossval_partition, data, labels, ...
+            'Progress', opts.Progress);
 
         if opts.Progress
             progressbar([], [], []);
