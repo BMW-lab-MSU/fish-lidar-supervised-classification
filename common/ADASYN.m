@@ -1,4 +1,4 @@
-function [out_featuresSyn, out_labelsSyn] = ADASYN(in_features, in_labels, in_beta, in_kDensity, in_kSMOTE, knnIdxFull, knnIdxMinority)
+function [out_featuresSyn, out_labelsSyn] = ADASYN(in_features, in_labels, in_beta, in_kDensity, in_kSMOTE)
 %this function implements the ADASYN method as proposed in the following
 %paper:
 %
@@ -229,13 +229,13 @@ if sum(g)==0
 end
 
 %with this g known, call the ADASYN_SMOTE subroutine...:
-out_featuresSyn = ADASYN_SMOTE(Smin,g,in_kSMOTE, knnIdxMinority);
+out_featuresSyn = ADASYN_SMOTE(Smin,g,in_kSMOTE);
 %...and generate the labels:
 out_labelsSyn = logical(minLabel * ones([size(out_featuresSyn,1) 1]));
 
 
 
-function Ssyn = ADASYN_SMOTE(Smin,g,k,idcs)
+function Ssyn = ADASYN_SMOTE(Smin,g,k)
 %subroutine implementing SMOTE algorithm as it is to be used by function
 %ADASYN(). cf. section 3.1.3 in the following paper for details:
 %
