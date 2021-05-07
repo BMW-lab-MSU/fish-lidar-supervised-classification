@@ -189,7 +189,7 @@ end
 %but that neighbor is not interesting because it's the point from Smin
 %itself. hence remove it:
 % idcs = idcs(:,2:end);
-idcs = knnIdxFull(in_labels==minLabel,:);
+idcs = knnIdxFull;
 
 
 %compute the \Gamma values (eq. (4) in reference [2]):
