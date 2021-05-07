@@ -66,6 +66,6 @@ end
 result.objective = objective;
 result.userdata = userdata;
 [minf3, minf3idx] = min(result.objective);
-result.undersampling_ratio = under(minf3idx);
+result.undersampling_ratio = undersampling(minf3idx);
 
 save(['tune_sampling_' name '.mat'], 'result');
