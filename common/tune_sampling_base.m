@@ -7,7 +7,7 @@ undersampling = 0:0.2:0.8;
 oversampling = 0:0.25:1;
 
 % Create the grid
-[under, over] = ndgrid(undersampling, oversampling);
+[over, under] = ndgrid(oversampling, undersampling);
 under = reshape(under, 1, numel(under));
 over = reshape(over, 1, numel(over));
 

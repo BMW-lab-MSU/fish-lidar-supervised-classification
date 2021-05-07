@@ -1,6 +1,7 @@
 function [objective, constraints, userdata] = cvobjfun(fitcfun, hyperparams, sampling_params, crossval_partition, data, labels)
 % bayesobjfun Optimize hyperparameters
     MINORITY_LABEL = 0;
+    N_NEIGHBORS = 5;
 
     % trained_models = cell(1, crossval_partition.NumTestSets);
     crossval_confusion = zeros(2, 2, crossval_partition.NumTestSets);
@@ -22,9 +23,8 @@ function [objective, constraints, userdata] = cvobjfun(fitcfun, hyperparams, sam
 
         % Oversample the minority class
         [synthetic_fish, synthetic_fish_labels] = ADASYN(...
-            data(training_set, :), ...
-            labels(training_set), ...
-            sampling_params.oversampling_beta, [], [], false);
+            data(training_set, :), labels(training_set), ...
+            sampling_params.oversampling_beta, N_NEIGHBORS, N_NEIGHBORS);
 
         % Train the model
         trained_model = fitcfun([data(training_set, :); synthetic_fish], ...

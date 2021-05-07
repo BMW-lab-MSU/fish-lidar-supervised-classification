@@ -26,7 +26,7 @@ function neighbors = knnindex(X, k, options)
 % Copyright (c) 2020 Trevor Vannoy
 
 arguments
-    X (:,:) single
+    X (:,:) double
     k (1, 1) {mustBePositive, mustBeInteger}
     options.Method (1,1) string {mustBeMember(options.Method, ["knnsearch", "nndescent"])} = "knnsearch"
     options.ExcludeSelf (1,1) logical = true;
@@ -43,7 +43,7 @@ elseif options.Method == "nndescent"
     % see https://pynndescent.readthedocs.io/en/latest/index.html for deatils on
     % PyNNDescent. Setting 'diversify_prob' to 0 results in a more accurate
     % index at the expense of speed; this could become an argument to knnindex
-    index = py.pynndescent.NNDescent(X, ...
+    index = py.pynndescent.NNDescent(double(X), ...
         pyargs('n_neighbors', py.int(k), 'diversify_prob', 0.0, ...
             'low_memory', options.LowMemory));
 
