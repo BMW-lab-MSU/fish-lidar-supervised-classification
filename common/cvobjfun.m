@@ -38,7 +38,7 @@ function [objective, constraints, userdata] = cvobjfun(fitcfun, hyperparams, sam
             pred_labels);
         [~, ~, ~, f3scores(i)] = analyze_confusion(crossval_confusion(:, :, i));
         
-        clear trained_model validation_set training_set synthetic_fish synthetic_fish_labels pred_labels
+        clearvars -except MINORITY_LABEL N_NEIGHBORS crossval_confusion,f3scores fitcfun hyperparams sampling_params data labels crossval_partition
     end
     
     objective = -mean(f3scores);
