@@ -2,7 +2,7 @@
 addpath('../common');
 %clear
 
-box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/Yellowstone';
+box_dir = '../../data/fish-lidar/Data/Yellowstone';
 
 %pool = parpool();
 %statset('UseParallel', true);
@@ -17,5 +17,5 @@ tune_sampling_base(@lda, training_data, training_labels, crossval_partition);
 
 %% Model fitting function
 function model = lda(data, labels, ~)
-    model = compact(fitcdiscr(data, labels)); 
+    model = compact(fitcdiscr(data, labels, 'DiscrimType', 'pseudoLinear')); 
 end
