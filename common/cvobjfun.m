@@ -23,9 +23,7 @@ if opts.Progress
 end
 
 for i = 1:crossval_partition.NumTestSets
-    % Get validation and training partitions; transpose the data and labels
-    % because our observations are in columns, but everybody else wants them
-    % in rows.
+    % Get validation and training partitions
     validation_set = test(crossval_partition, i); 
     training_set = training(crossval_partition, i);
 
