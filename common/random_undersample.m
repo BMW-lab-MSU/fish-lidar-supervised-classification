@@ -19,6 +19,11 @@ arguments
     labels (1,:) 
     undersample_class (1,1)
     opts.UndersamplingRatio (1,1) double {mustBeInRange(opts.UndersamplingRatio, 0, 1)} = 0.75
+    opts.Reproducible (1,1) logical = false
+end
+
+if opts.Reproducible
+    rng(0, 'twister');
 end
 
 idx = find(labels == undersample_class);

@@ -30,7 +30,8 @@ for i = 1:crossval_partition.NumTestSets
     % Undersample the majority class
     idx_remove = random_undersample(...
         labels(training_set), MINORITY_LABEL, ...
-        'UndersamplingRatio', undersampling_ratio);
+        'UndersamplingRatio', undersampling_ratio, ...
+        'Reproducible', true);
     
     training_set(idx_remove) = [];
 
