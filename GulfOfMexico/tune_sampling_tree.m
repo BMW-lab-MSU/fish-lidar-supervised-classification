@@ -9,12 +9,12 @@ box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
 %statset('UseParallel', true);
 
 %% Load data
-load([box_dir filesep 'training' filesep 'training_data.mat']);
+load([box_dir filesep 'training' filesep 'training_data_all_labels.mat']);
 training_data = training_data';
 training_labels = training_labels';
 
 %% Tune sampling ratios
-tune_sampling_base(@tree, training_data, training_labels, crossval_partition);
+tune_sampling_base(@tree, training_data, training_labels, crossval_partition, 'Progress', true);
 
 %% Model fitting function
 function model = tree(data, labels, ~)
