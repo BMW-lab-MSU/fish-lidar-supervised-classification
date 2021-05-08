@@ -1,6 +1,7 @@
 %% Setup
 addpath('../common');
 %clear
+rng(0, 'twister');
 
 box_dir = '../../data/fish-lidar/Data/Yellowstone';
 
