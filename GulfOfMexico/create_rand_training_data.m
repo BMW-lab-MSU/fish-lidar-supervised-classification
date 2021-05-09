@@ -30,7 +30,7 @@ for filename = input_data_files
     labels = logical([labels, logical(tmp.labels)]);
 end
 
-labels = any(labels(1:2,:));
+labels = any(labels(1:4,:));
 
 %% Partiion into training and test sets
 TEST_PCT = 0.2;
@@ -51,10 +51,10 @@ crossval_partition = cvpartition(training_labels, 'KFold', N_FOLDS, 'Stratify', 
 
 %% Save training and testing data
 mkdir(box_dir, 'testing');
-save([box_dir filesep 'testing' filesep 'testing_data.mat'], ...
+save([box_dir filesep 'testing' filesep 'testing_data_all_labels.mat'], ...
     'testing_data', 'testing_labels', 'holdout_partition', '-v7.3');
 
 mkdir(box_dir, 'training');
-save([box_dir filesep 'training' filesep 'training_data.mat'], ...
+save([box_dir filesep 'training' filesep 'training_data_all_labels.mat'], ...
     'training_data', 'training_labels', 'crossval_partition', ...
     'holdout_partition', '-v7.3');
