@@ -1,7 +1,7 @@
 function frames = create_regions(data, window_size, overlap)
 
 arguments
-   data (:,:) double
+   data (:,:) 
    window_size (1,1) double {mustBePositive, mustBeInteger}
    overlap (1,1) double {mustBeInRange(overlap, 0, 0.99)} = 0
 end
@@ -9,7 +9,7 @@ end
 n_instances = length(data);
 n_frames = ceil(n_instances/(window_size * (1 - overlap)));
 
-frames = cell(1, n_frames);
+frames = cell(n_frames, 1);
 
 stop = 0;
 for i = 1:n_frames
@@ -20,5 +20,5 @@ for i = 1:n_frames
         stop = n_instances;
     end
 
-    frames{i} = data(:, start:stop);
+    frames{i} = data(start:stop, :);
 end
