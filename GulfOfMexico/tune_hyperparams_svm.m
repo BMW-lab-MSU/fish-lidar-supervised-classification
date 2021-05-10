@@ -10,7 +10,7 @@ rng(0, 'twister');
 % statset('UseParallel', true);
 
 %% Load data
-load([box_dir filesep 'training' filesep 'training_data.mat']);
+load([box_dir filesep 'training' filesep 'training_data_all_labels.mat']);
 training_data = training_data';
 training_labels = training_labels';
 
