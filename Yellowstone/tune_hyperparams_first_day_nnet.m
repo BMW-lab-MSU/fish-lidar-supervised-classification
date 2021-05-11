@@ -1,5 +1,5 @@
 %% Configuration
-box_dir = '../../data/fish-lidar/Data/GulfOfMexico';
+box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
 
 %% Setup
 addpath('../common');
@@ -11,9 +11,9 @@ rng(0, 'twister');
 % statset('UseParallel', true);
 
 %% Load data
-load([box_dir filesep 'training' filesep 'roi_training_data.mat']);
+load([box_dir filesep 'training' filesep 'first_day_roi_training_data.mat']);
 
-load([box_dir filesep 'training' filesep 'sampling_tuning_nnet.mat'])
+load([box_dir filesep 'training' filesep 'sampling_tuning_first_day_roi_nnet.mat'])
 undersampling_ratio = result.undersampling_ratio
 clear result
 
@@ -25,8 +25,8 @@ optimize_vars = [
 ];
 
 minfun = @(hyperparams)cvobjfun_roi(@nnet, hyperparams, ...
-    undersampling_ratio, crossval_partition, training_data, ...
-    training_labels, training_roi_indicator);
+    undersampling_ratio, crossval_partition, training_roi_data, ...
+    training_roi_labels, training_roi_indicator);
 
 results = bayesopt(minfun, optimize_vars, ...
     'IsObjectiveDeterministic', true, 'UseParallel', false, ...
@@ -35,7 +35,7 @@ results = bayesopt(minfun, optimize_vars, ...
 
 best_params = bestPoint(results);
 
-save([box_dir filesep 'training' filesep 'hyperparameter_tuning_nnet.mat'],...
+save([box_dir filesep 'training' filesep 'hyperparameter_tuning_first_day_roi_nnet.mat'],...
     'results', 'best_params');
 
 %% Model fitting function

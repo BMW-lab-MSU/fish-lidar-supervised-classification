@@ -11,11 +11,9 @@ rng(0, 'twister');
 % statset('UseParallel', true);
 
 %% Load data
-load([box_dir filesep 'training' filesep 'training_data.mat']);
-training_data = training_data';
-training_labels = training_labels';
+load([box_dir filesep 'training' filesep 'roi_training_data.mat']);
 
-load([box_dir filesep 'training' filesep 'tune_sampling_nnet.mat'])
+load([box_dir filesep 'training' filesep 'sampling_tuning_nnet.mat'])
 undersampling_ratio = result.undersampling_ratio
 clear result
 
@@ -26,13 +24,14 @@ optimize_vars = [
    optimizableVariable('activations', {'relu', 'tanh', 'sigmoid'}),...
 ];
 
-minfun = @(hyperparams)cvobjfun(@nnet, hyperparams, undersampling_ratio, ...
-    crossval_partition, training_data, training_labels);
+minfun = @(hyperparams)cvobjfun_roi(@nnet, hyperparams, ...
+    undersampling_ratio, crossval_partition, training_data, ...
+    training_labels, training_roi_indicator);
 
 results = bayesopt(minfun, optimize_vars, ...
     'IsObjectiveDeterministic', true, 'UseParallel', false, ...
     'AcquisitionFunctionName', 'expected-improvement-plus', ...
-    'MaxObjectiveEvaluations', 30);
+    'MaxObjectiveEvaluations', 20);
 
 best_params = bestPoint(results);
 

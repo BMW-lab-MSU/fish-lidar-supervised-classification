@@ -10,11 +10,9 @@ rng(0, 'twister');
 % statset('UseParallel', true);
 
 %% Load data
-load([box_dir filesep 'training' filesep 'training_data_all_labels.mat']);
-training_data = training_data';
-training_labels = training_labels';
+load([box_dir filesep 'training' filesep 'roi_training_data.mat']);
 
-load([box_dir filesep 'training' filesep 'tune_sampling_tree.mat'])
+load([box_dir filesep 'training' filesep 'sampling_tuning_tree.mat'])
 undersampling_ratio = result.undersampling_ratio
 clear result
 
@@ -28,13 +26,14 @@ optimize_vars = [
    optimizableVariable('fncost', [1 20], 'Type', 'integer')
 ];
 
-minfun = @(hyperparams)cvobjfun(@tree, hyperparams, undersampling_ratio, ...
-    crossval_partition, training_data, training_labels);
+minfun = @(hyperparams)cvobjfun_roi(@tree, hyperparams, ...
+    undersampling_ratio, crossval_partition, training_data, ...
+    training_labels, training_roi_indicator);
 
 results = bayesopt(minfun, optimize_vars, ...
     'IsObjectiveDeterministic', true, 'UseParallel', false, ...
     'AcquisitionFunctionName', 'expected-improvement-plus', ...
-    'MaxObjectiveEvaluations', 30);
+    'MaxObjectiveEvaluations', 20);
 
 best_params = bestPoint(results);
 
@@ -47,4 +46,5 @@ function model = tree(data, labels, params)
         'MaxNumSplits', params.MaxNumSplits, ...
         'MinLeafSize', params.MinLeafSize, ...
         'SplitCriterion', char(params.SplitCriterion)));
+    % model = compact(fitctree(data, labels, 'Cost', [0 1; params.fncost 0]));
 end
