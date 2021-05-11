@@ -3,23 +3,22 @@ addpath('../common');
 %clear
 rng(0, 'twister');
 
-box_dir = '../../data/fish-lidar/Data/Yellowstone';
+box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/Yellowstone';
 
-if isempty(gcp('nocreate'))
-    pool = parpool();
-end
+%pool = parpool();
 %statset('UseParallel', true);
 
 %% Load data
-load([box_dir filesep 'training' filesep 'training_data.mat']);
-training_data = training_data';
-training_labels = training_labels';
+load([box_dir filesep 'training' filesep 'roi_training_data.mat']);
 
 %% Tune sampling ratios
-tune_sampling_base(@svm, training_data, training_labels, crossval_partition, ...
-    'Progress', true, 'UseParallel', true, 'NumThreads', 2);
+result = tune_sampling_roi_base(@svm, training_roi_data, ...
+    training_roi_labels, training_roi_indicator, crossval_partition, ...
+    'Progress', true);
+
+save([box_dir filesep 'training' filesep 'sampling_tuning_roi_svm.mat'], 'result')
 
 %% Model fitting function
 function model = svm(data, labels, ~)
-    model = compact(fitcsvm(data, labels)); 
+    model = compact(fitclinear(data, labels));
 end
