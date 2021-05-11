@@ -12,7 +12,7 @@ rng(0, 'twister');
 %% Load data
 load([box_dir filesep 'training' filesep 'roi_training_data.mat']);
 
-load([box_dir filesep 'training' filesep 'sampling_tuning_rusboost.mat'])
+load([box_dir filesep 'training' filesep 'sampling_tuning_roi_rusboost.mat'])
 undersampling_ratio = result.undersampling_ratio
 clear result
 
@@ -39,7 +39,7 @@ results = bayesopt(minfun, optimize_vars, ...
 
 best_params = bestPoint(results);
 
-save([box_dir filesep 'training' filesep 'hyperparameter_tuning_rusboost.mat'],...
+save([box_dir filesep 'training' filesep 'hyperparameter_tuning_roi_rusboost.mat'],...
     'results', 'best_params');
 
 %% Model fitting function

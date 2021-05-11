@@ -12,7 +12,7 @@ rng(0, 'twister');
 %% Load data
 load([box_dir filesep 'training' filesep 'roi_training_data.mat']);
 
-load([box_dir filesep 'training' filesep 'sampling_tuning_svm.mat'])
+load([box_dir filesep 'training' filesep 'sampling_tuning_roi_svm.mat'])
 undersampling_ratio = result.undersampling_ratio
 clear result
 
@@ -35,7 +35,7 @@ results = bayesopt(minfun, optimize_vars, ...
     'AcquisitionFunctionName', 'expected-improvement-plus', ...
     'MaxObjectiveEvaluations', 20);
 
-save([box_dir filesep 'training' filesep 'hyperparameter_tuning_svm.mat'],...
+save([box_dir filesep 'training' filesep 'hyperparameter_tuning_roi_svm.mat'],...
     'results', 'best_params');
 
 %% Model fitting function
