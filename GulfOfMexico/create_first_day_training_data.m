@@ -63,7 +63,7 @@ for i = 1:n_testing
 end
 
 %% Partition the data for k-fold cross validation
-N_FOLDS = 5;
+N_FOLDS = 3;
 
 crossval_partition = cvpartition(training_roi_indicator, 'KFold', N_FOLDS, 'Stratify', true);
 

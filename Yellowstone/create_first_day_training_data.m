@@ -32,7 +32,7 @@ testing_roi_data = create_regions(testing_data, WINDOW_SIZE, OVERLAP);
 testing_roi_indicator = cellfun(@(c) any(c), testing_roi_labels);
 
 %% Partition the data for k-fold cross validation
-N_FOLDS = 5;
+N_FOLDS = 3;
 
 crossval_partition = cvpartition(training_roi_indicator, 'KFold', N_FOLDS, 'Stratify', true);
 
