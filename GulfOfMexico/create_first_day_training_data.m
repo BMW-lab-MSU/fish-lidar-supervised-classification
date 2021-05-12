@@ -5,7 +5,7 @@ clear
 % Set random number generator properties for reproducibility
 rng(0, 'twister');
 
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/GulfOfMexico';
+box_dir = 'D:\Box Sync\AFRL_Data\Data\GulfOfMexico';
 
 training_file = 'processed_data_09-24.mat';
 testing_files = {...
@@ -36,7 +36,7 @@ testing_data = struct('data', cell(n_testing, 1), ...
 for i = 1:n_testing
     tmp = load([box_dir filesep 'processed data' filesep testing_files{1}], 'xpol_processed', 'labels');
     testing_data(i).data = single(tmp.xpol_processed)';
-    testing_data(i).labels = any(tmp.labels)';
+    testing_data(i).labels = any(tmp.labels(1:3,:))';
     testing_data(i).day = testing_days{i};
 end
 
