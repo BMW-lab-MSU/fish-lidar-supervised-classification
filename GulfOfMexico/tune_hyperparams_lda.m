@@ -36,7 +36,7 @@ results = bayesopt(minfun, optimize_vars, ...
 best_params = bestPoint(results);
 
 save([box_dir filesep 'training' filesep 'hyperparameter_tuning_roi_lda.mat'],...
-    'results', 'best_params');
+    'results', 'best_params', '-v7.3');
 
 %% Model fitting function
 function model = lda(data, labels, params)
