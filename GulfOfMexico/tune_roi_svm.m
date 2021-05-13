@@ -17,7 +17,7 @@ load([box_dir filesep 'training' filesep 'roi_training_data.mat']);
  clear result
 
  load([box_dir filesep 'training' filesep 'hyperparameter_tuning_roi_svm.mat'])
- params = best_params;
+ params = best_params
  clear best_params
 
 %% Tune number of labels per ROI
@@ -32,7 +32,7 @@ save([box_dir filesep 'training' filesep 'roi_label_tuning_svm.mat'], 'result')
 
 %% Model fitting function
 function model = svm(data, labels, params)
-    model = fitclinear(data, labels, ...
+    model = compact(fitclinear(data, labels, ...
         'Cost', [0 1; params.fncost 0], 'Lambda', params.lambda, ...
-        'Regularization', char(params.regularization));
+        'Regularization', char(params.regularization)));
 end
