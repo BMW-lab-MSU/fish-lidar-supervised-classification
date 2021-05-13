@@ -3,7 +3,7 @@ addpath('../common');
 %clear
 rng(0, 'twister');
 
-box_dir = 'D:\Box Sync\AFRL_Data\Data\GulfOfMexico';
+box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
 
 %pool = parpool();
 %statset('UseParallel', true);
