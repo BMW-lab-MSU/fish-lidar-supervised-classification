@@ -28,7 +28,7 @@ n_testing = numel(testing_files);
 %% Load data
 tmp = load([box_dir filesep 'processed data' filesep training_file], 'xpol_processed', 'labels');
 training_data = single(tmp.xpol_processed)';
-training_labels = any(tmp.labels)';
+training_labels = any(tmp.labels(1:3,:))';
 
 testing_data = struct('data', cell(n_testing, 1), ...
     'labels', cell(n_testing, 1), 'day', cell(n_testing, 1));
