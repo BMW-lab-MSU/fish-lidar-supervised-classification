@@ -3,7 +3,7 @@ addpath('../common');
 %clear
 rng(0, 'twister');
 
-box_dir = '../../data/fish-lidar/Data/GulfOfMexico';
+box_dir = 'D:\Box Sync\AFRL_Data\Data\GulfOfMexico';
 
 %pool = parpool();
 %statset('UseParallel', true);

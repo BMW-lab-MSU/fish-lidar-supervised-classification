@@ -1,5 +1,5 @@
 %% Configuration
-box_dir = '../../data/fish-lidar/Data/GulfOfMexico';
+box_dir = 'D:\Box Sync\AFRL_Data\Data\GulfOfMexico';
 
 %% Setup
 addpath('../common');
