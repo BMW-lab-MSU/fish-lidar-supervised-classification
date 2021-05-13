@@ -3,7 +3,7 @@ addpath('../common');
 %clear
 rng(0, 'twister');
 
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/GulfOfMexico';
+box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
 
 %pool = parpool();
 %statset('UseParallel', true);
@@ -17,7 +17,7 @@ undersampling_ratio = result.undersampling_ratio
 clear result
 
 load([box_dir filesep 'training' filesep 'hyperparameter_tuning_roi_tree.mat'])
-params = best_params;
+params = best_params
 clear best_params
 
 %% Tune number of labels per ROI

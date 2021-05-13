@@ -3,7 +3,7 @@ addpath('../common');
 %clear
 rng(0, 'twister');
 
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/GulfOfMexico';
+box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
 
 %pool = parpool();
 %statset('UseParallel', true);
@@ -32,9 +32,7 @@ save([box_dir filesep 'training' filesep 'roi_label_tuning_lda.mat'], 'result')
 
 %% Model fitting function
 function model = lda(data, labels, params)
-    %model = compact(fitcdiscr(data, labels, 'DiscrimType', 'pseudoLinear', ...
-    %    'Cost', [0 1; params.fncost 0], 'Delta', params.delta, ...
-    %    'Gamma', params.gamma));
-     model = compact(fitcdiscr(data, labels, 'DiscrimType', 'pseudoLinear', ...
-         'Cost', [0 1; params.fncost 0]));
+    model = compact(fitcdiscr(data, labels, 'DiscrimType', 'pseudoLinear', ...
+        'Cost', [0 1; params.fncost 0], 'Delta', params.delta, ...
+        'Gamma', params.gamma));
 end

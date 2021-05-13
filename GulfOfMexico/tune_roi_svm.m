@@ -3,7 +3,7 @@ addpath('../common');
 %clear
 rng(0, 'twister');
 
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/GulfOfMexico';
+box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
 
 %pool = parpool();
 %statset('UseParallel', true);
@@ -12,16 +12,13 @@ box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/GulfOfMexico';
 load([box_dir filesep 'training' filesep 'roi_training_data.mat']);
 
 %% Load params
-% NOTE: the SVM was an uninformative classifier during all tuning, so we
-% just use the defaults here.
-disp('using default values becuase the classifier was uninformative')
-% load([box_dir filesep 'training' filesep 'sampling_tuning_roi_svm.mat'])
-% undersampling_ratio = result.undersampling_ratio
-% clear result
+ load([box_dir filesep 'training' filesep 'sampling_tuning_roi_svm.mat'])
+ undersampling_ratio = result.undersampling_ratio
+ clear result
 
-% load([box_dir filesep 'training' filesep 'hyperparameter_tuning_roi_svm.mat'])
-% params = best_params;
-% clear best_params
+ load([box_dir filesep 'training' filesep 'hyperparameter_tuning_roi_svm.mat'])
+ params = best_params
+ clear best_params
 
 %% Tune number of labels per ROI
 result = tune_roi_base(@svm, params, undersampling_ratio, ....
@@ -34,6 +31,8 @@ result.objective(result.min_idx)
 save([box_dir filesep 'training' filesep 'roi_label_tuning_svm.mat'], 'result')
 
 %% Model fitting function
-function model = svm(data, labels, ~)
-    model = compact(fitclinear(data, labels));
+function model = svm(data, labels, params)
+    model = compact(fitclinear(data, labels, ...
+        'Cost', [0 1; params.fncost 0], 'Lambda', params.lambda, ...
+        'Regularization', char(params.regularization)));
 end
