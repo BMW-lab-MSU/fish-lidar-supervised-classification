@@ -5,24 +5,24 @@ addpath('../common')
 box_dir = 'D:\Box Sync\AFRL_Data\Data\Yellowstone';
 
 %% Load data
-load([box_dir filesep 'testing' filesep 'roi_testing_data.mat']);
+load([box_dir filesep 'testing' filesep 'first_day_roi_testing_data.mat']);
 
 
 %% Test SVM
 disp('Testing SVM....')
 disp('---------------')
 disp('')
-load([box_dir filesep 'training' filesep 'models' filesep 'svm.mat']);
-load([box_dir filesep 'training' filesep 'roi_label_tuning_svm.mat']);
+load([box_dir filesep 'training' filesep 'models' filesep 'svm_first_day.mat']);
+load([box_dir filesep 'training' filesep 'roi_label_tuning_first_day_svm.mat']);
 n_labels = result.n_labels;
 clear result
 
 %%%%%%%%%%%%%%%%%%
 % Shot results
 %%%%%%%%%%%%%%%%%%
-svm.shot.pred_labels = predict(model, cell2mat(testing_data));
+svm.shot.pred_labels = predict(model, cell2mat(testing_roi_data));
 
-svm.shot.confusion = confusionmat(cell2mat(testing_labels), ...
+svm.shot.confusion = confusionmat(cell2mat(testing_roi_labels), ...
     svm.shot.pred_labels);
 
 [a, p, r, f3] = analyze_confusion(svm.shot.confusion);
@@ -36,7 +36,7 @@ svm.shot.f3 = f3;
 %%%%%%%%%%%%%%%%%%
 % Split labels back into ROIs
 svm.roi.pred_labels = mat2cell(svm.shot.pred_labels, ...
-    cellfun('length', testing_labels), 1);
+    cellfun('length', testing_roi_labels), 1);
 
 % Create ROI indicator labels
 svm.roi.pred_indicator = cellfun(@(c) sum(c) >= n_labels, svm.roi.pred_labels);
@@ -65,17 +65,17 @@ disp('')
 disp('Testing LDA....')
 disp('---------------')
 disp('')
-load([box_dir filesep 'training' filesep 'models' filesep 'lda.mat']);
-load([box_dir filesep 'training' filesep 'roi_label_tuning_lda.mat']);
+load([box_dir filesep 'training' filesep 'models' filesep 'lda_first_day.mat']);
+load([box_dir filesep 'training' filesep 'roi_label_tuning_first_day_lda.mat']);
 n_labels = result.n_labels;
 clear result
 
 %%%%%%%%%%%%%%%%%%
 % Shot results
 %%%%%%%%%%%%%%%%%%
-lda.shot.pred_labels = predict(model, cell2mat(testing_data));
+lda.shot.pred_labels = predict(model, cell2mat(testing_roi_data));
 
-lda.shot.confusion = confusionmat(cell2mat(testing_labels), ...
+lda.shot.confusion = confusionmat(cell2mat(testing_roi_labels), ...
     lda.shot.pred_labels);
 
 [a, p, r, f3] = analyze_confusion(lda.shot.confusion);
@@ -89,7 +89,7 @@ lda.shot.f3 = f3;
 %%%%%%%%%%%%%%%%%%
 % Split labels back into ROIs
 lda.roi.pred_labels = mat2cell(lda.shot.pred_labels, ...
-    cellfun('length', testing_labels), 1);
+    cellfun('length', testing_roi_labels), 1);
 
 % Create ROI indicator labels
 lda.roi.pred_indicator = cellfun(@(c) sum(c) >= n_labels, lda.roi.pred_labels);
@@ -118,17 +118,17 @@ disp('')
 disp('Testing neural net....')
 disp('----------------------')
 disp('')
-load([box_dir filesep 'training' filesep 'models' filesep 'nnet.mat']);
-load([box_dir filesep 'training' filesep 'roi_label_tuning_nnet.mat']);
+load([box_dir filesep 'training' filesep 'models' filesep 'nnet_first_day.mat']);
+load([box_dir filesep 'training' filesep 'roi_label_tuning_first_day_nnet.mat']);
 n_labels = result.n_labels;
 clear result
 
 %%%%%%%%%%%%%%%%%%
 % Shot results
 %%%%%%%%%%%%%%%%%%
-nnet.shot.pred_labels = predict(model, cell2mat(testing_data));
+nnet.shot.pred_labels = predict(model, cell2mat(testing_roi_data));
 
-nnet.shot.confusion = confusionmat(cell2mat(testing_labels), ...
+nnet.shot.confusion = confusionmat(cell2mat(testing_roi_labels), ...
     nnet.shot.pred_labels);
 
 [a, p, r, f3] = analyze_confusion(nnet.shot.confusion);
@@ -142,7 +142,7 @@ nnet.shot.f3 = f3;
 %%%%%%%%%%%%%%%%%%
 % Split labels back into ROIs
 nnet.roi.pred_labels = mat2cell(nnet.shot.pred_labels, ...
-    cellfun('length', testing_labels), 1);
+    cellfun('length', testing_roi_labels), 1);
 
 % Create ROI indicator labels
 nnet.roi.pred_indicator = cellfun(@(c) sum(c) >= n_labels, nnet.roi.pred_labels);
@@ -171,17 +171,17 @@ disp('')
 disp('Testing decision tree....')
 disp('-------------------------')
 disp('')
-load([box_dir filesep 'training' filesep 'models' filesep 'tree.mat']);
-load([box_dir filesep 'training' filesep 'roi_label_tuning_tree.mat']);
+load([box_dir filesep 'training' filesep 'models' filesep 'tree_first_day.mat']);
+load([box_dir filesep 'training' filesep 'roi_label_tuning_first_day_tree.mat']);
 n_labels = result.n_labels;
 clear result
 
 %%%%%%%%%%%%%%%%%%
 % Shot results
 %%%%%%%%%%%%%%%%%%
-tree.shot.pred_labels = predict(model, cell2mat(testing_data));
+tree.shot.pred_labels = predict(model, cell2mat(testing_roi_data));
 
-tree.shot.confusion = confusionmat(cell2mat(testing_labels), ...
+tree.shot.confusion = confusionmat(cell2mat(testing_roi_labels), ...
     tree.shot.pred_labels);
 
 [a, p, r, f3] = analyze_confusion(tree.shot.confusion);
@@ -195,7 +195,7 @@ tree.shot.f3 = f3;
 %%%%%%%%%%%%%%%%%%
 % Split labels back into ROIs
 tree.roi.pred_labels = mat2cell(tree.shot.pred_labels, ...
-    cellfun('length', testing_labels), 1);
+    cellfun('length', testing_roi_labels), 1);
 
 % Create ROI indicator labels
 tree.roi.pred_indicator = cellfun(@(c) sum(c) >= n_labels, tree.roi.pred_labels);
@@ -224,17 +224,17 @@ disp('')
 disp('Testing RUSBoost....')
 disp('--------------------')
 disp('')
-load([box_dir filesep 'training' filesep 'models' filesep 'rusboost.mat']);
-load([box_dir filesep 'training' filesep 'roi_label_tuning_rusboost.mat']);
+load([box_dir filesep 'training' filesep 'models' filesep 'rusboost_first_day.mat']);
+load([box_dir filesep 'training' filesep 'roi_label_tuning_first_day_rusboost.mat']);
 n_labels = result.n_labels;
 clear result
 
 %%%%%%%%%%%%%%%%%%
 % Shot results
 %%%%%%%%%%%%%%%%%%
-rusboost.shot.pred_labels = predict(model, cell2mat(testing_data));
+rusboost.shot.pred_labels = predict(model, cell2mat(testing_roi_data));
 
-rusboost.shot.confusion = confusionmat(cell2mat(testing_labels), ...
+rusboost.shot.confusion = confusionmat(cell2mat(testing_roi_labels), ...
     rusboost.shot.pred_labels);
 
 [a, p, r, f3] = analyze_confusion(rusboost.shot.confusion);
@@ -248,7 +248,7 @@ rusboost.shot.f3 = f3;
 %%%%%%%%%%%%%%%%%%
 % Split labels back into ROIs
 rusboost.roi.pred_labels = mat2cell(rusboost.shot.pred_labels, ...
-    cellfun('length', testing_labels), 1);
+    cellfun('length', testing_roi_labels), 1);
 
 % Create ROI indicator labels
 rusboost.roi.pred_indicator = cellfun(@(c) sum(c) >= n_labels, rusboost.roi.pred_labels);
@@ -274,5 +274,5 @@ disp(rusboost.roi)
 
 
 %% Save results
-save([box_dir filesep 'testing' filesep 'results.mat'], 'svm', 'lda', ...
+save([box_dir filesep 'testing' filesep 'results_first_day.mat'], 'svm', 'lda', ...
     'nnet', 'tree', 'rusboost', '-v7.3');
