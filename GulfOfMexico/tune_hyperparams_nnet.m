@@ -1,5 +1,5 @@
 %% Configuration
-box_dir = '../../data/fish-lidar/Data/GulfOfMexico';
+box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
 
 %% Setup
 addpath('../common');
@@ -36,7 +36,7 @@ results = bayesopt(minfun, optimize_vars, ...
 best_params = bestPoint(results);
 
 save([box_dir filesep 'training' filesep 'hyperparameter_tuning_roi_nnet.mat'],...
-    'results', 'best_params');
+    'results', 'best_params', '-v7.3');
 
 %% Model fitting function
 function model = nnet(data, labels, params)

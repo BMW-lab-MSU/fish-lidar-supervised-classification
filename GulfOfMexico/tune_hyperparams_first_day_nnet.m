@@ -1,5 +1,5 @@
 %% Configuration
-box_dir = '../../data/fish-lidar/Data/GulfOfMexico';
+box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
 
 %% Setup
 addpath('../common');
