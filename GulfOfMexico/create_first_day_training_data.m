@@ -5,7 +5,7 @@ clear
 % Set random number generator properties for reproducibility
 rng(0, 'twister');
 
-box_dir = 'D:\Box Sync\AFRL_Data\Data\GulfOfMexico';
+box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
 
 training_file = 'processed_data_09-24.mat';
 testing_files = {...
@@ -62,6 +62,10 @@ for i = 1:n_testing
     testing_roi(i).day = testing_days{i};
 end
 
+testing_roi_data = vertcat(testing_roi(:).data);
+testing_roi_labels = vertcat(testing_roi(:).labels);
+testing_roi_indicator = vertcat(testing_roi(:).indicator);
+
 %% Partition the data for k-fold cross validation
 N_FOLDS = 3;
 
@@ -71,7 +75,7 @@ crossval_partition = cvpartition(training_roi_indicator, 'KFold', N_FOLDS, 'Stra
 %% Save training and testing data
 mkdir(box_dir, 'testing');
 save([box_dir filesep 'testing' filesep 'first_day_roi_testing_data.mat'], ...
-    'testing_roi', '-v7.3');
+    'testing_roi_data', 'testing_roi_labels', 'testing_roi_indicator', '-v7.3');
 
 mkdir(box_dir, 'training');
 save([box_dir filesep 'training' filesep 'first_day_roi_training_data.mat'], ...
