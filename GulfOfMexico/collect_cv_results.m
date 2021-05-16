@@ -9,8 +9,13 @@ model_names = {'svm', 'lda', 'nnet', 'tree', 'rusboost'};
 for model = model_names
     tmp = load([box_dir filesep 'training' filesep ...
         'hyperparameter_tuning_first_day_roi_' model{:}]);
+    tmp2 = load([box_dir filesep 'training' filesep ...
+    'sampling_tuning_roi_' model{:}]);
     
     results.(model{:}).params = tmp.best_params;
+    results.(model{:}).undersampling = tmp2.result.undersampling_ratio;
+
+    
     results.(model{:}).shot.cv_results = ...
         tmp.results.UserDataTrace{tmp.results.IndexOfMinimumTrace(end)};
     results.(model{:}).shot.confusion = ...
@@ -35,15 +40,19 @@ for model = model_names
     results.(model{:}).roi.f3 = f3;
 end
 
-save([box_dir filesep 'training' filesep 'cv_results_first_day'], 'results');
+save([box_dir filesep 'training' filesep 'cv_results_first_day'], '-struct', 'results');
 
 
 %% Collect 80/20 results
 for model = model_names
     tmp = load([box_dir filesep 'training' filesep ...
         'hyperparameter_tuning_roi_' model{:}]);
+    tmp2 = load([box_dir filesep 'training' filesep ...
+        'sampling_tuning_roi_' model{:}]);
     
     results.(model{:}).params = tmp.best_params;
+    results.(model{:}).undersampling = tmp2.result.undersampling_ratio;
+    
     results.(model{:}).shot.cv_results = ...
         tmp.results.UserDataTrace{tmp.results.IndexOfMinimumTrace(end)};
     results.(model{:}).shot.confusion = ...
@@ -68,4 +77,4 @@ for model = model_names
     results.(model{:}).roi.f3 = f3;
 end
 
-save([box_dir filesep 'training' filesep 'cv_results'], 'results');
+save([box_dir filesep 'training' filesep 'cv_results'], '-struct', 'results');
