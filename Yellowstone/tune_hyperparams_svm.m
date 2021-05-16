@@ -1,5 +1,5 @@
 %% Configuration
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
+box_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/Yellowstone';
 
 %% Setup
 addpath('../common');
@@ -21,8 +21,8 @@ n_observations = length(training_data);
 %% Tune SVM hyperparameters
 
 optimize_vars = [
-   optimizableVariable('lambda',[1e-5,1e5]/n_observations,'Transform','log'),...
-   optimizableVariable('regularization', {'ridge', 'lasso'}),...
+%    optimizableVariable('lambda',[1e-5,1e5]/n_observations,'Transform','log'),...
+%    optimizableVariable('regularization', {'ridge', 'lasso'}),...
    optimizableVariable('fncost', [1 20], 'Type', 'integer')
 ];
 
@@ -35,12 +35,16 @@ results = bayesopt(minfun, optimize_vars, ...
     'AcquisitionFunctionName', 'expected-improvement-plus', ...
     'MaxObjectiveEvaluations', 20);
 
+best_params = bestPoint(results);
+
 save([box_dir filesep 'training' filesep 'hyperparameter_tuning_roi_svm.mat'],...
     'results', 'best_params');
 
 %% Model fitting function
 function model = svm(data, labels, params)
     model = fitclinear(data, labels, ...
-        'Cost', [0 1; params.fncost 0], 'Lambda', params.lambda, ...
-        'Regularization', char(params.regularization)); 
+        'Cost', [0 1; params.fncost 0]); 
+    % model = fitclinear(data, labels, ...
+    %     'Cost', [0 1; params.fncost 0], 'Lambda', params.lambda, ...
+    %     'Regularization', char(params.regularization)); 
 end

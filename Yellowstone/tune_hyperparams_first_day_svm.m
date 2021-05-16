@@ -1,5 +1,5 @@
 %% Configuration
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
+box_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/Yellowstone';
 
 %% Setup
 addpath('../common');
@@ -34,6 +34,8 @@ results = bayesopt(minfun, optimize_vars, ...
     'IsObjectiveDeterministic', true, 'UseParallel', false, ...
     'AcquisitionFunctionName', 'expected-improvement-plus', ...
     'MaxObjectiveEvaluations', 20);
+
+best_params = bestPoint(results);
 
 save([box_dir filesep 'training' filesep 'hyperparameter_tuning_first_day_roi_svm.mat'],...
     'results', 'best_params');

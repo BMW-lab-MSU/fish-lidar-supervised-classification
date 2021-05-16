@@ -3,7 +3,7 @@ addpath('../common');
 %clear
 rng(0, 'twister');
 
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
+box_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/Yellowstone';
 
 %pool = parpool();
 %statset('UseParallel', true);
@@ -15,16 +15,16 @@ load([box_dir filesep 'training' filesep 'first_day_roi_training_data.mat']);
 % NOTE: the SVM was an uninformative classifier during all tuning, so we
 % just use the defaults here.
 disp('using default values becuase the classifier was uninformative')
-% load([box_dir filesep 'training' filesep 'sampling_tuning_first_day_roi_svm.mat'])
-% undersampling_ratio = result.undersampling_ratio
-% clear result
+load([box_dir filesep 'training' filesep 'sampling_tuning_first_day_roi_svm.mat'])
+undersampling_ratio = result.undersampling_ratio
+clear result
 
 % load([box_dir filesep 'training' filesep 'hyperparameter_tuning_first_day_roi_svm.mat'])
 % params = best_params;
 % clear best_params
 
 %% Tune number of labels per ROI
-result = tune_roi_base(@svm, params, undersampling_ratio,...
+result = tune_roi_base(@svm, [], undersampling_ratio,...
     crossval_partition, training_roi_data, training_roi_labels,...
     training_roi_indicator, 'Progress', true)
 
