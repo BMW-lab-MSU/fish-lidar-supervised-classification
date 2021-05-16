@@ -1,7 +1,7 @@
 %% setup
-addpath('../common')
+addpath('../../common')
 
-box_dir = '/Users/joeyaist/Box/AFRL_Data/Data/Yellowstone';
+box_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/Yellowstone';
 data_filename = 'processed_data_2015.mat';
 data_path = [box_dir filesep data_filename];
 
@@ -27,34 +27,32 @@ cmap = flipud(colormap(brewermap(10000,'*PuBu'))); % Blue on purple colormap wit
 start = 24.75e3;
 stop = 25.4e3;
 
-mkdir('figs')
-
 % original shots
 imshow(xpol_raw(:, start:stop), 'DisplayRange', [0 10], 'Colormap', cmap)
 ylim([600, 1700])
-exportgraphics(gca, 'figs/original_shots.pdf', 'ContentType', 'vector');
+exportgraphics(gca, 'original_shots.pdf', 'ContentType', 'vector');
 
 % surface detected
 figure
 imshow(xpol_raw(:, start:stop), 'DisplayRange', [0 10], 'Colormap', cmap)
 hold on
-plot(surface_index(start:stop), 'LineStyle', '--', 'Color', '#c18566', 'LineWidth', 2.5)
+plot(surface_index(start:stop), 'LineStyle', '--', 'Color', '#DC3100', 'LineWidth', 2.5)
 hold off
 ylim([600, 1700])
-exportgraphics(gca, 'figs/surface_detection.pdf', 'ContentType', 'vector');
+exportgraphics(gca, 'surface_detection.pdf', 'ContentType', 'vector');
 
 
 % surface corrected
 figure
 imshow(xpol_surface_corrected(:, start:stop), 'DisplayRange', [0 10], 'Colormap', cmap)
 ylim([0, 1100])
-exportgraphics(gca, 'figs/surface_correction.pdf', 'ContentType', 'vector');
+exportgraphics(gca, 'surface_correction.pdf', 'ContentType', 'vector');
 
 
 % depth adjustment
 figure
 imshow(xpol_depth_adjustment(:, start:stop), 'DisplayRange', [0 10], 'Colormap', cmap)
-exportgraphics(gca, 'figs/depth_adjustment.pdf', 'ContentType', 'vector');
+exportgraphics(gca, 'depth_adjustment.pdf', 'ContentType', 'vector');
 
 
 
