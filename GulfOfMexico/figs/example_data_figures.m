@@ -1,11 +1,9 @@
-addpath('../common');
+addpath('../../common');
 
-data_dir = '/Users/joeyaist/Box/AFRL_Data/Data/GulfOfMexico/processed data';
+data_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/GulfOfMexico/processed data';
 
 day1 = load([data_dir filesep 'processed_data_09-24.mat'], 'labels', 'xpol_raw', 'metadata');
 day2 = load([data_dir filesep 'processed_data_09-25.mat'], 'labels', 'xpol_raw', 'metadata');
-
-mkdir('figs');
 
 %%
 cmap = flipud(colormap(brewermap(10000,'*PuBu')));
@@ -43,7 +41,7 @@ d = linspace(0, total_distance, col_stop - col_start + 1);
 
 nexttile
 
-imagesc(d, DEPTH_INCREMENT * (0:row_stop-row_start-1), day2.xpol_raw(row_start:row_stop, col_start:col_stop));
+imagesc(d, DEPTH_INCREMENT * (0:row_stop-row_start-1), day2.xpol_raw(row_start:row_stop, col_start:col_stop), [0, 0.003]);
 colormap(cmap);
 hold on
 
@@ -54,17 +52,17 @@ hold on
 
 
 % jellyfish
-annotation('ellipse', [0.108 0.625 0.05 0.22], 'LineStyle', '-', 'Color', '#67A3C1', ...
+annotation('ellipse', [0.108 0.625 0.05 0.22], 'LineStyle', '-', 'Color', '#DC3100', ...
     'LineWidth', 3)
-annotation('ellipse', [0.31 0.7 0.05 0.2], 'LineStyle', '-', 'Color', '#67A3C1', ...
+annotation('ellipse', [0.31 0.7 0.05 0.2], 'LineStyle', '-', 'Color', '#DC3100', ...
     'LineWidth', 3)
 
 % fish schools
-annotation('ellipse', [0.422 0.7 0.03, 0.18], 'LineStyle', ':', 'Color', '#a3c166', ...
+annotation('ellipse', [0.422 0.7 0.03, 0.18], 'LineStyle', ':', 'Color', '#FFBF13', ...
     'LineWidth', 3)
-annotation('ellipse', [0.472 0.72 0.07 0.18], 'LineStyle', ':', 'Color', '#a3c166', ...
+annotation('ellipse', [0.472 0.72 0.07 0.18], 'LineStyle', ':', 'Color', '#FFBF13', ...
     'LineWidth', 3)
-annotation('ellipse', [0.757 0.68 0.03 0.18], 'LineStyle', ':', 'Color', '#a3c166', ...
+annotation('ellipse', [0.757 0.68 0.03 0.18], 'LineStyle', ':', 'Color', '#FFBF13', ...
     'LineWidth', 3)
 
 title('(a)', 'FontSize', 12)
@@ -87,13 +85,13 @@ depth = DEPTH_INCREMENT * (0:row_stop-row_start-1);
 
 nexttile
 
-imagesc(dist, depth, day1.xpol_raw(row_start:row_stop, col_start:col_stop));
+imagesc(dist, depth, day1.xpol_raw(row_start:row_stop, col_start:col_stop), [0, 0.003]);
 colormap(cmap)
 hold on
 
 % single fish hits
 scatter(d(find(day1.labels(1,col_start:col_stop))), depth(end-2)*ones(1, length(find(day1.labels(1, col_start:col_stop)))), ... 
-    'Marker', '^', 'MarkerEdgeColor', '#67A3C1', 'MarkerFaceColor', '#67A3C1', 'SizeData', 50)
+    'Marker', '^', 'MarkerEdgeColor', '#FFBF13', 'MarkerFaceColor', '#FFBF13', 'SizeData', 50)
 
 title('(b)', 'FontSize', 12)
 set(gca, 'TitleHorizontalAlignment', 'left')
@@ -101,4 +99,4 @@ set(gca, 'TitleHorizontalAlignment', 'left')
 
 
 %%
-exportgraphics(fig, 'figs/Gulf_of_Mexico_data_example.pdf', 'ContentType', 'vector');
+exportgraphics(fig, 'Gulf_of_Mexico_data_example.pdf', 'ContentType', 'vector');
