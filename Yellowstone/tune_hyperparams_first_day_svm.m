@@ -1,5 +1,5 @@
 %% Configuration
-box_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/Yellowstone';
+box_dir = '/mnt/data/trevor/research/afrl/data/AFRL_Data/Data/Yellowstone';
 
 %% Setup
 addpath('../common');

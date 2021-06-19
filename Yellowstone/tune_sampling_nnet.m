@@ -3,7 +3,7 @@ addpath('../common');
 %clear
 rng(0, 'twister');
 
-box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/Yellowstone';
+box_dir = '/mnt/data/trevor/research/afrl/data/AFRL_Data/Data/Yellowstone';
 
 
 %pool = parpool();
