@@ -3,7 +3,7 @@ addpath('../common');
 %clear
 rng(0, 'twister');
 
-box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
+box_dir = '/mnt/data/trevor/research/afrl/data/AFRL_Data/Data/GulfOfMexico';
 
 %pool = parpool();
 %statset('UseParallel', true);
@@ -21,9 +21,22 @@ params = best_params
 clear best_params
 
 %% Tune number of labels per ROI
+t0 = tic;
 result = tune_roi_base(@lda, params, undersampling_ratio, ....
     crossval_partition, training_data, training_labels, ...
     training_roi_indicator, 'Progress', true)
+runtime = toc(t0);
+
+% save runtimes
+tab = table(runtime, 'VariableNames', "roi_tuning", 'RowNames', "lda");
+if exist(['runtimes' filesep 'roi_tuning_runtimes.mat'])
+    load(['runtimes' filesep 'roi_tuning_runtimes']);
+    runtimes = [runtimes; tab];
+else
+    runtimes = tab;
+    mkdir('runtimes');
+end
+save(['runtimes' filesep 'roi_tuning_runtimes'], 'runtimes')
 
 result.confusion(:,:,result.min_idx)
 result.objective(result.min_idx)
