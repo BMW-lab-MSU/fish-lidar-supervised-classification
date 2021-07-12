@@ -1,5 +1,5 @@
 %% Configuration
-box_dir = 'D:\Box Sync\AFRL_Data\Data\GulfOfMexico';
+box_dir = '/mnt/data/trevor/research/afrl/data/AFRL_Data/Data/GulfOfMexico';
 
 %% Setup
 addpath('../common');
@@ -30,10 +30,23 @@ minfun = @(hyperparams)cvobjfun_roi(@tree, hyperparams, ...
     undersampling_ratio, crossval_partition, training_roi_data, ...
     training_roi_labels, training_roi_indicator);
 
+t0 = tic;
 results = bayesopt(minfun, optimize_vars, ...
     'IsObjectiveDeterministic', true, 'UseParallel', false, ...
     'AcquisitionFunctionName', 'expected-improvement-plus', ...
     'MaxObjectiveEvaluations', 20);
+runtime = toc(t0);
+
+% save runtimes
+tab = table(runtime, 'VariableNames', "hyperparam_tuning_first_day", 'RowNames', "tree");
+if exist(['runtimes' filesep 'hyperparam_tuning_runtimes_first_day.mat'])
+    load(['runtimes' filesep 'hyperparam_tuning_runtimes_first_day']);
+    runtimes = [runtimes; tab];
+else
+    runtimes = tab;
+    mkdir('runtimes');
+end
+save(['runtimes' filesep 'hyperparam_tuning_runtimes_first_day'], 'runtimes')
 
 best_params = bestPoint(results);
 
