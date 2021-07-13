@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5021330.svg)](https://doi.org/10.5281/zenodo.5021330)
+
 # Machine learning based region of interest detection in airborne lidar fisheries surveys
 This repository contains all of the code used to create the results and figures in our *Machine learning based region of interest detection in airborne lidar fisheries surveys* paper, which is currently under review for publication in the SPIE Journal of Applied Remote Sensing.
 
