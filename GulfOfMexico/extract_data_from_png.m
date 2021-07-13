@@ -1,4 +1,5 @@
 function datastruct = extract_data_from_png(filename)
+% SPDX-License-Identifier: BSD-3-Clause
 
 rawdata = imread(filename);
 

@@ -10,6 +10,8 @@ function [accuracy, precision, recall, f3] = analyze_confusion(confmat)
 % actual fish    |  confmat(2,1) (FN)   |   confmat(2,2) (TP)  |
 %                |______________________|______________________|
 
+% SPDX-License-Identifier: BSD-3-Clause
+
 TN = confmat(1,1);
 FP = confmat(1,2);
 FN = confmat(2,1);

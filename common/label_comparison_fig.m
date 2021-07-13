@@ -1,5 +1,7 @@
 function fig = label_comparison_fig(labels, predicted_labels, data, depth_increment)
 
+% SPDX-License-Identifier: BSD-3-Clause
+
 LABEL_HEIGHT = 3;
 
 % force labels to be row vectors

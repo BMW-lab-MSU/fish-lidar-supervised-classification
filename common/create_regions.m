@@ -1,5 +1,7 @@
 function frames = create_regions(data, window_size, overlap)
 
+% SPDX-License-Identifier: BSD-3-Clause
+
 arguments
    data (:,:) 
    window_size (1,1) double {mustBePositive, mustBeInteger}

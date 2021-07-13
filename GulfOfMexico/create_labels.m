@@ -14,6 +14,7 @@ function [labels] = create_labels(label_dir, data_file_name, PNG_file)
 %             schools, row 3 is jellyfish, and row 4 is plankton layers
 
 % Authors: Jackson Belford, Trevor Vannoy
+% SPDX-License-Identifier: BSD-3-Clause
 
 data_no_ext = strsplit(data_file_name, '.');
 file_parts = strsplit(string(data_no_ext(1)), '_');

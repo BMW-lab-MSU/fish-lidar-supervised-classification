@@ -1,6 +1,8 @@
 % Unit tests for find_water_surface.m
 % run with runtests('find_water_surface_test')
 
+% SPDX-License-Identifier: BSD-3-Clause
+
 % setup
 vect = [0 ; 0; 0; 1; 0; 0; 2; 1; 1; 20; 50; 120; 50; 20; 1; 0; 0; 0];
 matrix = [vect, circshift(vect, 2), circshift(vect, -3)];

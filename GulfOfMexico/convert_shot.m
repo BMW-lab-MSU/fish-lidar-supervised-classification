@@ -1,5 +1,7 @@
 function icath = convert_shot(shot_data, co_gain, x_gain, pol)
 
+% SPDX-License-Identifier: BSD-3-Clause
+
 shot_data = double(shot_data);
 
 if strcmp(pol,'co')

@@ -23,6 +23,8 @@ function surface_index = find_water_surface(raw_data, options)
 %   first n samples when finding the water surface. This helps deal with any
 %   strong reflections that may have happened significantly above the water. 
 %   The default value is n = 512
+
+% SPDX-License-Identifier: BSD-3-Clause
     
 arguments
     raw_data (:,:) double

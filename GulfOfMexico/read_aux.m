@@ -1,4 +1,5 @@
 function [time, lat, lon, co_gain, x_gain, tilt, temp] = read_aux(shot_data)
+% SPDX-License-Identifier: BSD-3-Clause
 
 %% Time
 hr = str2double(char(shot_data(2094+1:2095+1))');

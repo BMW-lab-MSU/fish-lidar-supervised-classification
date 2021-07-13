@@ -9,6 +9,7 @@ function labels_human = create_labels(label_file, distance)
 %   labels_human - ground truth labels
 
 % Authors: Jackson Belford, Trevor Vannoy
+% SPDX-License-Identifier: BSD-3-Clause
 
 %% Load labels file
 hits_matrix = readmatrix(label_file);

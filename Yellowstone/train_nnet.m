@@ -1,3 +1,4 @@
+% SPDX-License-Identifier: BSD-3-Clause
 %% Configuration
 box_dir = 'D:\Box Sync\AFRL_Data\Data\Yellowstone';
 

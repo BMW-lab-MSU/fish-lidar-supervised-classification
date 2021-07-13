@@ -8,6 +8,8 @@ function [hits_matrix] = get_single_fish_hits_vect(single_files_to_find, single_
 %   PNG_file:                  PNG pulled from .mat data
 %   hits_matrix:               [4 x ~] with the single_hits_row_number row labeled.
 
+% SPDX-License-Identifier: BSD-3-Clause
+
 file_name_extension_index = 4;
 message_content = 'Single hit labeled at ~~~ ';
 single_hit_value = 1;

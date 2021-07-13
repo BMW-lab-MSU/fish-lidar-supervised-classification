@@ -1,3 +1,4 @@
+% SPDX-License-Identifier: BSD-3-Clause
 %% script_extract_data_from_day
 close all; clear all; clc;
 tic;

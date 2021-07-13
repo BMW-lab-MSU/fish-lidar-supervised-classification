@@ -15,6 +15,8 @@ function remove = random_undersample(labels, undersample_class, opts)
 %   'UndersamplingRatio', ratio) undersamples the undersample_class by ratio,
 %   which must be between 0 and 1.
 
+% SPDX-License-Identifier: BSD-3-Clause
+
 arguments
     labels (1,:) 
     undersample_class (1,1)

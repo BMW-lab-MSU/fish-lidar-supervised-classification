@@ -16,6 +16,8 @@ function corrected_data = correct_surface(data, surface_index, surface_pad)
 % Outputs:
 %   corrected_data = LIDAR image data with the surface at a constant height
 
+% SPDX-License-Identifier: BSD-3-Clause
+
     corrected_data = zeros(size(data));
 
     for i = 1:length(data)

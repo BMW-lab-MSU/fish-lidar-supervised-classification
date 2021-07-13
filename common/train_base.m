@@ -1,5 +1,7 @@
 function model = train_base(fitcfun, hyperparams, undersampling_ratio, data, labels, roi_indicator)
 
+% SPDX-License-Identifier: BSD-3-Clause
+
 MINORITY_LABEL = 0;
 
 % undersample the majority class

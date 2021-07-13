@@ -9,6 +9,8 @@ function [hits_matrix] = get_layer_hits_vect(layer_files_to_find, layer_shots_va
 %   PNG_file:                  PNG pulled from .mat data
 %   hits_matrix:                 [4 x ~] with the school_hits_row_number row labeled.
 
+% SPDX-License-Identifier: BSD-3-Clause
+
 shot_index_1 = 1;
 shot_index_2 = 2;
 file_name_extension_index = 5;

@@ -1,5 +1,7 @@
 function result = tune_roi_base(fitcfun, hyperparams, undersampling_ratio, crossval_partition, data, labels, roi_indicator, opts)
 % cvobjfun Optimize hyperparameters via cross-validation
+
+% SPDX-License-Identifier: BSD-3-Clause
 arguments
     fitcfun (1,1) function_handle
     hyperparams

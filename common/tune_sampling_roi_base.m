@@ -1,4 +1,6 @@
 function result = tune_sampling_roi_base(fitcfun, data, labels, roi_indicator, crossval_partition, opts)
+
+% SPDX-License-Identifier: BSD-3-Clause
 arguments
     fitcfun (1,1) function_handle
     data (:,1) cell

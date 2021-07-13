@@ -14,6 +14,8 @@ function [xpol_processed, copol_processed] = preprocess(xpol_raw, copol_raw, sur
 %   xpol_processed  - preprocessed xpol data
 %   copol_processed - preprocessed copol data
 
+% SPDX-License-Identifier: BSD-3-Clause
+
 %% Surface correction
 % The height of the water does not start at the same row in each LIDAR
 % shot. This could potentially cause problems with shift-variant
