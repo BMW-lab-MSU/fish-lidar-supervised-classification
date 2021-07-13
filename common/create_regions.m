@@ -1,4 +1,5 @@
 function frames = create_regions(data, window_size, overlap)
+% create_regions Split data into regions of interest
 
 % SPDX-License-Identifier: BSD-3-Clause
 

@@ -1,5 +1,5 @@
 function [objective, constraints, userdata] = cvobjfun_roi(fitcfun, hyperparams, undersampling_ratio, crossval_partition, data, labels, roi_indicator, opts)
-% cvobjfun Optimize hyperparameters via cross-validation
+% cvobjfun_roi Optimize hyperparameters via cross-validation
 
 % SPDX-License-Identifier: BSD-3-Clause
 arguments

@@ -1,4 +1,5 @@
 function result = tune_sampling_roi_base(fitcfun, data, labels, roi_indicator, crossval_partition, opts)
+% Tune the undersampling ratio via cross-validation
 
 % SPDX-License-Identifier: BSD-3-Clause
 arguments
