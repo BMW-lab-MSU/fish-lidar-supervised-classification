@@ -1,5 +1,5 @@
 %%
-box_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/Yellowstone';
+box_dir = '../../../data/fish-lidar/Yellowstone';
 
 
 load([box_dir filesep 'testing' filesep 'first_day_roi_testing_data.mat']);

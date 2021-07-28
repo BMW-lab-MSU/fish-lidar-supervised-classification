@@ -1,8 +1,8 @@
 %% Setup
 addpath('../../common');
 
-data_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/Yellowstone';
-load([data_dir filesep 'processed_data_2016.mat'])
+data_dir = '../../../data/fish-lidar/Yellowstone';
+load([data_dir filesep 'processed' filesep 'processed_data_2016.mat'])
 
 SPEED_OF_LIGHT = 299792458 / 1.3; % water has an index of refraction ~1.3
 SAMPLE_RATE = 800e6;

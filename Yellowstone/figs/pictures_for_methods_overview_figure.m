@@ -1,9 +1,9 @@
 %% setup
 addpath('../../common')
 
-box_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/Yellowstone';
+box_dir = '../../../data/fish-lidar/Yellowstone';
 data_filename = 'processed_data_2015.mat';
-data_path = [box_dir filesep data_filename];
+data_path = [box_dir filesep 'processed' filesep data_filename];
 
 % number of rows above the surface of the water to start the image
 SURFACE_PAD = 0;

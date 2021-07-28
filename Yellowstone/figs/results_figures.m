@@ -1,11 +1,11 @@
 %% Setup
 addpath('../../common');
 
-data_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/Yellowstone';
+data_dir = '../../../data/fish-lidar/Yellowstone';
 
 % load data
-data2016 = load([data_dir filesep 'processed_data_2016.mat'], 'xpol_processed', 'location');
-data2015 = load([data_dir filesep 'processed_data_2015.mat'], 'xpol_processed', 'location');
+data2016 = load([data_dir filesep 'processed' filesep 'processed_data_2016.mat'], 'xpol_processed', 'location');
+data2015 = load([data_dir filesep 'processed' filesep 'processed_data_2015.mat'], 'xpol_processed', 'location');
 
 % load results
 results = load([data_dir filesep 'testing' filesep 'results']);
