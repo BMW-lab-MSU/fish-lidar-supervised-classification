@@ -1,8 +1,9 @@
 % SPDX-License-Identifier: BSD-3-Clause
 %% Setup
+clear
 addpath('../common');
 
-box_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/Yellowstone';
+box_dir = '../../data/fish-lidar/Yellowstone';
 
 model_names = {'svm', 'lda', 'nnet', 'tree', 'rusboost'};
 
