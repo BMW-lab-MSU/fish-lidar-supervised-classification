@@ -6,7 +6,7 @@ clear
 % Set random number generator properties for reproducibility
 rng(0, 'twister');
 
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
+box_dir = '../../data/fish-lidar/Yellowstone';
 data_files = {'processed_data_2015', 'processed_data_2016'};
 years = {'2015', '2016'};
 
@@ -16,7 +16,7 @@ data = struct('data', cell(numel(data_files), 1), ...
     'labels', cell(numel(data_files), 1), 'year', cell(numel(data_files), 1));
 
 for i = 1:numel(data_files)
-    tmp = load([box_dir filesep data_files{i}], 'xpol_processed', 'labels');
+    tmp = load([box_dir filesep 'processed' filesep data_files{i}], 'xpol_processed', 'labels');
     data(i).data = single(tmp.xpol_processed)';
     data(i).labels = logical(tmp.labels)';
     data(i).year = years{i};
@@ -71,4 +71,4 @@ save([box_dir filesep 'training' filesep 'roi_training_data.mat'], ...
     'training_data', 'training_labels', 'training_roi_indicator',...
     'crossval_partition', 'holdout_partition');
 
-save([box_dir filesep 'full_roi_data.mat'], 'roi');
+save([box_dir filesep 'processed' filesep 'full_roi_data.mat'], 'roi');

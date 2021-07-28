@@ -6,16 +6,16 @@ clear
 % Set random number generator properties for reproducibility
 rng(0, 'twister');
 
-box_dir = '/mnt/data/trevor/research/AFRL/Box/Data/Yellowstone';
+box_dir = '../../data/fish-lidar/Yellowstone';
 training_file = 'processed_data_2015';
 testing_file = 'processed_data_2016';
 
 %% Load data
-tmp = load([box_dir filesep training_file], 'xpol_processed', 'labels');
+tmp = load([box_dir filesep 'processed' filesep training_file], 'xpol_processed', 'labels');
 training_data = single(tmp.xpol_processed)';
 training_labels = logical(tmp.labels)';
 
-tmp = load([box_dir filesep testing_file], 'xpol_processed', 'labels');
+tmp = load([box_dir filesep 'processed' filesep testing_file], 'xpol_processed', 'labels');
 testing_data = single(tmp.xpol_processed)';
 testing_labels = logical(tmp.labels)';
 

@@ -2,7 +2,7 @@
 %% Preprocess Yellowstone data and create mat files
 addpath('../common');
 
-box_dir = '/mnt/data/trevor/research/afrl/box/Data/Yellowstone';
+box_dir = '../../data/fish-lidar/Yellowstone';
 
 data_filenames = {'yellowstone_wfov_20160928.processed.h5', 'yellowstone_20150923.processed.h5'};
 labels_filenames = {'fish_hits_2016_with_school_size_estimates.csv', 'fish_hits_2015_with_school_size_estimates.csv'};
@@ -19,8 +19,8 @@ REDUCED_COLUMN_HEIGHT = 60;
 
 
 for i = 1:length(data_filenames)
-    data_path = [box_dir filesep data_filenames{i}];
-    labels_path = [box_dir filesep labels_filenames{i}];
+    data_path = [box_dir filesep 'data' filesep data_filenames{i}];
+    labels_path = [box_dir filesep 'labels' filesep labels_filenames{i}];
     
     % load in the data
     disp(['loading ' data_filenames{i} '...'])
@@ -59,5 +59,6 @@ for i = 1:length(data_filenames)
     data.location = location;
     data.timestamps = timestamps;
     
-    save([box_dir filesep save_filenames{i}], '-struct', 'data', '-v7.3');
+    mkdir([box_dir filesep 'processed'])
+    save([box_dir filesep 'processed' filesep save_filenames{i}], '-struct', 'data', '-v7.3');
 end

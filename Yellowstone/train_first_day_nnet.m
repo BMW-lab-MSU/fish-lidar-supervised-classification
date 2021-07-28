@@ -1,6 +1,6 @@
 % SPDX-License-Identifier: BSD-3-Clause
 %% Configuration
-box_dir = 'D:\Box Sync\AFRL_Data\Data\Yellowstone';
+box_dir = '../../data/fish-lidar/Yellowstone';
 
 %% Setup
 addpath('../common');

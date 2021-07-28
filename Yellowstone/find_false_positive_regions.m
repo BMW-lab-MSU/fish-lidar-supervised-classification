@@ -3,7 +3,7 @@
 clear
 addpath('../common')
 
-box_dir = 'D:\Box Sync\AFRL_Data\Data\Yellowstone';
+box_dir = '../../data/fish-lidar/Yellowstone';
 
 %% Find false positive regions in the 80/20 split testing data
 load([box_dir filesep 'testing' filesep 'roi_testing_data.mat']);

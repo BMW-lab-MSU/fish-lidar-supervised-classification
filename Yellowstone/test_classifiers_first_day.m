@@ -3,7 +3,7 @@
 clear
 addpath('../common')
 
-box_dir = 'D:\Box Sync\AFRL_Data\Data\Yellowstone';
+box_dir = '../../data/fish-lidar/Yellowstone';
 
 %% Load data
 load([box_dir filesep 'testing' filesep 'first_day_roi_testing_data.mat']);
