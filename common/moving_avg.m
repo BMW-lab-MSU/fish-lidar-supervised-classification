@@ -11,7 +11,7 @@ function avg = moving_avg(x, window_size)
 %   workspace before being used on a new data stream.
 
 % Copyright (c) 2021 Trevor Vannoy
-% SPDX-ID: BSD-3-Clause
+% SPDX-License-Identifier: BSD-3-Clause
 
 arguments
     x (1,1) {mustBeNumeric}
