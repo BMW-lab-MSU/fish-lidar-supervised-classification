@@ -20,7 +20,7 @@ function corrected_data = correct_surface(data, surface_index, surface_pad)
 
     corrected_data = zeros(size(data));
 
-    for i = 1:length(data)
+    for i = 1:width(data)
         % start the image a little bit above the actual surface of the water
         surface_start = surface_index(i) - surface_pad;
 
