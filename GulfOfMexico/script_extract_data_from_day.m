@@ -3,8 +3,8 @@
 close all; clear all; clc;
 tic;
 
-data_dir = '/home/trevor/research/afrl/Fish lidar & machine learning/GM11'
-save_dir = '/home/trevor/research/afrl/box/Data/GulfOfMexico/original data'
+data_dir = '../../data/fish-lidar/GulfOfMexico/data'
+save_dir = '../../data/fish-lidar/GulfOfMexico/data'
 
 DAYS = {'09-24', '09-25', '09-26', '09-29', '09-30', '10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07'};
 

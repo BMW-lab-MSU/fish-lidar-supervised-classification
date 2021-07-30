@@ -1,6 +1,6 @@
 addpath('../../common');
 
-data_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/GulfOfMexico/processed data';
+data_dir = '../../../data/fish-lidar/GulfOfMexico/processed';
 
 day1 = load([data_dir filesep 'processed_data_09-24.mat'], 'labels', 'xpol_raw', 'metadata');
 day2 = load([data_dir filesep 'processed_data_09-25.mat'], 'labels', 'xpol_raw', 'metadata');

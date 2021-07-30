@@ -2,10 +2,11 @@
 %% Preprocess Gulf of Mexico data and create mat files
 addpath('../common/')
 
-boxDir = '/mnt/data/trevor/research/afrl/box/Data/GulfOfMexico';
-originalDataDir = [boxDir filesep 'original data'];
-labelDir = [boxDir filesep 'ground truth results'];
-processedDataDir = [boxDir filesep 'processed data'];
+boxDir = '../../data/fish-lidar/GulfOfMexico';
+originalDataDir = [boxDir filesep 'data'];
+labelDir = [boxDir filesep 'labels'];
+processedDataDir = [boxDir filesep 'processed'];
+mkdir([processedDataDir])
 
 dataFilenames = {'DATA_FOR_09-24.mat', 'DATA_FOR_09-25.mat', 'DATA_FOR_09-26.mat', 'DATA_FOR_09-29.mat', 'DATA_FOR_09-30.mat', 'DATA_FOR_10-01.mat', 'DATA_FOR_10-02.mat', 'DATA_FOR_10-03.mat', 'DATA_FOR_10-04.mat', 'DATA_FOR_10-05.mat', 'DATA_FOR_10-06.mat', 'DATA_FOR_10-07.mat'}; 
 

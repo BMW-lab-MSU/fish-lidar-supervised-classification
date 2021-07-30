@@ -1,6 +1,6 @@
 % SPDX-License-Identifier: BSD-3-Clause
 %% Configuration
-box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
+box_dir = '../../data/fish-lidar/GulfOfMexico';
 
 %% Setup
 addpath('../common');

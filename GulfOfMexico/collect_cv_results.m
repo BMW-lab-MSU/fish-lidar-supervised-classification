@@ -1,9 +1,10 @@
 % SPDX-License-Identifier: BSD-3-Clause
 
 %% Setup
+clear
 addpath('../common');
 
-box_dir = '/Users/trevvvy/research/afrl/data/fish-lidar/GulfOfMexico';
+box_dir = '../../data/fish-lidar/GulfOfMexico';
 
 model_names = {'svm', 'lda', 'nnet', 'tree', 'rusboost'};
 

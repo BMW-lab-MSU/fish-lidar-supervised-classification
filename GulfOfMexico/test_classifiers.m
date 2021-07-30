@@ -3,7 +3,7 @@
 clear
 addpath('../common')
 
-box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
+box_dir = '../../data/fish-lidar/GulfOfMexico';
 
 %% Load data
 load([box_dir filesep 'testing' filesep 'roi_testing_data.mat']);

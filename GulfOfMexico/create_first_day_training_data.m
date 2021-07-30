@@ -6,7 +6,7 @@ clear
 % Set random number generator properties for reproducibility
 rng(0, 'twister');
 
-box_dir = '/mnt/data/trevor/research/afrl/AFRL_Data/Data/GulfOfMexico';
+box_dir = '../../data/fish-lidar/GulfOfMexico';
 
 training_file = 'processed_data_09-24.mat';
 testing_files = {...
@@ -27,7 +27,7 @@ testing_days = {'09-25', '09-26', '09-29', '09-30', '10-01', ...
 n_testing = numel(testing_files);
 
 %% Load data
-tmp = load([box_dir filesep 'processed data' filesep training_file], 'xpol_processed', 'labels');
+tmp = load([box_dir filesep 'processed' filesep training_file], 'xpol_processed', 'labels');
 training_data = single(tmp.xpol_processed)';
 training_labels = any(tmp.labels(1:3,:))';
 
@@ -35,7 +35,7 @@ testing_data = struct('data', cell(n_testing, 1), ...
     'labels', cell(n_testing, 1), 'day', cell(n_testing, 1));
 
 for i = 1:n_testing
-    tmp = load([box_dir filesep 'processed data' filesep testing_files{1}], 'xpol_processed', 'labels');
+    tmp = load([box_dir filesep 'processed' filesep testing_files{1}], 'xpol_processed', 'labels');
     testing_data(i).data = single(tmp.xpol_processed)';
     testing_data(i).labels = any(tmp.labels(1:3,:))';
     testing_data(i).day = testing_days{i};
