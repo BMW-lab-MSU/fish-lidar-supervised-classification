@@ -22,7 +22,7 @@ All files that begin with `tune` are for parameter tuning. `tune_*_first_day_*.m
 `test_classifiers*.m` test all trained classifiers on the relevant testing set and saves results. `collect_cv_results.m` collects cross-validation results obtained during parameter tuning.  
 
 ## Steps to reproduce results
-In the files metioned in the following steps, the path(s) to the data files need to be set. This variable is typically called `box_dir`.
+In the files metioned in the following steps, the path(s) to the data files need to be set. This variable is typically called `box_dir`. By default, this path is set to `../../data/fish-lidar/Yellowstone`; therefore, if you put the data archive in that path, you won't have to change any paths.
 
 ### Preprocessing
 1. Preprocess the data: `create_processed_mat_files.m`

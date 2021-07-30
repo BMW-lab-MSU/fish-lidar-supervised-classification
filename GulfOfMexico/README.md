@@ -22,7 +22,7 @@ All files that begin with `tune` are for parameter tuning. `tune_*_first_day_*.m
 `test_classifiers*.m` test all trained classifiers on the relevant testing set and saves results. `collect_cv_results.m` collects cross-validation results obtained during parameter tuning.  
 
 ## Steps to reproduce results
-In the files mentioned in the following steps, the path(s) to the data files need to be set. This variable is typically called `box_dir`.
+In the files mentioned in the following steps, the path(s) to the data files need to be set. This variable is typically called `box_dir`. By default, this path is set to `../../data/fish-lidar/GulfOfMexico`; therefore, you can avoid changing paths in all the scripts by putting the data archive in that directory.
 
 ### Preprocessing
 1. Convert the PNG files into MAT files: `script_extract_data_from_day.m`
