@@ -9,7 +9,8 @@ box_dir = '../../data/fish-lidar/GulfOfMexico';
 ROI_SIZE = 1000;
 N_SMOOTHING_SAMPLES = 10;
 N_COLUMNS = 150;
-CLASSIFIERS = {'lda', 'nnet', 'tree', 'svm', 'rusboost'};
+% CLASSIFIERS = {'lda', 'nnet', 'tree', 'svm', 'rusboost'};
+CLASSIFIERS = {'lda', 'nnet', 'tree', 'svm'};
 
 FILES = {'streaming_data_09-30.mat'};
 
@@ -49,6 +50,10 @@ for file = FILES
         % Preallocate data structures
         labels = false(N_INSTANCES,1);
         ROI_labels = false(ceil(N_INSTANCES / ROI_SIZE), 1);
+        data_loadtime = zeros(N_INSTANCES,1);
+        preprocessing_runtime = zeros(N_INSTANCES,1);
+        prediction_runtime = zeros(N_INSTANCES,1);
+        total_runtime = zeros(N_INSTANCES,1);
 
         profile on
 
@@ -56,6 +61,8 @@ for file = FILES
         instance_num = 0;
         ROI_num = 0;
         while ~xpol_reader.isDone
+
+            t_loop_start = tic;
             instance_num = instance_num + 1;
 
             % Read in new samples
@@ -63,6 +70,10 @@ for file = FILES
             copol_raw = copol_reader()';
             xpol_gain = xpol_gain_reader()';
             copol_gain = copol_gain_reader()';
+
+            data_loadtime(instance_num) = toc(t_loop_start);
+
+            t_preprocessing_start = tic;
 
             % Multiply by gains to convert from current
             xpol_raw = xpol_raw * xpol_gain;
@@ -78,6 +89,10 @@ for file = FILES
             xpol_processed = correct_surface(xpol_raw, surface_idx_smooth, 0);
             xpol_processed = xpol_processed(1:N_COLUMNS);
 
+            preprocessing_runtime(instance_num) = toc(t_preprocessing_start);
+
+            t_prediction_start = tic;
+
             % Predict label
             labels(instance_num) = predict(model, xpol_processed');
 
@@ -88,10 +103,40 @@ for file = FILES
                 ROI_labels(ROI_num) = ...
                     sum(labels(instance_num - 1000 + 1:instance_num)) >= n_labels;
             end
+
+            prediction_runtime(instance_num) = toc(t_prediction_start);
+
+            total_runtime(instance_num) = toc(t_loop_start);
         end
         disp('saving results...')
-        % Save profile results
+
         profile off
+
+        mean_preprocessing_runtime = mean(preprocessing_runtime);
+        max_preprocessing_runtime = max(preprocessing_runtime);
+        std_preprocessing_runtime = std(preprocessing_runtime);
+        mean_data_loadtime = mean(data_loadtime);
+        max_data_loadtime = max(data_loadtime);
+        std_data_loadtime = std(data_loadtime);
+        mean_prediction_runtime = mean(prediction_runtime);
+        max_prediction_runtime = max(prediction_runtime);
+        std_prediction_runtime = std(prediction_runtime);
+        mean_runtime = mean(total_runtime);
+        max_runtime = max(total_runtime);
+        std_runtime = std(total_runtime);
+
+        mkdir([box_dir filesep 'runtimes'])
+
+        save([box_dir filesep 'runtimes' filesep classifier{:} ...
+            '_streaming_simulation.mat'], 'mean_preprocessing_runtime', ...
+            'max_preprocessing_runtime', 'std_preprocessing_runtime', ...
+            'mean_data_loadtime', 'max_data_loadtime', 'std_data_loadtime', ...
+            'mean_prediction_runtime', 'max_prediction_runtime', ...
+            'std_prediction_runtime', 'mean_runtime', 'max_runtime', ...
+            'std_runtime', 'total_runtime', 'prediction_runtime', ...
+            'data_loadtime', 'preprocessing_runtime');
+
+        % Save profile results
         profsave(profile('info'), [box_dir filesep 'runtimes' filesep ...
             classifier{:} '_streaming_simulation_' DATE{:}]);
     end
