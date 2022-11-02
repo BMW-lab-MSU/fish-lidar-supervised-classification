@@ -26,7 +26,8 @@ false_positive_rois = cellfun(@(roi) roi', false_positive_rois, 'UniformOutput',
 tp_indicator = find(results.nnet.roi.pred_indicator == 1 & testing_roi_indicator == 1);
 
 tp_rois = testing_roi_data(tp_indicator);
-tp_roi_labels = results.nnet.roi.pred_labels(tp_indicator);
+tp_roi_pred_labels = results.nnet.roi.pred_labels(tp_indicator);
+tp_roi_human_labels = testing_roi_labels(tp_indicator);
 
 % Transpose the regions so shots are in columns, not rows
 tp_rois = cellfun(@(roi) roi', tp_rois, 'UniformOutput', false);
@@ -34,13 +35,13 @@ tp_rois = cellfun(@(roi) roi', tp_rois, 'UniformOutput', false);
 %%
 
 
-roi_tp1 = label_comparison_fig(testing_roi_labels{118}, tp_roi_labels{4}, ...
-    tp_rois{3}, DEPTH_INCREMENT);
-roi_tp1.Units = 'inches';
-roi_tp1.Position = [1 1 4.5 4];
+roi_tp1 = label_comparison_fig(tp_roi_human_labels{4}(501:end), tp_roi_pred_labels{4}(501:end), ...
+    tp_rois{4}(:,501:end), DEPTH_INCREMENT);
+roi_tp1.Units = 'pixels';
+roi_tp1.Position = [100 100 1600 900];
 
 
-
+%%
 
 
 exportgraphics(roi_tp1, 'yellowstone_roi_tp.pdf', 'ContentType', 'vector');
